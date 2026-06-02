@@ -1,0 +1,24 @@
+### PyCharm (JetBrains) ###
+# Nasconde le configurazioni personali del tuo editor
+.idea/
+*.iws
+*.iml
+
+### Python ###
+# Nasconde i file compilati da Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+### Ambienti Virtuali (Virtual Environments) ###
+venv/
+.venv/
+env/
+ENV/
+
+### File di sistema o temporanei ###
+.DS_Store
+Thumbs.db
+*.log
