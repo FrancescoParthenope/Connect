@@ -1,0 +1,138 @@
+database model with mongodb for the connect app
+
+_______
+
+USERS
+{
+    _id: ObjectId,
+    email: string,
+    password_hash: string,
+    first_name: string,
+    last_name: string,
+    birth_date: date,
+    profile_picture: string,
+    bio: string,
+    roles: array[string],
+    tutor_profile: {
+        description: string,
+        subjects: array[ObjectId],
+        certifications: array[string],
+        average_rating: float,
+        reviews_count: int,
+        cv_path: string,
+    } | null,
+    coins: int,
+    creation_date: date,
+    last_access: date
+}
+
+SUBJECTS
+{
+    _id: ObjectId,
+    name: string,
+    field: string
+}
+
+CLASSROOMS
+{
+    _id: ObjectId,
+    name: string,
+    members: [
+    { user_id: ObjectId, role: string, join_date: date }
+    ],
+    description: string,
+    invite_code: string,
+    creation_date: date
+}
+
+CLASSROOMS_DOCUMENTS
+{
+    _id: ObjectId,
+    classroom_id: ObjectId,
+    owner_id: ObjectId,
+    filename: string,
+    storage_path: string,
+    upload_date: date
+}
+
+CONVERSATIONS
+{
+    _id: ObjectId,
+    type: string,
+    classroom_id: ObjectId | null,
+    participants: array[ObjectId],
+    creation_date: date,
+    last_activity: date
+}
+
+MESSAGES
+{
+    _id: ObjectId,
+    conversation_id: ObjectId,
+    sender_id: ObjectId,
+    text: string,
+    attachments: array[string],
+    creation_date: date
+}
+
+TESTS
+{
+    _id: ObjectId,
+    title: string,
+    classroom_id: ObjectId,
+    creator_id: ObjectId,
+    questions: [{
+        _id: ObjectId,
+        question_type: string,
+        question: string,
+        answers: array[string],
+        correct_answer: int | null
+    }],
+    time_limit: int
+}
+
+TESTS_SUBMISSIONS
+{
+    _id: ObjectId,
+    test_id: ObjectId,
+    student_id: ObjectId,
+    answers: [{
+        question_id: ObjectId,
+        given_answer: int | string
+    }],
+    submit_date: date,
+    status: string,
+    score: int
+}
+
+REVIEWS
+{
+    _id: ObjectId,
+    student_id: ObjectId,
+    tutor_id: ObjectId,
+    subject_id: ObjectId,
+    rating: float,
+    comment: string,
+    creation_date: date
+}
+
+COINS_TRANSACTIONS
+{
+    _id: ObjectId,
+    type: string,
+    from_user: ObjectId | null,
+    to_user: ObjectId | null,
+    coins: int,
+    creation_date: date
+}
+
+TUTORING_SESSIONS
+{
+    _id: ObjectId,
+    tutor_id: ObjectId,
+    student_id: ObjectId,
+    start_time: date,
+    end_time: date,
+    duration_minutes: int,
+    status: string
+}
