@@ -1,24 +1,27 @@
 ### PyCharm (JetBrains) ###
-# Nasconde le configurazioni personali del tuo editor
+# hide personal IDE configurations
 .idea/
 *.iws
 *.iml
 
 ### Python ###
-# Nasconde i file compilati da Python
+# hide pyton compilated files
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 .Python
 
-### Ambienti Virtuali (Virtual Environments) ###
+### Virtual Environments ###
 venv/
 .venv/
 env/
 ENV/
 
-### File di sistema o temporanei ###
+### temporary files###
 .DS_Store
 Thumbs.db
 *.log
+
+### env ###
+.env
