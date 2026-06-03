@@ -1,0 +1,74 @@
+from flask import jsonify, request
+from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime, timezone
+from app.auth import bp
+from config.database import users_collection
+
+
+# the route for the login request received
+@bp.route('/login', methods=['POST'])
+def login():
+    return jsonify({"message": "Login Endpoint Ready"})
+
+# the route for the registration request received
+@bp.route('/register', methods=['POST'])
+def register():
+    # recovering json data from the request
+    data = request.get_json()
+    if not data:
+        return jsonify({"message": "No data provided"})
+
+    email = data.get("email","").strip()
+    password = data.get("password","")
+    first_name = data.get("first_name","").strip()
+    last_name = data.get("last_name","").strip()
+    role = data.get("role","student").strip()
+
+    # check data received
+    if not email or not password or not first_name or not last_name:
+        return jsonify({"error": "missing an obligatory camp"})
+
+    # role check, default fallback for the data is student
+    # but a security check is done anyway
+    if role not in ["student","tutor"]:
+        return jsonify({"error": "role must be student or tutor"})
+
+    # check if the user exists already by email
+    if users_collection.find_one({"email":email}):
+        return jsonify({"error": "email already exists"})
+
+    # generating password hashing
+    password_hash = generate_password_hash(password)
+
+    # creating the new user
+    new_user = {
+        "email": email,
+        "password_hash": password_hash,
+        "first_name": first_name,
+        "last_name": last_name,
+        "birth_date": None,
+        "profile_picture": None,
+        "bio": "",
+        "roles": [role],
+        "tutor_profile": None,
+        "coins": 10, #at the first registration, a gift of 10 tokens is given
+        "creation_date": datetime.now(timezone.utc),
+        "last_access": datetime.now(timezone.utc),
+    }
+    if role == "tutor":
+        new_user["tutor_profile"] = {
+            "description": "",
+            "subjects": [],
+            "certifications": [],
+            "average_rating": 0.0,
+            "reviews_count": 0,
+            "cv_path": ""
+        }
+
+    # insert new user into the database
+    try:
+        users_collection.insert_one(new_user)
+        return jsonify({"message": "New user successfully created"}), 201
+    except Exception as e:
+        # error in inserting the new user into MongoDB
+        return jsonify({"error": f"Error inserting the new user into the database: {str(e)}"}), 500
