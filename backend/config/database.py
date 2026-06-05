@@ -13,6 +13,9 @@ try:
     # initialization
     client = MongoClient(MONGO_URI)
 
+    # test ping
+    client.admin.command('ping')
+
     #select (or create if doesn't exist) database
     db = client[DB_NAME]
 
