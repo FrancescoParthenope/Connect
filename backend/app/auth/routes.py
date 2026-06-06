@@ -1,4 +1,5 @@
-from flask import jsonify, request, session
+from flask import jsonify, request
+from flask_jwt_extended import create_access_token
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timezone
 from app.auth import bp
@@ -10,14 +11,14 @@ def login():
     # recovering json data from the request
     data = request.get_json()
     if not data:
-        return jsonify({"error": "No data provided"})
+        return jsonify({"error": "No data provided"}),400
 
     email = data.get("email","").strip()
     password = data.get("password","").strip()
 
     # checking the presence of all data
     if not email or not password:
-        return jsonify({"error": "missing an obligatory camp"})
+        return jsonify({"error": "missing an obligatory camp"}),400
 
     # searching user in MongoDB database
     user = users_collection.find_one({"email":email})
@@ -26,17 +27,15 @@ def login():
     if not user or not check_password_hash(user["password_hash"], password):
         return jsonify({"error": "invalid credentials"}), 401
 
-    # saving user important information in flask session
-    session.clear() # clear old session eventually
-    session["user_id"] = str(user["_id"]) # recovering MongoDB ObjectID and converting into a string
-    session["email"] = user["email"] # recovering user email
-    session["roles"] = user["roles"] # recovering user roles
-
     # update the user last login on database
     users_collection.update_one(
         {"_id": user["_id"]},
         {"$set": {"last_access": datetime.now(timezone.utc)}},
     )
+
+    # creating JWT token using flask jwt-extended
+    user_id_string = str(user["_id"]) # transforms ObjectId in String
+    token = create_access_token(identity={"user_id": user_id_string})
 
     # successful response to frontend
     return jsonify({
@@ -47,26 +46,9 @@ def login():
             "last_name": user["last_name"],
             "email": user["email"],
             "roles": user["roles"],
+            "token": token
         }
     }), 200
-
-# method is post for avoiding cross-site-request-forgery (CSRF)
-@bp.route('/logout', methods=['POST'])
-def logout():
-    # check if the user has an active session
-    if "user_id" not in session:
-        return jsonify(
-            {"success": False},
-            {"error": "no active session found, impossible to logout"}
-        ), 400
-    # clearing the current session, deleting all data stored in it
-    session.clear()
-
-    # respond to the frontend for a successful logout
-    return jsonify(
-        {"success": True},
-        {"message": "Logged out successfully"}
-    ),200
 
 # the route for the registration request received
 @bp.route('/register', methods=['POST'])
@@ -74,7 +56,7 @@ def register():
     # recovering json data from the request
     data = request.get_json()
     if not data:
-        return jsonify({"error": "No data provided"})
+        return jsonify({"error": "No data provided"}),400
 
     email = data.get("email","").strip()
     password = data.get("password","")
