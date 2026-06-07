@@ -5,7 +5,7 @@ import secrets
 class MockPayment:
     @staticmethod
     def create_card_token(card_number):
-        if card_number.len != 16:
+        if len(card_number) != 16:
             return {
                 "success": False,
                 "message": "incorrect length of card number"

@@ -2,7 +2,6 @@ from datetime import datetime, timezone
 from bson import ObjectId
 from config.database import users_collection
 
-
 def seed_database():
     # first cleaning to avoid duplicates in subsequent tests
     users_collection.delete_many({})
@@ -79,7 +78,7 @@ def seed_database():
     result_tutor = users_collection.insert_one(tutor_exemple)
 
     print(f"Database populated successfully:")
-    print(f"ID Studente: {result_student.inserted_id}")
+    print(f"ID Student: {result_student.inserted_id}")
     print(f"ID Tutor: {result_tutor.inserted_id}")
 
 

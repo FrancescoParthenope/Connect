@@ -33,20 +33,19 @@ def login():
         {"$set": {"last_access": datetime.now(timezone.utc)}},
     )
 
-    # creating JWT token using flask jwt-extended
-    user_id_string = str(user["_id"]) # transforms ObjectId in String
-    token = create_access_token(identity={"user_id": user_id_string})
+    ## Create JWT access token using the user's ID as identity
+    token = create_access_token(identity=str(user["_id"]))
 
     # successful response to frontend
     return jsonify({
         "success": True,
         "message": "Logged in successfully",
+        "token": token,
         "user": {
             "first_name": user["first_name"],
             "last_name": user["last_name"],
             "email": user["email"],
             "roles": user["roles"],
-            "token": token
         }
     }), 200
 
