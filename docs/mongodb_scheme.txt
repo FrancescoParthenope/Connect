@@ -20,7 +20,15 @@ USERS
         average_rating: float,
         reviews_count: int,
         cv_path: string,
-    } | null,
+    } | null
+    payment_methods: array[{
+        token_id: string,
+        type: string,
+        expiration_date: string // Mese/Anno (es: "12/28"),
+        provider: string,
+        last_four_digit: string,
+        is_default: boolean
+    }]
     coins: int,
     creation_date: date,
     last_access: date

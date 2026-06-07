@@ -18,6 +18,16 @@ def seed_database():
         "bio": "Studente di Informatica in cerca di supporto in Analisi 1.",
         "roles": ["student"],
         "tutor_profile": None,  # not a tutor
+        "payment_methods": [
+            {
+                "token_id": "tok_1N3b8Fca7XyZ9012345678aa",
+                "type": "credit_card",
+                "provider": "visa",
+                "last_four_digit": "4242",
+                "expiration_date": "12/28",
+                "is_default": True
+            }
+        ],
         "coins": 50,
         "creation_date": datetime.now(timezone.utc),
         "last_access": datetime.now(timezone.utc)
@@ -41,6 +51,24 @@ def seed_database():
             "reviews_count": 12,
             "cv_path": "uploads/cv/chiara_cv.pdf"
         },
+        "payment_methods": [
+            {
+                "token_id": "tok_5K8m2Pba9WvQ1234567890bb",
+                "type": "credit_card",
+                "provider": "mastercard",
+                "last_four_digit": "5555",
+                "expiration_date": "08/29",
+                "is_default": True
+            },
+            {
+                "token_id": "tok_pp_7J2x9Lzn3Mkp9876543210cc",
+                "type": "paypal",
+                "provider": "paypal",
+                "last_four_digit": "uniparthenope",
+                "expiration_date": "N/A",
+                "is_default": False
+            }
+        ],
         "coins": 120,
         "creation_date": datetime.now(timezone.utc),
         "last_access": datetime.now(timezone.utc)
