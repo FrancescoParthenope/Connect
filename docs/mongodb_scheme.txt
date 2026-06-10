@@ -97,6 +97,7 @@ TESTS
         correct_answer: int | null
     }],
     time_limit: int
+    is_active: boolean
 }
 
 TESTS_SUBMISSIONS
