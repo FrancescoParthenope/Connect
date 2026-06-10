@@ -24,7 +24,8 @@ function mainListener(page, navigateTo){
     if (linkToLogout){
         linkToLogout.addEventListener("click", (event) => {
             event.preventDefault();
-            localStorage.clear();
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
             alert("Logged out successfully");
             goTo('main')
         })

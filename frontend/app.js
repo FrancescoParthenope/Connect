@@ -1,7 +1,7 @@
 import * as Auth from "./js/auth.js";
 import * as Main from "./js/main.js";
 
-export const API_URL = "http://127.0.0.1:5000";
+export const API_URL = "http://127.0.0.1:8000";
 
 export async function navigateTo(page){
     const app = document.getElementById('app');
