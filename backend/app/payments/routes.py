@@ -5,6 +5,9 @@ from app.payments import bp
 from config.database import users_collection
 from app.services.mockPayment import MockPayment
 
+# WARNING: the payment methods need to change to adapt to effective
+# adopt the standard PCI-DSS (security for bank datas)
+
 @bp.route('/payments_methods', methods=['POST'])
 @jwt_required()
 def add_payments_methods():

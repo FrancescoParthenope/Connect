@@ -2,11 +2,23 @@ from bson import ObjectId
 from flask import jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from datetime import datetime
+
+from app.services.tutor import TutorProfileManager
 from app.user import bp
 from config.database import users_collection
 
-@bp.route('/get_profile', methods=['GET'])
+@bp.route('/profile', methods=['GET','POST'])
 @jwt_required()
+def profile_manager():
+    if request.method == 'GET':
+        return get_profile()
+    elif request.method == 'POST':
+        return update_profile()
+    else:
+        return jsonify({"success": False, "message": "Invalid method"}), 400
+
+# @bp.route('/get_profile', methods=['GET'])
+# @jwt_required()
 def get_profile():
 
     # get the user id from jwt and transforms it to binary mongodb code
@@ -27,12 +39,21 @@ def get_profile():
         if not user_profile_info:
             return jsonify({"success": False, "message": "User not found"}), 404
 
+        # need to reconvert data to string from datetime
+        date_retrieved = user_profile_info.get("birth_date","")
+
+        if date_retrieved is None:
+            date_retrieved = ""
+
+        if isinstance(date_retrieved, datetime):
+            date_retrieved = date_retrieved.strftime('%Y-%m-%d')
+
         return jsonify({
             "success": True,
             "data": {
                 "first_name": user_profile_info.get("first_name", ""),
                 "last_name": user_profile_info.get("last_name", ""),
-                "birth_date": user_profile_info.get("birth_date", ""),
+                "birth_date": date_retrieved,
                 "profile_picture": user_profile_info.get("profile_picture", ""),
                 "bio": user_profile_info.get("bio", "")
             }
@@ -44,9 +65,8 @@ def get_profile():
             "error": f"Error recovering user data from database: {str(e)}"
         }), 500
 
-
-@bp.route('/update_profile', methods=['POST'])
-@jwt_required()
+# @bp.route('/update_profile', methods=['POST'])
+# @jwt_required()
 def update_profile():
 
     # get the user id from jwt and transforms it to binary mongodb code
@@ -100,7 +120,7 @@ def update_profile():
                 "success": True,
                 "message": "Profile updated successfully"
             }), 200
-        else:
+        else:# @bp.route('/update_profile', methods=['POST'])
             return jsonify({
                 "success": True,
                 "message": "No update done, datas remain unchanged"
@@ -111,3 +131,22 @@ def update_profile():
             "success": False,
             "error": f"Error updating user in database : {str(e)}"
         }), 500
+
+@bp.route('/search_tutors', methods=['GET'])
+@jwt_required()
+def search_tutors():
+
+    subject = request.args.get('subject')
+    if not subject:
+        return jsonify({"success": False, "message": "No subject provided"}), 400
+
+    result, message, error_type = TutorProfileManager.get_tutors_list_by_subject(subject)
+
+    if not result:
+        if error_type == "NOT_FOUND":
+            return jsonify({"success": False, "message": message}), 404
+        elif error_type == "DB_ERROR":
+            return jsonify({"success": True, "data": message}), 500
+
+
+    return jsonify({"success": True, "data": message}), 200

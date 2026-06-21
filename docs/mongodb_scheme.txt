@@ -20,15 +20,33 @@ USERS
         average_rating: float,
         reviews_count: int,
         cv_path: string,
-    } | null
+    } | null,
+    tutor_application: array[{
+        subject_id: ObjectId,
+        status: string,
+        assigned_date: date,
+        completed_date: date | null,
+        test_data: array[{
+            question_id: ObjectId,
+            question: string,
+            answers: array[{
+                answer_id: int,
+                text: string
+            }]
+        }],
+        user_answers: array[{
+            question_id: ObjectId,
+            answer_given: int
+        }]
+    }] | null,
     payment_methods: array[{
         token_id: string,
         type: string,
-        expiration_date: string // Mese/Anno (es: "12/28"),
+        expiration_date: string // Mese/Anno    (es: "12/28"),
         provider: string,
         last_four_digit: string,
         is_default: boolean
-    }]
+    }],
     coins: int,
     creation_date: date,
     last_access: date
@@ -45,7 +63,7 @@ CLASSROOMS
 {
     _id: ObjectId,
     name: string,
-    members: [
+    members: array[
     { user_id: ObjectId, role: string, join_date: date }
     ],
     description: string,
@@ -83,20 +101,41 @@ MESSAGES
     creation_date: date
 }
 
+TUTOR_TESTS
+{
+    _id: ObjectId,
+    subject_id: ObjectId,
+    questions: array[
+        {
+            _id: ObjectId,
+            question: string,
+            answers : array[{
+                answer_id: int,
+                text: string
+            }],
+            correct_answer: int
+        }
+    ]
+}
+
 TESTS
 {
     _id: ObjectId,
     title: string,
     classroom_id: ObjectId,
     creator_id: ObjectId,
-    questions: [{
+    questions: array[{
         _id: ObjectId,
         question_type: string,
         question: string,
-        answers: array[string],
+        max_score: int,
+        answers: array[{
+            answer_id: int,
+            text: string
+        }] | null,
         correct_answer: int | null
     }],
-    time_limit: int
+    time_limit: int,
     is_active: boolean
 }
 
@@ -105,9 +144,12 @@ TESTS_SUBMISSIONS
     _id: ObjectId,
     test_id: ObjectId,
     student_id: ObjectId,
-    answers: [{
+    answers: array[{
         question_id: ObjectId,
-        given_answer: int | string
+        given_answer_id: int | null,
+        given_answer_text: string | null,
+        score_assigned: int | null,
+        evaluation_status: string
     }],
     submit_date: date,
     status: string,
