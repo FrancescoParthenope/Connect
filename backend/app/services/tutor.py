@@ -1,4 +1,5 @@
 from config.database import users_collection, subjects_collection
+from datetime import datetime, timezone, timedelta
 
 
 class TutorProfileManager:
@@ -137,38 +138,40 @@ class TutorProfileManager:
         except Exception as e:
             return False,  f"Error updating subjects in user tutor_profile in database : {str(e)}"
 
-    '''
-    # useless ?
     @staticmethod
-    def get_tutor_subjects(user_id):
-        user_filter = {
-            "_id": user_id,
-            "roles": "tutor"
-        }
-
+    def get_ineligible_subjects(user_id):
         try:
-            result = users_collection.find_one(user_filter, {"tutor_profile.subjects": 1, "_id": 0})
+            user = users_collection.find_one({"_id": user_id},{
+                "tutor_application": 1,
+            })
+            if not user:
+                return False, "User not found in database", "NOT_FOUND"
 
-            if not result:
-                return False, "User not found or not a tutor"
+            ineligible_subjects = []
 
-            # subject is still inside tutor profile
-            # to get the list used 2 .get() with empty fallback values for security reason
-            return True, result.get("tutor_profile", {}).get("subjects", [])
+            for subject in user.get("tutor_application", []):
+                status = subject.get("status")
+                subject_id = subject.get("subject_id")
+
+                if subject_id: # put this check for security reason
+                    if status == "completed" or status == "pending" or status =="in_progress":
+                        ineligible_subjects.append(subject_id)
+
+                    elif status == "failed":
+                        completed_date = subject.get("completed_date")
+                        time_now = datetime.now(timezone.utc)
+
+                        if completed_date and (time_now - completed_date < timedelta(days=30)):
+                            ineligible_subjects.append(subject_id)
+
+            return True, ineligible_subjects, "SUCCESS"
 
         except Exception as e:
-            return False, f"Error connecting to database : {str(e)}"
-    '''
+            return False, f"Error connecting to database : {str(e)}", "DB_ERROR"
 
     @staticmethod
-    def get_tutors_list_by_subject(subject):
+    def get_tutors_list_by_subject(subject_id):
         try:
-            subject_dict = subjects_collection.find_one({"name": subject}, {"_id": 1}) or {}
-            subject_id = subject_dict.get("_id")
-
-            if not subject_id:
-                return False, "Subject not present in database", "NOT_FOUND"
-
             query_filter = {
                 "roles": "tutor",
                 "tutor_profile.subjects": subject_id

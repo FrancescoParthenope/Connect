@@ -11,12 +11,12 @@ DB_NAME = os.getenv("MONGO_DATABASE","connect_db")
 
 try:
     # initialization
-    client = MongoClient(MONGO_URI)
+    client = MongoClient(MONGO_URI, tz_aware=True)
 
     # test ping
     client.admin.command('ping')
 
-    #select (or create if doesn't exist) database
+    #select (or create if it doesn't exist) database
     db = client[DB_NAME]
 
     #references to the collections as in docs/mongodb_scheme.txt

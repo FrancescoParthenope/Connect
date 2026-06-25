@@ -85,11 +85,8 @@ def register():
         "password_hash": password_hash,
         "first_name": first_name,
         "last_name": last_name,
-        "birth_date": None,
-        "profile_picture": None,
         "bio": "",
         "roles": [role],
-        "tutor_profile": None,
         "coins": 10, #at the first registration, a gift of 10 tokens is given
         "creation_date": datetime.now(timezone.utc),
         "last_access": datetime.now(timezone.utc),

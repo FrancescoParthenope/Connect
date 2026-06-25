@@ -3,7 +3,7 @@ from flask import jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.user import bp
 from config.database import subjects_collection
-from app.services.tutor import TutorProfileManager
+from app.services import TutorProfileManager
 
 @bp.route('/tutor', methods=['GET', 'POST'])
 @jwt_required()
@@ -67,7 +67,7 @@ def add_subject():
             return jsonify({
                 "success": False,
                 "message": "Subject not in database"
-            })
+            }), 404
         subject_id = ObjectId(subject["_id"])
 
         # using the service class to add the subject to the user
@@ -83,7 +83,7 @@ def add_subject():
             "success": False,
             "error": f"Error searching subject in database: {str(e)}"
         }),500
-
+tors_list = []
 # @bp.route('/get_tutor_profile', methods=['GET'])
 # @jwt_required()
 def get_tutor_profile():
@@ -103,3 +103,21 @@ def get_tutor_profile():
                         "cv_path": message.get("cv_path", "")
                     }
                     }), 200
+
+@bp.route('/search_tutors', methods=['GET'])
+@jwt_required()
+def search_tutors():
+    subject = request.args.get('subject')
+    if not subject:
+        return jsonify({"success": False, "message": "No subject provided"}), 400
+
+    result, message, error_type = TutorProfileManager.get_tutors_list_by_subject(subject)
+
+    if not result:
+        if error_type == "NOT_FOUND":
+            return jsonify({"success": False, "message": message}), 404
+        elif error_type == "DB_ERROR":
+            return jsonify({"success": False, "message": message}), 500
+
+
+    return jsonify({"success": True, "data": message}), 200

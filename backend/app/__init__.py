@@ -17,6 +17,8 @@ jwt = JWTManager(app)
 from app.auth import bp as auth_bp
 from app.payments import bp as payment_bp
 from app.user import bp as user_bp
+from app.tutor_tests import bp as tutor_tests_bp
 app.register_blueprint(auth_bp)
 app.register_blueprint(payment_bp)
 app.register_blueprint(user_bp)
+app.register_blueprint(tutor_tests_bp)

@@ -3,7 +3,6 @@ from flask import jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from datetime import datetime
 
-from app.services.tutor import TutorProfileManager
 from app.user import bp
 from config.database import users_collection
 
@@ -131,22 +130,3 @@ def update_profile():
             "success": False,
             "error": f"Error updating user in database : {str(e)}"
         }), 500
-
-@bp.route('/search_tutors', methods=['GET'])
-@jwt_required()
-def search_tutors():
-
-    subject = request.args.get('subject')
-    if not subject:
-        return jsonify({"success": False, "message": "No subject provided"}), 400
-
-    result, message, error_type = TutorProfileManager.get_tutors_list_by_subject(subject)
-
-    if not result:
-        if error_type == "NOT_FOUND":
-            return jsonify({"success": False, "message": message}), 404
-        elif error_type == "DB_ERROR":
-            return jsonify({"success": True, "data": message}), 500
-
-
-    return jsonify({"success": True, "data": message}), 200

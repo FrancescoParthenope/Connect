@@ -15,7 +15,7 @@ USERS
     roles: array[string],
     tutor_profile: {
         description: string,
-        subjects: array[ObjectId],
+        subjects: array[{subject_id: ObjectId, subject_name: string}],
         certifications: array[string],
         average_rating: float,
         reviews_count: int,
@@ -23,8 +23,11 @@ USERS
     } | null,
     tutor_application: array[{
         subject_id: ObjectId,
+        subject_name: string
         status: string,
         assigned_date: date,
+        started_date: date | null
+        expire_date : date | null
         completed_date: date | null,
         test_data: array[{
             question_id: ObjectId,

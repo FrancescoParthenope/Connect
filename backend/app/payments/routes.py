@@ -3,7 +3,7 @@ from flask import jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.payments import bp
 from config.database import users_collection
-from app.services.mockPayment import MockPayment
+from app.services.mock_payment import MockPayment
 
 # WARNING: the payment methods need to change to adapt to effective
 # adopt the standard PCI-DSS (security for bank datas)
