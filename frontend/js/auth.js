@@ -2,7 +2,7 @@ import {API_URL} from "../app.js";
 
 let goTo;
 
-function authListener(page, navigateTo){
+export function init(page, navigateTo){
     if (navigateTo)
         goTo = navigateTo;
 
@@ -50,13 +50,13 @@ async function handleLogin(event){
         const data = await response.json();
 
         if (response.ok) {
-            // saving informations sent by server
+            // saving information sent by server
             localStorage.setItem('token', data.token);
             localStorage.setItem('user', JSON.stringify(data.user));
             alert('Login successful');
             goTo('main');
         } else {
-            alert(`Login failed with status ${response.status}`);
+            alert(`Login failed with status: ${data["error"]}`);
         }
     }
     catch(error){
@@ -113,5 +113,3 @@ async function handleRegister(event){
         alert(`Impossible to connect to server`)
     }
 }
-
-export { authListener, handleRegister, handleLogin }

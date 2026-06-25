@@ -1,11 +1,12 @@
 let goTo;
 
-function mainListener(page, navigateTo){
+export function init(page, navigateTo){
     goTo = navigateTo;
 
     const linkToLogin = document.getElementById("linkToLogin");
     const linkToRegister = document.getElementById("linkToRegister");
     const linkToLogout = document.getElementById("linkToLogout");
+    const linkToEligibleSubjects = document.getElementById("linkToEligibleSubjects");
 
     if (linkToLogin){
         linkToLogin.addEventListener("click", (event) => {
@@ -30,6 +31,11 @@ function mainListener(page, navigateTo){
             goTo('main')
         })
     }
-}
 
-export { mainListener }
+    if (linkToEligibleSubjects){
+        linkToEligibleSubjects.addEventListener("click", (event) => {
+            event.preventDefault();
+            goTo('eligibleSubjects');
+        })
+    }
+}
