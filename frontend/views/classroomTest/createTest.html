@@ -1,0 +1,34 @@
+<form id="createTestForm" method='POST'>
+    <label for="title">Test Title</label>
+    <input
+        id="title"
+        name="title"
+        type="text"
+        required >
+
+    <br><br>
+
+    <label for="time_limit"> Time limit </label>
+    <input
+        id="time_limit"
+        name="time_limit"
+        type="number"
+        min="1"
+        value="1"
+        required >
+
+    <br><br>
+
+    <div id="questionsContainer">
+
+    </div>
+
+    <button type="button" id="addQuestionButton">
+        Add question
+    </button>
+
+    <br><br>
+
+    <input type="submit" value="Create Test">
+
+</form>

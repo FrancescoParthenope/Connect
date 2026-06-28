@@ -1,6 +1,11 @@
 import * as Auth from "./js/auth.js";
 import * as Main from "./js/main.js";
 import * as TutorTest from "./js/tutorTest.js";
+import * as Payments from "./js/payment.js";
+import * as Users from "./js/user.js";
+import * as Tests from "./js/createTest.js";
+import * as ClassroomTest from "./js/classroomTest.js";
+import * as StartTest from "./js/startTest.js";
 
 export const API_URL = "http://127.0.0.1:8000";
 
@@ -8,7 +13,12 @@ const routes = { // used to create path and load listener dynamically
     'login': { folder: 'auth', module: Auth },
     'register': { folder: 'auth', module: Auth },
     'main': { folder: '', module: Main},
-    'eligibleSubjects': {folder: 'tutorTest', module: TutorTest}
+    'eligibleSubjects': {folder: 'tutorTest', module: TutorTest},
+    'insert_payments': {folder: 'payments', module: Payments},
+    'update_profile': {folder: 'user', module: Users},
+    'createTest': {folder: 'classroomTest', module: Tests},
+    'classroomTest': {folder: 'classroomTest', module: ClassroomTest},
+    'startTest': {folder: 'classroomTest', module: StartTest},
 }
 
 export async function navigateTo(page){

@@ -1,0 +1,28 @@
+<form id="PaymentsForm" method="post">
+
+    <label for="paymentType">Payment Method</label>
+    <select id="paymentType" name="payment_type">
+        <option value="Card">Card</option>
+        <option value="Paypal">Paypal</option>
+    </select>
+    <br><br>
+    <label for="cardNumber">Card number</label>
+    <input id="cardNumber" name="card_number" type="text" maxlength="16" required>
+    <br><br>
+    <label for="expirationDate">Expiration date</label>
+    <input id="expirationDate" name="expiration_date" type="text" placeholder="12/30" required>
+    <br><br>
+    <label for="cvv">cvv</label>
+    <input id="cvv" name="cvv" type="text" required>
+    <br><br>
+    <label for="provider">Provider</label>
+    <input type="text" id="provider" name="provider" placeholder="Mastercard">
+    <br><br>
+    <label for="is_default">
+        <input id="is_default" name="is_default" type="checkbox">
+        Set as default payment method
+    </label>
+    <br><br>
+    <input type="submit" value="Save payment method">
+</form>
+

@@ -5,6 +5,7 @@ from app.user import bp
 from config.database import subjects_collection
 from app.services import TutorProfileManager
 
+
 @bp.route('/tutor', methods=['GET', 'POST'])
 @jwt_required()
 def tutor_manager():
