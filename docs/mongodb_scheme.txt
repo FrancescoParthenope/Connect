@@ -65,6 +65,7 @@ SUBJECTS
 CLASSROOMS
 {
     _id: ObjectId,
+    subject_id: ObjectId,
     name: string,
     members: array[
     { user_id: ObjectId, role: string, join_date: date }
@@ -127,7 +128,9 @@ TESTS
     title: string,
     classroom_id: ObjectId,
     creator_id: ObjectId,
-    questions: array[{
+    creator_name: string,
+    questions: array[
+    {
         _id: ObjectId,
         question_type: string,
         question: string,
@@ -145,6 +148,7 @@ TESTS
 TESTS_SUBMISSIONS
 {
     _id: ObjectId,
+    title: string,
     test_id: ObjectId,
     student_id: ObjectId,
     answers: array[{
@@ -157,6 +161,42 @@ TESTS_SUBMISSIONS
     submit_date: date,
     status: string,
     score: int
+}
+
+STUDENT_TESTS_COMPLETED
+{
+    _id: ObjectId,
+    title: string,
+    student_id: ObjectId,
+    completed_date: date,
+    questions: array[{
+        question_text: string,
+        given_answer_text: string,
+        score_assigned: int
+    }],
+    status: string,
+    score: int
+}
+
+TESTS_SESSIONS
+{
+    _id: ObjectId,
+    test_id: ObjectId,
+    student_id: ObjectId,
+    question_order: array[
+        question_id: ObjectId,
+        question_type: string,
+        question: string,
+        max_score: int,
+        answers: array[{
+            answer_id: int,
+            text: string
+        }] | null,
+    ],
+     time_limit: int,
+     started_at: date,
+     expire_date: date | null
+     status: string
 }
 
 REVIEWS

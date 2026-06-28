@@ -32,6 +32,7 @@ try:
     coins_transactions_collection = db["coins_transactions"]
     tutoring_sessions_collection = db["tutoring_sessions"]
     tutor_tests_collection = db["tutor_tests"]
+    tests_sessions_collection = db["test_sessions"]
 
     print(f"Connection to MongoDB successful, database: {DB_NAME}")
 
