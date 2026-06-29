@@ -1,6 +1,6 @@
 import random
 from datetime import datetime, timedelta, timezone
-from config.database import tests_collection, tests_sessions_collection, tests_submissions_collection
+from config.database import tests_collection, tests_sessions_collection, tests_submissions_collection, student_tests_collection
 
 class StudentTestManager:
     @staticmethod
@@ -119,6 +119,46 @@ class StudentTestManager:
                 'submit_date': datetime.now(timezone.utc),
                 'status': 'submitted',
                 'score': score
+            })
+
+            completed_questions = []
+
+            for answer in answers:
+                question = question_map.get(answer['question_id'])
+
+                question_data = {
+                    "question_text": question["question"],
+                    "score_assigned": answer["score_assigned"],
+                }
+
+                if question["question_type"] == "multiple_choice":
+                    selected_answer = ""
+
+                    for option in question["answers"]:
+                        if option["answer_id"] == answer["given_answer_id"]:
+                            selected_answer = option["text"]
+                            break
+                    question_data["given_answer_text"] = selected_answer
+                else:
+                    question_data["given_answer_text"] = answer["given_answer"]
+
+                completed_questions.append(question_data)
+
+            open_question = False
+
+            for question in test['questions']:
+                if question["question_type"] == "open_answer":
+                    open_question = True
+                    break
+
+            student_tests_collection.insert_one({
+                "test_id": test_id,
+                "title": test['title'],
+                "student_id": student_id,
+                "completed_date": datetime.now(timezone.utc),
+                "questions": completed_questions,
+                "status": "CORRECTION" if open_question else "COMPLETED",
+                "score": score,
             })
 
             tests_sessions_collection.update_one({ 'test_id': test_id, "student_id": student_id }, {"$set": {"status": "submitted"}})
