@@ -33,26 +33,30 @@ export function displayTests(tests, studentTests, goTo, toggleTest) {
                 );
             }
         });
-        // Show submitted tests ordered by completed_date
+
+        /* Iterate through the student's completed tests, which are already sorted
+        by submission date (most recent first). For each completed test, find the
+        corresponding classroom test to retrieve its full information (title,
+        time limit, active status, etc.). This allows the submitted tests to be
+        displayed in the same order they were submitted while still showing all
+        the classroom test details.*/
+
         studentTests.forEach(completedTest => {
-            const test = tests.find(
-                t => t.test_id === completedTest.test_id
+            const classTest = tests.find(
+                test => test.test_id === completedTest.test_id
             );
-            if (test) {
+            if (classTest) {
                 displayStudentTest(
-                    test,
+                    classTest,
                     completedTest,
                     containers,
                     goTo
                 );
             }
-
         });
-
     } else {
         // Tutor view
         tests.forEach(test => {
-
             displayTutorTest(
                 test,
                 containers,
