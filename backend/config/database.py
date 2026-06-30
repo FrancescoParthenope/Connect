@@ -11,7 +11,7 @@ DB_NAME = os.getenv("MONGO_DATABASE","connect_db")
 
 try:
     # initialization
-    client = MongoClient(MONGO_URI, tz_aware=True)
+    client = MongoClient(MONGO_URI, tz_aware=True, serverSelectionTimeoutMS=15000)
 
     # test ping
     client.admin.command('ping')

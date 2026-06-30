@@ -97,7 +97,26 @@ CONVERSATIONS
 
 MESSAGES
 {
+    _id: ObjectId,COINS_TRANSACTIONS
+{
     _id: ObjectId,
+    type: string,
+    from_user: ObjectId | null,
+    to_user: ObjectId | null,
+    coins: int,
+    creation_date: date
+}
+
+TUTORING_SESSIONS
+{
+    _id: ObjectId,
+    tutor_id: ObjectId,
+    student_id: ObjectId,
+    start_time: date,
+    end_time: date,
+    duration_minutes: int,
+    status: string
+}
     conversation_id: ObjectId,
     sender_id: ObjectId,
     text: string,
@@ -140,7 +159,26 @@ TESTS
             text: string
         }] | null,
         correct_answer: int | null
-    }],
+    }],COINS_TRANSACTIONS
+{
+    _id: ObjectId,
+    type: string,
+    from_user: ObjectId | null,
+    to_user: ObjectId | null,
+    coins: int,
+    creation_date: date
+}
+
+TUTORING_SESSIONS
+{
+    _id: ObjectId,
+    tutor_id: ObjectId,
+    student_id: ObjectId,
+    start_time: date,
+    end_time: date,
+    duration_minutes: int,
+    status: string
+}
     time_limit: int,
     is_active: boolean
 }

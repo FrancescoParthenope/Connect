@@ -1,16 +1,17 @@
 import random
 from datetime import datetime, timezone, timedelta
 from config.database import users_collection, tutor_tests_collection, subjects_collection
+from app.services.tutor import TutorProfileManager
 
 # support functions are at the end of the class
 
 class TutorTestManager:
 
     @staticmethod
-    def verify_and_update_test(user_id, test_id):
+    def verify_and_update_test(user_id, subject_id):
         try:
             # recovering the test from the DB
-            test = tutor_tests_collection.find_one({"_id": test_id})
+            test = tutor_tests_collection.find_one({"subject_id": subject_id})
             if not test:
                 return False, "Test not found in database", "NOT_FOUND"
 
@@ -68,9 +69,12 @@ class TutorTestManager:
                 return False, "No pending Tutor Test for the user", "NO_PENDING_TEST"
 
             if status == "completed":
+                # the variable returned from these functions are not used here
+                promote_status, promote_message = TutorProfileManager.promote_to_tutor(user_id)
+                add_status, add_message = TutorProfileManager.add_subject(user_id, subject_id)
                 return True, message, "TEST_PASSED"
             else:
-                return False, message, "TEST_FAILED"
+                return True, message, "TEST_FAILED"
 
         except Exception as e:
             return False, f"Error connecting to database : {str(e)}", "DB_ERROR"
@@ -158,12 +162,12 @@ class TutorTestManager:
     def get_all_pending_tests(user_id):
         try:
             # searching in db the right user
-            # and recovering all the tests with "pending"
+            # and recovering all the tests with "pending" or "in_progress"
             user_filter = {
                 "_id": user_id,
                 "tutor_application": {
                     "$elemMatch": {
-                        "status": "pending"
+                        "status": { "$in": ["pending","in_progress"] }
                     }
                 }
             }
@@ -171,26 +175,77 @@ class TutorTestManager:
             pending_tests = users_collection.find_one(user_filter,{"_id": 0, "tutor_application": 1})
 
             if not pending_tests or "tutor_application" not in pending_tests:
-                return False, "No pending Tutor Test for the user", "NOT_FOUND"
+                return False, "No pending or in progress Tutor Test for the user", "NOT_FOUND"
 
             pending_tests_list = []
 
             # creating the list to give
             for test in pending_tests.get("tutor_application"):
-                # taking only the one with the status "pending"
+                status = test.get("status","")
+                if status in ["pending", "in_progress"]:
                     subject_id = test.get("subject_id")
+                    # taking only the one with the status "pending" or "in_progress"
+                    # verify first if an in_progress test is expired
+                    if status == "in_progress":
+                        time_now = datetime.now(timezone.utc)
+                        expire_date = test.get("expire_date")
+                        # if is expired we return the result of verify and update test function
+                        if time_now >= expire_date:
+                            return TutorTestManager.verify_and_update_test(user_id,subject_id)
+
+                    # if it's pending or in progress but not expire we recover the info to pass
+                    subject_id = subject_id
                     subject_id_str = str(subject_id) if subject_id else None
                     subject_name = test.get("subject_name")
                     assigned_date = test.get("assigned_date")
+                    assigned_status = test.get("status")
 
                     # appending in the list the dictionary with the info extracted
                     pending_tests_list.append({
                         "subject_id": subject_id_str,
                         "subject_name": subject_name,
                         "assigned_date": assigned_date,
+                        "assigned_status": assigned_status
                     })
 
             return True, pending_tests_list, "SUCCESS"
+
+        except Exception as e:
+            return False, f"Error connecting to database : {str(e)}", "DB_ERROR"
+
+    @staticmethod
+    def get_all_completed_tests(user_id):
+        try:
+            # searching the test that are completed or failed
+            user_filter = {
+                "_id": user_id,
+                "tutor_application": {
+                    "$elemMatch": {
+                        "status": { "$in": ["completed","failed"] }
+                    }
+                }
+            }
+
+            cursor = users_collection.find(user_filter, {"_id": 0, "tutor_application": 1})
+            data_to_return = []
+            found = False
+
+            for app_doc in cursor:
+                for application in app_doc.get("tutor_application", []):
+                    if application.get("status") in ["completed","failed"]:
+                        found = True
+                        data_to_append = {
+                            "subject_name" : application.get("subject_name"),
+                            "assigned_date": application.get("assigned_date"),
+                            "completed_date": application.get("completed_date"),
+                            "application_status": application.get("status")
+                        }
+                        data_to_return.append(data_to_append)
+
+            if found:
+                return True, data_to_return, "SUCCESS"
+
+            return False, "No Completed Application Found", "NOT_FOUND"
 
         except Exception as e:
             return False, f"Error connecting to database : {str(e)}", "DB_ERROR"
@@ -257,63 +312,24 @@ class TutorTestManager:
                 "user_answers": user_answers
             }
 
-            return True, output, None
+            return True, output, "SUCCESS"
 
         except Exception as e:
             return False, f"Error connecting to database : {str(e)}", "DB_ERROR"
 
     @staticmethod
     def start_test(user_id, subject_id):
-        try:
-            # setting the time of start and the time of finish of the test
-            starting_time = datetime.now(timezone.utc)
-            expire_date = starting_time + timedelta(minutes=30)
+        # first we verify with private function if is a pending test
+        status, message, status_key = TutorTestManager.__verify_pending(user_id, subject_id)
 
-            update_filter = {
-                "_id": user_id,
-                "tutor_application.subject_id": subject_id,
-                "tutor_application.status": "pending",
-            }
+        if status:
+            return status, message, status_key
 
-            query_filter = {
-                "$set": {
-                    "tutor_application.$.status": "in_progress",
-                    "tutor_application.$.started_date": starting_time,
-                    "tutor_application.$.expire_date": expire_date,
-                }
-            }
+        #if we are here test was not pending, verifying if is a test in progress
+        # we return directly the result of this last check
 
-            result = users_collection.update_one(update_filter,query_filter)
-
-            # this will check if the test is passed from pending to in_progress
-            if result.matched_count > 0:
-                return True, "Test is started", "SUCCESS"
-
-            # this will check if the test was already in progres
-
-            check_in_progress = users_collection.find_one({
-                "_id": user_id,
-                "tutor_application.subject_id": subject_id
-            })
-
-            if check_in_progress:
-                for app in check_in_progress.get("tutor_application", []):
-                    if app.get("subject_id") == subject_id and app.get("status") == "in_progress":
-                        if datetime.now(timezone.utc) > app.get("expire_date"):
-                            test = tutor_tests_collection.find_one({
-                                "subject_id": subject_id,
-                            }, {"_id":1 })
-                            if test:
-                                return TutorTestManager.verify_and_update_test(user_id,test.get("_id"))
-                            else:
-                                return False, "Test not found", "NOT_FOUND"
-                        return True, "Test is in progress", "IN_PROGRESS"
-
-            # if is another situation, completed or application not present, test cannot start
-            return False, "Test cannot be started", "NOT_STARTED"
-
-        except Exception as e:
-            return False, f"Error connecting to database : {str(e)}", "DB_ERROR"
+        status, message, status_key = TutorTestManager.__verify_in_progress(user_id, subject_id)
+        return status, message, status_key
 
     @staticmethod
     def save_single_answer(user_id, subject_id, question_id, answer):
@@ -373,7 +389,7 @@ class TutorTestManager:
             result = users_collection.update_one(user_filter, push_query)
 
             if result.matched_count > 0:
-                return True, "Answer successfully saved", None
+                return True, "Answer successfully saved", "CREATED"
             else:
                 return False, "Answer not saved, Test not in progress ", "NOT_IN_PROGRESS"
 
@@ -404,9 +420,9 @@ class TutorTestManager:
 
         test_result = count / tot * 100
         if test_result >= 85.0:
-            return True, f"Tutor test completed with {test_result}%", "SUCCESS"
+            return True, f"Congratulation! \nTutor test completed with {test_result}%", "SUCCESS"
         else:
-            return False, f"Tutor test failed with {test_result}%", "FAILED"
+            return False, f"We are sorry! \nTutor test failed with {test_result}%", "FAILED"
 
     @staticmethod
     def __prepare_and_shuffle_questions(question_list):
@@ -431,3 +447,72 @@ class TutorTestManager:
             return []
         # shuffling the answer list and returning it
         return random.sample(answers_list, len(answers_list))
+
+    @staticmethod
+    def __verify_pending(user_id, subject_id):
+        try:
+            # setting the time of start and the time of finish of the test
+            starting_time = datetime.now(timezone.utc)
+            expire_date = starting_time + timedelta(minutes=30)
+
+            update_filter = {
+                "_id": user_id,
+                "tutor_application": {
+                    "$elemMatch": {
+                        "subject_id": subject_id,
+                        "status": "pending"
+                    }
+                }
+            }
+
+            query_filter = {
+                "$set": {
+                    "tutor_application.$.status": "in_progress",
+                    "tutor_application.$.started_date": starting_time,
+                    "tutor_application.$.expire_date": expire_date,
+                }
+            }
+
+            result = users_collection.update_one(update_filter, query_filter)
+
+            # this will check if the test is passed from pending to in_progress
+            if result.matched_count > 0:
+                return True, "Test is started", "SUCCESS"
+
+            return False, "Test not pending", "NOT_PENDING"
+
+        except Exception as e:
+            return False, f"Error connecting to database : {str(e)}", "DB_ERROR"
+
+    @staticmethod
+    def __verify_in_progress(user_id, subject_id):
+        try:
+            user_filter = {
+                "_id": user_id,
+                "tutor_application": {
+                    "$elemMatch": {
+                        "subject_id": subject_id,
+                        "status": "in_progress"
+                    }
+                }
+            }
+
+            check_in_progress = users_collection.find_one(user_filter, {
+                "_id": 0,
+                "tutor_application.$": 1,
+            })
+
+            if check_in_progress and check_in_progress.get("tutor_application"):
+                app = check_in_progress["tutor_application"][0]
+                # checking if the test is expired
+                expire_date = app.get("expire_date")
+                if expire_date and datetime.now(timezone.utc) > expire_date:
+                    #if is expired we return the result of verify and update test
+                    return TutorTestManager.verify_and_update_test(user_id,subject_id)
+                #if not we can continue the test
+                return True, "Test is in progress", "IN_PROGRESS"
+
+            return False, "Test cannot be started", "NOT_STARTED"
+
+        except Exception as e:
+            return False, f"Error connecting to database : {str(e)}", "DB_ERROR"

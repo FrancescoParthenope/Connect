@@ -3,7 +3,8 @@ from flask import jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.user import bp
 from config.database import subjects_collection
-from app.services import TutorProfileManager
+from app.services import TutorProfileManager, SubjectManager
+from app.utils import create_route_response
 
 
 @bp.route('/tutor', methods=['GET', 'POST'])
@@ -110,15 +111,15 @@ def get_tutor_profile():
 def search_tutors():
     subject = request.args.get('subject')
     if not subject:
-        return jsonify({"success": False, "message": "No subject provided"}), 400
-
-    result, message, error_type = TutorProfileManager.get_tutors_list_by_subject(subject)
-
+        return create_route_response(
+            False,
+            "No Subject provided",
+            "BAD_REQUEST"
+        )
+    result, message, error_type = SubjectManager.get_subject_id(subject)
     if not result:
-        if error_type == "NOT_FOUND":
-            return jsonify({"success": False, "message": message}), 404
-        elif error_type == "DB_ERROR":
-            return jsonify({"success": False, "message": message}), 500
+        create_route_response(result,message,error_type)
 
+    result, message, error_type = TutorProfileManager.get_tutors_list_by_subject(message)
 
-    return jsonify({"success": True, "data": message}), 200
+    return create_route_response(result, message, error_type)

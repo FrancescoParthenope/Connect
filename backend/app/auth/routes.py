@@ -85,6 +85,7 @@ def register():
         "password_hash": password_hash,
         "first_name": first_name,
         "last_name": last_name,
+        "profile_picture": "",
         "bio": "",
         "roles": [role],
         "coins": 10, #at the first registration, a gift of 10 tokens is given

@@ -46,3 +46,15 @@ class SubjectManager:
 
         except Exception as e:
             return False, f"Error connecting to database : {str(e)}", "DB_ERROR"
+
+    @staticmethod
+    def get_subjects_by_field(field_name):
+        try:
+
+            cursor = subjects_collection.find({"field": field_name})
+            output = list(cursor)
+
+            return True, output, "SUCCESS"
+
+        except Exception as e:
+            return False, f"Error connecting to database : {str(e)}", "DB_ERROR"

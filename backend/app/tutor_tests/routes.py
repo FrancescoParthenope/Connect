@@ -67,10 +67,19 @@ def add_tutor_application():
 
 @bp.route(f"{base_route}/pending_tests", methods=['GET'])
 @jwt_required()
-def get_pending_application():
+def get_pending_applications():
     user_id = ObjectId(get_jwt_identity())
 
     status, data, status_key = TutorTestManager.get_all_pending_tests(user_id)
+
+    return create_route_response(status,data,status_key)
+
+@bp.route(f"{base_route}/completed", methods=['GET'])
+@jwt_required()
+def get_completed_applications():
+    user_id = ObjectId(get_jwt_identity())
+
+    status, data, status_key = TutorTestManager.get_all_completed_tests(user_id)
 
     return create_route_response(status,data,status_key)
 
@@ -136,5 +145,28 @@ def save_answer():
     status, data, status_key = TutorTestManager.save_single_answer(
         user_id, subject_id, question_id, answer
     )
+
+    return create_route_response(status,data,status_key)
+
+@bp.route(f"{base_route}/submit", methods=['POST'])
+@jwt_required()
+def submit_tutor_test():
+    user_id = ObjectId(get_jwt_identity())
+    data = request.get_json()
+    if not data:
+        return create_route_response(
+            False,
+            "No data provided",
+            "BAD_REQUEST"
+        )
+    if "subjectId" not in data:
+        return create_route_response(
+            False,
+            "No test id provided",
+            "BAD_REQUEST"
+        )
+    subject_id = ObjectId(data["subjectId"])
+
+    status, data, status_key = TutorTestManager.verify_and_update_test(user_id, subject_id)
 
     return create_route_response(status,data,status_key)

@@ -17,6 +17,8 @@ error_map = {
 success_map = {
     "SUCCESS": 200,
     "IN_PROGRESS": 200,
+    "TEST_PASSED": 200,
+    "TEST_FAILED": 200,
     "CREATED": 201
 }
 

@@ -19,8 +19,10 @@ from app.payments import bp as payment_bp
 from app.user import bp as user_bp
 from app.tutor_tests import bp as tutor_tests_bp
 from app.test import bp as test_bp
+from app.subject import bp as subject_bp
 app.register_blueprint(auth_bp)
 app.register_blueprint(payment_bp)
 app.register_blueprint(user_bp)
 app.register_blueprint(tutor_tests_bp)
 app.register_blueprint(test_bp)
+app.register_blueprint(subject_bp)
