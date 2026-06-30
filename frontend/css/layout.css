@@ -1,0 +1,10 @@
+.tutor-card h3 {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.profile-picture {
+    border-radius: 50%;
+    object-fit: cover;
+}

@@ -38,7 +38,7 @@ async function handleLogin(event){
     const password = document.getElementById("password").value;
 
     try {
-        const response = await fetch(`${API_URL}/api/login`, {
+        const response = await fetch(`${API_URL}/login`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -86,7 +86,7 @@ async function handleRegister(event){
     }
 
     try {
-        const response = await fetch(`${API_URL}/api/register`, {
+        const response = await fetch(`${API_URL}/register`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({

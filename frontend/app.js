@@ -6,23 +6,28 @@ import * as Users from "./js/user.js";
 import * as Tests from "./js/createTest.js";
 import * as ClassroomTest from "./js/classroomTest.js";
 import * as StartTest from "./js/startTest.js";
+import * as Tutor from "./js/tutor.js";
 import * as ViewTest from "./js/viewTest.js";
 import * as CorrectTests from "./js/correctTests.js";
 import * as CorrectSingleTest from "./js/correctSingleTest.js";
 import * as ReviewTest from "./js/reviewTest.js";
 
-export const API_URL = "http://127.0.0.1:8000";
+export const API_URL = "http://127.0.0.1:8000/api";
 
 const routes = { // used to create path and load listener dynamically
     'login': { folder: 'auth', module: Auth },
     'register': { folder: 'auth', module: Auth },
     'main': { folder: '', module: Main},
     'eligibleSubjects': {folder: 'tutorTest', module: TutorTest},
+    'activeApplications': {folder: 'tutorTest', module: TutorTest},
+    'tutorTest': {folder: 'tutorTest', module: TutorTest},
     'insert_payments': {folder: 'payments', module: Payments},
     'update_profile': {folder: 'user', module: Users},
     'createTest': {folder: 'classroomTest', module: Tests},
     'classroomTest': {folder: 'classroomTest', module: ClassroomTest},
     'startTest': {folder: 'classroomTest', module: StartTest},
+    'completedApplications': {folder: 'tutorTest', module: TutorTest},
+    'searchBySubject': {folder: 'tutor', module: Tutor},
     'viewTest': {folder: 'classroomTest', module: ViewTest},
     'correctTests': {folder: 'classroomTest', module: CorrectTests},
     'correctSingleTest': {folder: 'classroomTest', module: CorrectSingleTest},
