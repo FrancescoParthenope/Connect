@@ -13,6 +13,16 @@ export function init(page, navigateTo){
     const linkToClassroomTest = document.getElementById("linkToClassroomTest");
     const linkToStartTest = document.getElementById("linkToStartTest");
 
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    if(user){
+        const role = user.roles[0];
+
+        if(role === "student" && linkToCreateTest){
+            linkToCreateTest.style.display = "none";
+        }
+    }
+
     if (linkToLogin){
         linkToLogin.addEventListener("click", (event) => {
             event.preventDefault();

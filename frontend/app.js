@@ -6,6 +6,10 @@ import * as Users from "./js/user.js";
 import * as Tests from "./js/createTest.js";
 import * as ClassroomTest from "./js/classroomTest.js";
 import * as StartTest from "./js/startTest.js";
+import * as ViewTest from "./js/viewTest.js";
+import * as CorrectTests from "./js/correctTests.js";
+import * as CorrectSingleTest from "./js/correctSingleTest.js";
+import * as ReviewTest from "./js/reviewTest.js";
 
 export const API_URL = "http://127.0.0.1:8000";
 
@@ -19,6 +23,10 @@ const routes = { // used to create path and load listener dynamically
     'createTest': {folder: 'classroomTest', module: Tests},
     'classroomTest': {folder: 'classroomTest', module: ClassroomTest},
     'startTest': {folder: 'classroomTest', module: StartTest},
+    'viewTest': {folder: 'classroomTest', module: ViewTest},
+    'correctTests': {folder: 'classroomTest', module: CorrectTests},
+    'correctSingleTest': {folder: 'classroomTest', module: CorrectSingleTest},
+    'reviewTest': {folder: 'classroomTest', module: ReviewTest},
 }
 
 export async function navigateTo(page){

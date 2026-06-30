@@ -3,12 +3,14 @@ import { API_URL } from "../app.js";
 let goTo;
 let questionCounter = 0;
 
+// initialize the test creation page
 export function init(page, navigateTo) {
 
     if (navigateTo) {
         goTo = navigateTo;
     }
 
+    // Register from and button events
     if (page === "createTest") {
         const createTestForm = document.getElementById("createTestForm");
         if (createTestForm) {
@@ -28,12 +30,14 @@ export function init(page, navigateTo) {
     }
 }
 
+// Create a new test
 async function handleCreateTest(event) {
 
     event.preventDefault();
 
     const token = localStorage.getItem("token");
 
+    // check if the user is authenticated
     if (!token) {
         alert("You must be logged in");
         if (goTo) {
@@ -42,22 +46,15 @@ async function handleCreateTest(event) {
         return;
     }
 
+    // collect the test information
     const title = document.getElementById("title").value.trim();
     const timeLimit = Number(document.getElementById("time_limit").value);
 
+    // Build the question list
     const questions = buildQuestions();
 
-    console.log("Questions", questions);
-
-    console.log({
-        action: "create_test",
-        title: title,
-        classroom_id: "507f1f77bcf86cd799439011",
-        time_limit: timeLimit,
-        questions: questions
-    });
-
     try {
+        // Send the new test to the backend
         const response = await fetch(`${API_URL}/api/tests`, {
             method: "POST",
             headers: {
@@ -91,14 +88,15 @@ async function handleCreateTest(event) {
     }
 }
 
+// Add a new question to the form
 function addQuestion() {
 
-    console.log("ADD QUESTION");
-
+    // Generate a unique question id
     questionCounter++;
 
     const container = document.getElementById("questionsContainer");
 
+    // create the question container
     const questionDiv = document.createElement("div");
 
     questionDiv.id = `questionContainer_${questionCounter}`;
@@ -144,17 +142,16 @@ function addQuestion() {
 
     `;
 
+    // Add the question to the page
     container.appendChild(questionDiv);
     toggleQuestionType(questionCounter);
 
-    document
-        .getElementById(`remove_${questionCounter}`)
-        .addEventListener("click", function () {
-            questionDiv.remove();
-        });
-
+    // remove the selected question
+    document.getElementById(`remove_${questionCounter}`).addEventListener("click", function () {questionDiv.remove();});
 }
 
+
+// Create the multiple-choice answer section
 function createMultipleChoiceSection(questionCounter){
     return `
         <div id="answers_${questionCounter}">
@@ -199,6 +196,8 @@ function createMultipleChoiceSection(questionCounter){
     `;
 }
 
+
+// TQoggle the questio type
 function toggleQuestionType(questionCounter) {
 
     const questionType = document.getElementById(`type_${questionCounter}`);
@@ -209,22 +208,36 @@ function toggleQuestionType(questionCounter) {
     }
 
     questionType.addEventListener("change", function () {
+
+        const answersInput = answersSection.querySelectorAll("input");
+
+        // show or hide the answer section
         if (this.value === "open_answer") {
             answersSection.style.display = "none";
+            answersInput.forEach(input => {
+                input.required = false;
+            })
         } else {
             answersSection.style.display = "block";
+            answersInput.forEach(input => {
+                input.required = true;
+            });
+
         }
     });
 }
 
+
+// build the question list for the backend
 function buildQuestions() {
 
     const questions = [];
 
+    // process all created questions
     for (let i = 1; i <= questionCounter; i++) {
         const questionDiv = document.getElementById(`questionContainer_${i}`);
 
-        // La domanda potrebbe essere stata eliminata
+        // skip removed questions
         if (!questionDiv) {
             continue;
         }
@@ -240,6 +253,7 @@ function buildQuestions() {
             max_score: maxScore
         };
 
+        // Buld the question based on its type
         if (questionType === "multiple_choice") {
 
             question.answers = [
@@ -265,15 +279,14 @@ function buildQuestions() {
                 document.getElementById(`correct_${i}`).value
             );
 
+            // open questions do not have predefines answers
         } else {
-
             question.answers = null;
             question.correct_answer = null;
-
         }
-
+        // add the question to the test
         questions.push(question);
     }
-
+    // return the complete question list
     return questions;
 }

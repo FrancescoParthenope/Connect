@@ -4,6 +4,13 @@ let goTo;
 let currentTest = null
 let timerInterval = null;
 
+// current displayed question
+let currentQuestionIndex = 0;
+
+// stores all student answers locally
+let studentAnswers = []
+
+// Initialize the test page
 export function init(page, navigateTo){
 
     if(navigateTo){
@@ -11,15 +18,14 @@ export function init(page, navigateTo){
     }
     if(page === "startTest"){
         loadTest();
-        const submitButton = document.getElementById("submitTestButton");
-        if(submitButton){
-            submitButton.addEventListener("click", submitTest);
-        }
     }
 }
 
+// start the selected test
 async function loadTest(){
+
     const token = localStorage.getItem("token");
+    // check if the user is authenticated
     if(!token){
         alert("You must be logged in");
         if(goTo){
@@ -28,12 +34,11 @@ async function loadTest(){
         return;
     }
 
+    // Get the selected test id
     const testId = localStorage.getItem("test_id");
 
-    console.log("TEST ID: ", testId);
-    console.log("Invio richiesta start test...");
-
     try{
+        // request a new test session from the backend
         const response = await fetch(`${API_URL}/api/student/tests`,{
 
             method:"POST",
@@ -48,9 +53,7 @@ async function loadTest(){
             })
         });
 
-        console.log("status: ", response.status);
         const data = await response.json();
-        console.log("Risp backend:", data);
 
         if(response.ok){
             displayTest(data.message);
@@ -62,61 +65,172 @@ async function loadTest(){
         console.error(error);
         alert("Impossible to connect to server");
     }
-
 }
 
-function displayTest(test){
-
-    currentTest = test;
-
-    document.getElementById("testTitle").textContent = test.title;
-    startTimer(test.time_limit);
+function displayQuestion(index) {
 
     const container = document.getElementById("questionsContainer");
+
     container.innerHTML = "";
 
-    test.questions.forEach((question, index) => {
+    const question = currentTest.questions[index];
 
-        const div = document.createElement("div");
+    const div = document.createElement("div");
 
-        let answersHtml = "";
+    let answersHtml = "";
 
-        if(question.question_type === "multiple_choice"){
-            question.answers.forEach(answer => {
-                answersHtml += `
+    // Display answer options based on the question type
+    if (question.question_type === "multiple_choice") {
+        question.answers.forEach(answer => {
+            answersHtml += `
                     <label>
                         <input
                             type="radio"
-                            name="question_${index}"
+                            name="question"
                             value="${answer.answer_id}">
                         ${answer.text}
                     </label>
                     <br>
                 `;
-            });
-
-        }else{
-            answersHtml = `
+        });
+    } else {
+        // create the question card for open answer
+        answersHtml = `
                 <textarea
-                    id="question_${index}"
+                    id="openAnswer"
                     rows="5"
                     cols="60"
                     placeholder="Write your answer here...">
                 </textarea>
            `;
-        }
+    }
 
-        div.innerHTML = `
-            <hr>
-            <h3>Question ${index + 1}</h3>
-            <p>${question.question}</p>
-            ${answersHtml}
-        `;
-        container.appendChild(div);
-    });
+    div.innerHTML = `
+    <hr>
+        <h3>Question ${index + 1} / ${currentTest.questions.length}</h3>
+        <p>${question.question}</p>
+        ${answersHtml}
+
+        <br><br>
+        <button
+            id="previousButton"
+            ${index === 0 ? "disabled" : ""}>
+            Previous
+        </button>
+
+        ${
+        index === currentTest.questions.length - 1 ?
+            `<button id="submitButton">
+            Submit Test
+             </button>`
+            :
+            `<button id="nextButton">
+            Next
+        </button>`
+    }`;
+    container.appendChild(div);
+    restoreAnswers(index)
+
+    // Previous question
+    const previousButton = document.getElementById("previousButton");
+
+    if (previousButton) {
+        previousButton.addEventListener("click", function () {
+            saveCurrentAnswer()
+            currentQuestionIndex--;
+            displayQuestion(currentQuestionIndex);
+        });
+    }
+
+    // Next question
+    const nextButton = document.getElementById("nextButton");
+
+    if (nextButton) {
+        nextButton.addEventListener("click", function () {
+            saveCurrentAnswer();
+            currentQuestionIndex++;
+            displayQuestion(currentQuestionIndex);
+        });
+    }
+
+    // Submit test
+    const submitButton = document.getElementById("submitButton");
+
+    if (submitButton) {
+        submitButton.addEventListener("click", function () {
+            saveCurrentAnswer();
+            submitTest();
+        });
+    }
+}
+
+// Save the current answers
+function saveCurrentAnswer(){
+    const question = currentTest.questions[currentQuestionIndex];
+
+    if(question.question_type === "multiple_choice"){
+        const selected = document.querySelector('input[name="question"]:checked');
+
+        studentAnswers[currentQuestionIndex] = {
+            question_id: question.question_id,
+            given_answer_id: selected ? Number(selected.value) : null
+        };
+    }else{
+        studentAnswers[currentQuestionIndex] = {
+            question_id: question.question_id,
+            given_answer: document.getElementById("openAnswer").value.trim()
+        };
+    }
+}
+
+// Restore the previously saved answer
+function restoreAnswers(index) {
+
+    const question = currentTest.questions[index];
+    const savedAnswer = studentAnswers[index];
+
+    if (!savedAnswer) {
+        return;
+    }
+
+    if (question.question_type === "multiple_choice") {
+        const radio = document.querySelector(
+            `input[name="question"][value="${savedAnswer.given_answer_id}"]`
+        );
+        if (radio) {
+            radio.checked = true;
+        }
+    } else {
+        const textArea = document.getElementById("openAnswer");
+        if (textArea) {
+            textArea.value = savedAnswer.given_answer;
+        }
+    }
+}
+
+// Display the test questions
+function displayTest(test){
+
+    currentTest = test;
+
+    // initialize the answer list
+    studentAnswers = new Array(test.questions.length).fill(null)
+
+    // start from the first question
+    currentQuestionIndex = 0;
+
+    // Display basic test information
+    document.getElementById("testTitle").textContent = test.title;
+
+    // start the countdown timer
+    startTimer(test.time_limit);
+
+    // Display the first question
+    displayQuestion(currentQuestionIndex)
 }
 
 
+// function fo start the countdown timer
 function startTimer(minutes){
     let timeLeft = minutes * 60;
 
@@ -127,6 +241,7 @@ function startTimer(minutes){
 
         if(timeLeft <= 0){
             clearInterval(timerInterval);
+            saveCurrentAnswer();
             alert("Time is over!");
             submitTest();
         }
@@ -135,39 +250,13 @@ function startTimer(minutes){
 }
 
 
+// collect all student answers
 function buildAnswers(test){
-
-    const answers = [];
-
-    test.questions.forEach((question, index) => {
-        const answer = {question_id: question.question_id};
-
-        console.log(question);
-
-        if(question.question_type === "multiple_choice"){
-            const selected = document.querySelector(`input[name="question_${index}"]:checked`);
-            if(selected){
-                answer.given_answer_id = Number(selected.value);
-            }else{
-                answer.given_answer_id = null;
-            }
-        }else{
-            answer.given_answer = document.getElementById(`question_${index}`).value.trim();
-        }
-        answers.push(answer);
-
-        console.log("QUESTION:", answer);
-        console.log("QUESTION ID INVIATO:", answer.question_id);
-
-    });
-
-    return answers;
+    return studentAnswers;
 }
 
-
+// submit the completed test
 async function submitTest(){
-
-    alert("Submitting...");
 
     const token = localStorage.getItem("token");
 
@@ -179,14 +268,11 @@ async function submitTest(){
         return;
     }
 
+    // Build the submission payload
     const answers = buildAnswers(currentTest);
-    console.log({
-        action: "submit_test",
-        test_id: currentTest.test_id,
-        answers: answers
-    });
 
     try{
+        // Send the completed test to the backend
         const response = await fetch(`${API_URL}/api/student/tests`, {
             method: "POST",
             headers:{
@@ -205,8 +291,10 @@ async function submitTest(){
         const data = await response.json();
 
         if(response.ok){
+            // Stop the time after a successful submission
             clearInterval(timerInterval);
             alert("Test submitted successfully");
+            goTo("classroomTest")
         }else{
             alert(data.message);
         }

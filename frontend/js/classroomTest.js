@@ -1,119 +1,98 @@
 import { API_URL } from "../app.js";
+import {displayTests} from "./displayTests.js";
 
 let goTo;
 
+// initialize the classroom test page
 export function init(page, navigateTo){
+
+    const user = JSON.parse(localStorage.getItem('user'));
+    const role = user.roles[0]
+
     if(navigateTo){
         goTo = navigateTo;
     }
+    // load all classroom tests when the page is opened
     if(page === "classroomTest"){
         loadClassroomTests();
+
+        // Go back to the main page
+        const backButton = document.getElementById("backButton");
+
+        if(backButton){
+            backButton.addEventListener("click", function(){
+                goTo("main")
+            });
+        }
+
+        // show the correction button only for tutors
+        if(correctTestsButton){
+            if(role === "tutor"){
+                correctTestsButton.style.display = "inline-block";
+                correctTestsButton.addEventListener("click", function(){
+                    goTo("correctTests")
+                });
+            }else{
+                correctTestsButton.style.display = "none";
+            }
+        }
     }
 }
 
-async function loadClassroomTests(){
+// load classroom test and student submissions
+async function loadClassroomTests() {
 
     const token = localStorage.getItem("token");
 
-    if(!token){
+    if (!token) {
         alert("You must be logged in");
-        if(goTo){
+        if (goTo) {
             goTo("login");
         }
         return;
     }
 
-    try{
+    try {
+        // request classroom tests
         const response = await fetch(
-            `${API_URL}/api/tests?classroom_id=507f1f77bcf86cd799439011`, {method: "GET", headers: {"Authorization": `Bearer ${token}`}});
+            `${API_URL}/api/tests?classroom_id=507f1f77bcf86cd799439011`, {
+                method: "GET",
+                headers: {"Authorization": `Bearer ${token}`}
+            });
 
-        const data = await response.json();
+        // request completed student tests
+        const responseStudent = await fetch(`${API_URL}/api/student/tests?action=get_student_test`, {
+            method: "GET",
+            headers: {"Authorization": `Bearer ${token}`}
+        });
 
-        if(response.ok){
-            console.log(data);
-            displayTests(data.data);
-        }else{
-            alert(data.message);
+        const testsData = await response.json();
+        const studentsData = await responseStudent.json();
+
+        if (response.ok && responseStudent.ok) {
+            displayTests(
+                testsData.data,
+                studentsData.data,
+                goTo,
+                toggleTest
+            );
+        } else {
+            alert("Error loading test");
         }
 
-    }catch(error){
+    } catch (error) {
         console.error(error);
         alert("Impossible to connect to server");
     }
 }
 
-function displayTests(tests){
-
-    const container = document.getElementById("testsContainer");
-    container.innerHTML = "";
-
-    const user = JSON.parse(localStorage.getItem("user"));
-    const role = user.roles[0];
-
-    tests.forEach(test => {
-
-        if(role === "student" && !test.is_active){
-            return;
-        }
-
-        let buttonHtml = "";
-        if (role === "tutor") {
-            buttonHtml = `
-                <button
-                    class="toggleButton"
-                    data-id="${test.test_id}"
-                    data-active="${test.is_active}">
-                    ${test.is_active ? "Deactivate" : "Activate"}
-                </button>
-            `;
-        } else {
-            if (test.is_active) {
-                buttonHtml = `
-                    <button
-                        class="startButton"
-                        data-id="${test.test_id}">
-                        Start Test
-                    </button>
-                `;
-            }
-        }
-
-        const div = document.createElement("div");
-
-        div.innerHTML = `
-            <hr>
-            <h3>${test.title}</h3>
-            <p>Time limit: ${test.time_limit} minutes</p>
-            <p>Status: ${test.is_active ? "Active" : "Inactive"}
-            </p>
-          ${buttonHtml}
-        `;
-        container.appendChild(div);
-
-        if (role === "tutor") {
-
-            const button = div.querySelector(".toggleButton");
-
-            button.addEventListener("click", function () {
-                toggleTest(this.dataset.id, this.dataset.active === "true");
-            });
-        } else {
-            const button = div.querySelector(".startButton");
-            if (button) {
-                button.addEventListener("click", function () {
-                localStorage.setItem("test_id", this.dataset.id);
-                goTo("startTest");
-                });
-            }
-        }
-    });
-}
-
+// Activate or deactivate a test
 async function toggleTest(testId, currentStatus) {
 
     const token = localStorage.getItem("token");
 
     try {
+        // send the new activation status to the backend
         const response = await fetch(`${API_URL}/api/tests`, {
             method: "POST",
             headers: {
