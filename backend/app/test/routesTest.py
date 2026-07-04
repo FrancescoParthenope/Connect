@@ -49,15 +49,11 @@ def tests_manager():
 #@bp.route('/tests', methods=['POST'])
 #@jwt_required()
 def create_test():
-
-    # recovering json data from the request
     data = request.get_json()
 
-    # check presence of all data
     if not data:
         return jsonify({'error': 'No data provided'}), 400
 
-    # get user id form JWT
     user_id = ObjectId(get_jwt_identity())
 
     user = users_collection.find_one({'_id': user_id})
@@ -70,20 +66,17 @@ def create_test():
 
     user = user['first_name'] + ' ' + user['last_name']
 
-    # extract test information
     title = data.get('title').strip()
     classroom_id = data.get('classroom_id')
     questions = data.get('questions', [])
     time_limit = data.get('time_limit', 60)
 
-    # validate required fields
     if not title or not classroom_id or len(questions) == 0:
         return jsonify({
             'success': False,
             'message': "No required data provided"
         }), 400
 
-    #  create test document
     test_document = {
         'title': title,
         'classroom_id': classroom_id,
@@ -113,27 +106,21 @@ def create_test():
 #@bp.route('/tests/<test_id>', methods=['GET'])
 #@jwt_required()
 def get_test(test_id):
-
-    # search the test in MongoDB
     test = tests_collection.find_one({'_id': ObjectId(test_id)})
 
-    # check if the test exists
     if not test:
         return jsonify({
             'success': False,
             'message': "Test not found"
         }), 404
 
-    # convert MongoDB id to string, so they can be returned as JSON
     test['_id'] = str(test['_id'])
     test['creator_id'] = str(test['creator_id'])
     test['classroom_id'] = str(test['classroom_id'])
 
-    # convert question in string
     for question in test['questions']:
         question['_id'] = str(question['_id'])
 
-    # return the requested test
     return jsonify({
         'success': True,
         'data': test
@@ -145,24 +132,19 @@ def get_test(test_id):
 def get_classroom_tests(classroom_id):
 
     try:
-        # retrieve all test associated with the selected classroom
         tests = list(
             tests_collection.find({ 'classroom_id' : classroom_id}))
 
-        # create a simplified response object
         formatted_test = []
 
         for test in tests:
-            # basic test information
             formatted_test.append({
-                # convert MongoDB into string
                 'test_id': str(test['_id']),
                 'title': test['title'],
                 'time_limit': test['time_limit'],
                 'is_active': test['is_active']
             })
 
-        # return all classroom test
         return jsonify({
             'success': True,
             'data': formatted_test

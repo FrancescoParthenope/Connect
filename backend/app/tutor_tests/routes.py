@@ -2,7 +2,9 @@ from bson import ObjectId
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask import request
 from app.tutor_tests import bp
-from app.services import TutorProfileManager, SubjectManager, TutorTestManager
+from app.services.tutor import *
+from app.services.subject import *
+from app.services.tutor_test import *
 from app.utils import create_route_response
 
 base_route = '/tutor_tests'
@@ -12,12 +14,12 @@ base_route = '/tutor_tests'
 def get_eligible_subjects():
     user_id = ObjectId(get_jwt_identity())
 
-    status, content, status_key = TutorProfileManager.get_ineligible_subjects(user_id)
+    status, content, status_key = get_ineligible_subjects(user_id)
 
     if not status:
         return create_route_response(status,content,status_key)
 
-    status, content, status_key = SubjectManager.get_filtered_subjects(content)
+    status, content, status_key = get_filtered_subjects(content)
 
     if not status:
         return create_route_response(status,content,status_key)
@@ -61,7 +63,7 @@ def add_tutor_application():
             "BAD_REQUEST"
         )
 
-    status, message, status_key = TutorTestManager.assign_test_to_student(user_id, subject_id)
+    status, message, status_key = assign_test_to_student(user_id, subject_id)
 
     return create_route_response(status,message,status_key)
 
@@ -70,7 +72,7 @@ def add_tutor_application():
 def get_pending_applications():
     user_id = ObjectId(get_jwt_identity())
 
-    status, data, status_key = TutorTestManager.get_all_pending_tests(user_id)
+    status, data, status_key = get_all_pending_tests(user_id)
 
     return create_route_response(status,data,status_key)
 
@@ -79,7 +81,7 @@ def get_pending_applications():
 def get_completed_applications():
     user_id = ObjectId(get_jwt_identity())
 
-    status, data, status_key = TutorTestManager.get_all_completed_tests(user_id)
+    status, data, status_key = get_all_completed_tests(user_id)
 
     return create_route_response(status,data,status_key)
 
@@ -105,12 +107,12 @@ def start_tutor_test():
 
     subject_id = ObjectId(data["subjectId"])
 
-    status, data, status_key = TutorTestManager.start_test(user_id, subject_id)
+    status, data, status_key = start_test(user_id, subject_id)
 
     if not status:
         return create_route_response(status,data,status_key)
 
-    status, data, status_key = TutorTestManager.get_test_assigned(user_id, subject_id)
+    status, data, status_key = get_test_assigned(user_id, subject_id)
 
     return create_route_response(status,data,status_key)
 
@@ -142,7 +144,7 @@ def save_answer():
     question_id = ObjectId(data["questionId"])
     answer = data["answer"]
 
-    status, data, status_key = TutorTestManager.save_single_answer(
+    status, data, status_key = save_single_answer(
         user_id, subject_id, question_id, answer
     )
 
@@ -167,6 +169,6 @@ def submit_tutor_test():
         )
     subject_id = ObjectId(data["subjectId"])
 
-    status, data, status_key = TutorTestManager.verify_and_update_test(user_id, subject_id)
+    status, data, status_key = verify_and_update_test(user_id, subject_id)
 
     return create_route_response(status,data,status_key)
