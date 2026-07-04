@@ -2,18 +2,15 @@ import { API_URL } from "../app.js";
 
 let goTo;
 
-//initialize the correction page
 export function init(page, navigateTo) {
 
     if(navigateTo) {
         goTo = navigateTo;
     }
-    // load test to correct and corrected tests
     if(page === "correctTests") {
         loadTestsToCorrect()
         loadCorrectedTests()
 
-        // go back to the classroom page
         const backButton = document.getElementById("backButton");
 
         if(backButton) {
@@ -24,7 +21,6 @@ export function init(page, navigateTo) {
     }
 }
 
-// load all test waiting for correction
 async function loadTestsToCorrect() {
 
     const token = localStorage.getItem("token");
@@ -53,15 +49,11 @@ async function loadTestsToCorrect() {
     }
 }
 
-// Display tests that require tutor correction
 async function displayTestsToCorrect(tests){
 
     const container = document.getElementById("testsToCorrectContainer");
-
-    // clear previous content
     container.innerHTML = "";
 
-    // Create a card for each submitted test
     tests.forEach(test => {
         const div = document.createElement("div");
 
@@ -82,7 +74,6 @@ async function displayTestsToCorrect(tests){
 
         const button = div.querySelector(".correctButton");
 
-        // open the selected submission
         button.addEventListener("click", function () {
             localStorage.setItem("submission_id", this.dataset.id);
             goTo("correctSingleTest");
@@ -90,14 +81,12 @@ async function displayTestsToCorrect(tests){
     });
 }
 
-// Display all corrected tests
 function displayCorrectedTests(tests) {
 
     const container = document.getElementById("correctedTestsContainer");
 
     container.innerHTML = "";
 
-    // Create a card for each corrected test
     tests.forEach(test => {
         const div = document.createElement("div");
 
@@ -116,14 +105,11 @@ function displayCorrectedTests(tests) {
     });
 }
 
-
-// load all corrected tests
 async function loadCorrectedTests() {
 
     const token = localStorage.getItem("token");
 
     try {
-        // request corrected tests from backend
         const response = await fetch(
             `${API_URL}/api/student/tests?action=get_corrected_tests`,
             {
@@ -136,7 +122,6 @@ async function loadCorrectedTests() {
 
         const data = await response.json();
 
-        // display corrected tests
         if (response.ok) {
             displayCorrectedTests(data.data);
         } else {

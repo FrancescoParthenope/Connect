@@ -1,29 +1,21 @@
 
-
-// Display all classroom tests
 export function displayTests(tests, studentTests, goTo, toggleTest) {
 
     const user = JSON.parse(localStorage.getItem("user"));
     const role = user.roles[0];
 
-    // Configure page sections
     const containers = setupContainers(role);
 
-    // Map completed tests by test id
     const studentMap = buildStudentMap(studentTests);
 
     if (role === "student") {
-
-        // Show tests not yet completed
         tests.forEach(test => {
 
             const completedTest = studentMap[test.test_id];
-            // Skip inactive tests
             if (!test.is_active) {
                 return;
             }
 
-            // Show only tests that have not been submitted
             if (!completedTest) {
                 displayStudentTest(
                     test,
@@ -55,7 +47,6 @@ export function displayTests(tests, studentTests, goTo, toggleTest) {
             }
         });
     } else {
-        // Tutor view
         tests.forEach(test => {
             displayTutorTest(
                 test,
@@ -67,7 +58,11 @@ export function displayTests(tests, studentTests, goTo, toggleTest) {
     }
 }
 
-// Configure page containers based on the user role
+/*
+ * In this function we configure the containers that are visible to the user
+ * But because what can be seen is different between the roles of the student
+ * we pass the role of the user to get the right containers type to be shown
+ */
 function setupContainers(role) {
 
     const activeContainer = document.getElementById("activeTestsContainer");
@@ -99,7 +94,6 @@ function setupContainers(role) {
     };
 }
 
-// Create a map of completed student tests
 function buildStudentMap(studentTests) {
 
     const studentMap = {};

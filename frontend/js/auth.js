@@ -49,8 +49,12 @@ async function handleLogin(event){
 
         const data = await response.json();
 
+        /* we save after the login the information that are useful for the user
+         * inside the local storage. This way we can recover theme when we need them
+         * with ease, and we don't need to worry about their correctness because server
+         * will do the checks
+         */
         if (response.ok) {
-            // saving information sent by server
             localStorage.setItem('token', data.token);
             localStorage.setItem('user', JSON.stringify(data.user));
             alert('Login successful');
@@ -71,14 +75,11 @@ async function handleRegister(event){
     localStorage.removeItem('token');
     localStorage.removeItem('user');
 
-    // saving variables for the registration
     const firstName = document.getElementById('fname').value;
     const lastName = document.getElementById('lname').value;
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('password2').value;
-
-    // checking if the two passwords are the same
 
     if (password !== confirmPassword){
         alert('Passwords do not match!');

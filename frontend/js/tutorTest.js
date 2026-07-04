@@ -110,11 +110,9 @@ function filterSubjects(selectedField){
     const container = document.getElementById('subjectsContainer');
 
     container.innerHTML = ''; // clearing the container
-    // selecting all subjects if all, else subjects for the field
     const filtered = (selectedField === 'all') ?
         subjects : subjects.filter(s => s.field === selectedField);
 
-    // putting the card on screen
     filtered.forEach(subject => {
         const card = document.createElement("div");
         card.className = "subjectCard";
@@ -339,16 +337,20 @@ function startTimer(secondsLeft){
     // first call to display something before checking if the time displayed is correct
     document.getElementById("timerDisplay").textContent = formatTime(secondsLeft);
 
-    // set an interval to be secure that the time showed is right, refreshing every second
+    /*
+     * Here we set up an interval to be secure that the time showed in the frontend is right
+     * we use in the async function the time left we get from the server and confront it
+     * with the time at the moment of the function call so we can be sure
+     * that is shown the right amount of time left to complete the test
+     * this timer is refreshed every second (1000 is in milliseconds)
+     */
     timerInterval = setInterval(async() => {
         const secondsPassed = Math.floor((Date.now() - arrivalTime)/1000);
         const remainingTime = secondsLeft - secondsPassed;
 
-        // test is finished
+        // if the test has no time left we can submit the test so it can be corrected
         if (remainingTime <= 0) {
-            // logic for submitting the test when the timer reaches 0
             clearInterval(timerInterval);
-            // blocking the buttons when the timer is 0 adding a class to the test container
             const container = document.getElementById("tutorTestContainer");
             container.classList.add("disabledOverlay");
 
@@ -364,7 +366,6 @@ function startTimer(secondsLeft){
             }
         }
         else {
-            // display the time left in the timer
             document.getElementById("timerDisplay").textContent = formatTime(remainingTime);
         }
     }, 1000);
@@ -455,14 +456,13 @@ async function saveAndContinue(questionId){
     try {
         await postFunction(`${base_route}/answer`,body)
 
-        // update the answers given locally to display correctly
         const existingAnswerIndex = testToTake.user_answers.findIndex(
             a => a.question_id === questionId
         );
-        if (existingAnswerIndex !== -1) { // answer was already given, we change the answer locally
+        if (existingAnswerIndex !== -1) {
             testToTake.user_answers[existingAnswerIndex].answer_given= parseInt(selectedAnswer.value);
         }
-        else { // answer was not given yet, we add to the user_answers
+        else {
             testToTake.user_answers.push({
                 question_id: questionId,
                 answer_given: parseInt(selectedAnswer.value)
@@ -483,9 +483,15 @@ async function saveAndContinue(questionId){
     }
 }
 
+/*
+ * when this function is called we save the last answer selected (if is selected)
+ * than we submit the test to the server so it can be corrected
+ * One thing we do in this function is disabling the save and submit button immediatly
+ * to avoid (or try to prevent at least) the case which the button is erroneusly
+ * clicked multiple times (this can return a false answer from the server)
+ */
 async function saveAndSubmit(questionId){
     const saveAndSubmitBtn = document.getElementById("saveAndSubmitBtn");
-    // button disabled to avoid multiple submit
     saveAndSubmitBtn.disabled = true;
     saveAndSubmitBtn.textContent = "Submitting the test...";
 
@@ -495,7 +501,6 @@ async function saveAndSubmit(questionId){
     )
 
     try {
-        // saving the last answer if it was selected
         if (selectedAnswer) {
             const saveBody = {
                 "subjectId": subjectId,
@@ -513,7 +518,6 @@ async function saveAndSubmit(questionId){
         showTestFinished(submitResponse.message || "Test Finished");
     }
     catch (error){
-        // restoring the button in case of error
         saveAndSubmitBtn.disabled = false;
         saveAndSubmitBtn.textContent = "Save and Submit";
 
@@ -543,7 +547,6 @@ function goToNextQuestion() {
 function showTestFinished(message){
     const container = document.getElementById('tutorTestContainer');
 
-    // removing the block to the buttons if present
     container.classList.remove('disabledOverlay');
 
     clearInterval(timerInterval);

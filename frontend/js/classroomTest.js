@@ -3,20 +3,18 @@ import {displayTests} from "./displayTests.js";
 
 let goTo;
 
-// initialize the classroom test page
 export function init(page, navigateTo){
 
     const user = JSON.parse(localStorage.getItem('user'));
-    const role = user.roles[0]
+    const isTutor = user.roles.includes("tutor");
 
     if(navigateTo){
         goTo = navigateTo;
     }
-    // load all classroom tests when the page is opened
+
     if(page === "classroomTest"){
         loadClassroomTests();
 
-        // Go back to the main page
         const backButton = document.getElementById("backButton");
 
         if(backButton){
@@ -25,9 +23,8 @@ export function init(page, navigateTo){
             });
         }
 
-        // show the correction button only for tutors
         if(correctTestsButton){
-            if(role === "tutor"){
+            if(isTutor){
                 correctTestsButton.style.display = "inline-block";
                 correctTestsButton.addEventListener("click", function(){
                     goTo("correctTests")
@@ -39,7 +36,6 @@ export function init(page, navigateTo){
     }
 }
 
-// load classroom test and student submissions
 async function loadClassroomTests() {
 
     const token = localStorage.getItem("token");
@@ -53,15 +49,13 @@ async function loadClassroomTests() {
     }
 
     try {
-        // request classroom tests
         const response = await fetch(
-            `${API_URL}/api/tests?classroom_id=507f1f77bcf86cd799439011`, {
+            `${API_URL}/tests?classroom_id=507f1f77bcf86cd799439011`, {
                 method: "GET",
                 headers: {"Authorization": `Bearer ${token}`}
             });
 
-        // request completed student tests
-        const responseStudent = await fetch(`${API_URL}/api/student/tests?action=get_student_test`, {
+        const responseStudent = await fetch(`${API_URL}/student/tests?action=get_student_test`, {
             method: "GET",
             headers: {"Authorization": `Bearer ${token}`}
         });
@@ -86,14 +80,12 @@ async function loadClassroomTests() {
     }
 }
 
-// Activate or deactivate a test
 async function toggleTest(testId, currentStatus) {
 
     const token = localStorage.getItem("token");
 
     try {
-        // send the new activation status to the backend
-        const response = await fetch(`${API_URL}/api/tests`, {
+        const response = await fetch(`${API_URL}/tests`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

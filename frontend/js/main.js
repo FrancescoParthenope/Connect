@@ -19,9 +19,8 @@ export function init(page, navigateTo) {
     const user = JSON.parse(localStorage.getItem("user"));
 
     if(user){
-        const role = user.roles[0];
-
-        if(role === "student" && linkToCreateTest){
+        const isTutor = user.roles.includes("tutor")
+        if(!isTutor && linkToCreateTest){
             linkToCreateTest.style.display = "none";
         }
     }
