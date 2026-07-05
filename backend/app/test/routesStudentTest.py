@@ -1,9 +1,7 @@
-# from bson import ObjectId
 from flask import request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.services.studentTest import *
 from app.test import bp
-# from config.database import student_tests_collection, users_collection
 
 @bp.route('/student/tests', methods=['GET', 'POST'])
 @jwt_required()
@@ -68,7 +66,7 @@ def student_test_manager():
 def start_test(test_id):
     student_id = get_jwt_identity()
 
-    success, result = start_test(test_id, student_id)
+    success, result = start_tests(test_id, student_id)
 
     if not success:
         return jsonify({
@@ -95,7 +93,7 @@ def submit_test(test_id, data):
 
     student_id = get_jwt_identity()
 
-    success, result = submit_test(test_id, student_id, answers)
+    success, result = submit_tests(test_id, student_id, answers)
 
     if not success:
         return jsonify({
@@ -133,7 +131,7 @@ def get_student_test():
 #@jwt_required()
 def get_tests_to_correct():
 
-    success, result = get_tests_to_correct()
+    success, result = get_test_to_correct()
 
     if not success:
         return jsonify({
@@ -176,7 +174,8 @@ def get_submission():
 # @bp.route('/student/tests', methods=['POST'])
 # @jwt_required()
 def save_correction(data):
-    success, result = save_correction(data)
+
+    success, result = save_corrections(data)
 
     if not success:
         return jsonify({
@@ -194,7 +193,8 @@ def save_correction(data):
 # @bp.route('/student/tests', methods=['POST'])
 # @jwt_required()
 def get_corrected_tests():
-    success, result = get_corrected_tests()
+
+    success, result = get_corrected_test()
 
     if not success:
         return jsonify({
@@ -215,7 +215,7 @@ def get_review_test():
     test_id = request.args.get('test_id')
     student_id = get_jwt_identity()
 
-    success, result = get_review_test(test_id, student_id)
+    success, result = get_review_tests(test_id, student_id)
 
     if success:
         return jsonify({

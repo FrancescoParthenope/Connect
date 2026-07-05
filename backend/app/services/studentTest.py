@@ -4,7 +4,7 @@ from bson import ObjectId
 from config.database import (tests_collection, tests_sessions_collection,
                          tests_submissions_collection, student_tests_collection, users_collection)
 
-def start_test(test_id, student_id):
+def start_tests(test_id, student_id):
     try:
         success, payload, status_key = _recover_test(test_id)
         if not success:
@@ -54,7 +54,7 @@ def start_test(test_id, student_id):
         return False, str(e)
 
 
-def submit_test(test_id, student_id, answers):
+def submit_tests(test_id, student_id, answers):
     try:
 
         session = tests_sessions_collection.find_one({ 'test_id': test_id, 'student_id': student_id })
@@ -175,7 +175,7 @@ def get_student_tests(student_id):
         return False, str(e)
 
 
-def get_tests_to_correct():
+def get_test_to_correct():
     try:
 
         tests = student_tests_collection.find({ "status": "CORRECTION"}).sort("completed_date", -1)
@@ -245,7 +245,7 @@ def get_submission_test(submission_id):
         return False, str(e)
 
 
-def save_correction(data):
+def save_corrections(data):
     try:
         submission_id = data.get("submission_id")
         questions = data.get("questions")
@@ -287,7 +287,7 @@ def save_correction(data):
     except Exception as e:
         return False, str(e)
 
-def get_corrected_tests():
+def get_corrected_test():
     try:
         tests = student_tests_collection.find({"status": { "$in": ["COMPLETED", "FAILED"]}}).sort("completed_date", -1)
 
@@ -319,7 +319,7 @@ def get_corrected_tests():
         return False, str(e)
 
 
-def get_review_test(test_id, student_id):
+def get_review_tests(test_id, student_id):
     try:
         # retrieve the reviewed test for the current student
         review_test = student_tests_collection.find_one({
@@ -348,6 +348,7 @@ def _recover_test(test_id):
         return False, "Test is not active", "NOT_ACTIVE"
 
     return True, test, "SUCCESS"
+
 
 def _check_session_submitted(session, test_id, student_id, test):
     if session["status"] == "submitted":
@@ -431,4 +432,4 @@ def _get_completed_questions(answers, question_map):
 
         completed_questions.append(question_data)
 
-        return completed_questions
+    return completed_questions

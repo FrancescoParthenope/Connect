@@ -19,6 +19,7 @@ from app.tutor_tests import bp as tutor_tests_bp
 from app.test import bp as test_bp
 from app.subject import bp as subject_bp
 from app.classroom import bp as classroom_bp
+from app.chat import bp as chat_bp
 app.register_blueprint(auth_bp)
 app.register_blueprint(payment_bp)
 app.register_blueprint(user_bp)
@@ -26,3 +27,4 @@ app.register_blueprint(tutor_tests_bp)
 app.register_blueprint(test_bp)
 app.register_blueprint(subject_bp)
 app.register_blueprint(classroom_bp)
+app.register_blueprint(chat_bp)

@@ -1,6 +1,6 @@
 from app.services.subject import get_subject_id
 from app.services.user import get_user_fname_lname, get_classroom_user_info, get_user_id_by_email
-from app.services.chat import get_private_conversation, send_message
+from app.services.chat import get_private_conversation, send_messages
 from datetime import datetime, timezone
 import secrets
 import string
@@ -68,7 +68,7 @@ def invite_in_classroom(tutor_id, classroom_id, email):
     if not is_found:
         return False, "Can't recover the conversation from the database", "DB_ERROR"
 
-    status, message = send_message(conversation["_id"], tutor_id, code)
+    status, message = send_messages(conversation["_id"], tutor_id, code)
 
     if status:
         return True, message, "SUCCESS"

@@ -9,7 +9,7 @@ from app.services.classroom import *
 base_route = "/classroom"
 
 @bp.route('/classroom-creation', methods=['POST'])
-@jwt_required
+@jwt_required()
 def create():
     tutor_id = ObjectId(get_jwt_identity())
     status, data, status_key = _check_data(request.get_json())
@@ -34,7 +34,7 @@ def create():
     return create_route_response(status,message,status_key)
 
 @bp.route('/invite', methods=['POST'])
-@jwt_required
+@jwt_required()
 def invite():
     tutor_id = ObjectId(get_jwt_identity())
     status, data, status_key = _check_data(request.get_json())
@@ -53,7 +53,7 @@ def invite():
     return create_route_response(status, message, status_key)
 
 @bp.route('/add_classroom', methods=['POST'])
-@jwt_required
+@jwt_required()
 def add_classroom():
     user_id = ObjectId(get_jwt_identity())
     data = request.get_json()
