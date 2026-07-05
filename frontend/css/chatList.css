@@ -1,0 +1,107 @@
+.page {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    font-family: "Poppins", sans-serif;
+}
+
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#conversationsContainer{
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+    gap: 15px;
+    margin-top:20px;
+}
+
+.ConversationCard{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 22px;
+    background: #e3f2fd;
+    cursor:pointer;
+    border-radius:8px;
+    border-bottom: 1px solid rgba(255,255,255,.25);
+    transition:.2s;
+}
+
+.ConversationCard:hover{
+    background: #5B7FC8;
+}
+
+.conversationInfo{
+    display:flex;
+    flex-direction:column;
+}
+
+.conversationInfo h3{
+    margin: 0;
+    color: black;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.conversationInfo p{
+    margin-top: 6px;
+    margin-bottom: 0;
+    color:black;
+    font-size: 15px;
+}
+
+.conversationCard small {
+    color: grey;
+    font-size: 12px;
+    float: right;
+}
+
+#usersContainer{
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+.userCard{
+    padding: 18px 22px;
+    background:#e3f2fd;
+    cursor: pointer;
+    transition: .2s;
+    border-bottom: 1px solid rgba(255,255,255,.25);
+    margin-top: 10px;
+    border-radius: 10px;
+
+}
+.userCard:hover{
+    background: #5B7FC8;
+}
+
+.userCard h3{
+    margin: 0;
+    color: black;
+    font-size: 20px;
+    font-weight: 600;
+    font-family: "Poppins", sans-serif;
+}
+
+#searchConversationInput,
+#searchUserInput {
+    width:100%;
+    padding:12px;
+    margin:20px 0;
+    border:1px solid #ccc;
+    border-radius:10px;
+    font-size:15px;
+    font-family:"Poppins", sans-serif;
+    box-sizing:border-box;
+}
+
+
+
+
+
+

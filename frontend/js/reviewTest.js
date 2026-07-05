@@ -36,7 +36,7 @@ async function loadReviewTest() {
 
     try {
         const response = await fetch(
-            `${API_URL}/api/student/tests?action=get_review_test&test_id=${testId}`,
+            `${API_URL}/student/tests?action=get_review_test&test_id=${testId}`,
             {
                 method: "GET",
                 headers: {

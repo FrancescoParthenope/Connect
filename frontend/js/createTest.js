@@ -19,13 +19,20 @@ export function init(page, navigateTo) {
                 handleCreateTest
             );
         }
+
         const addQuestionButton = document.getElementById("addQuestionButton");
-        console.log(addQuestionButton)
         if (addQuestionButton) {
             addQuestionButton.addEventListener(
                 "click",
                 addQuestion
             );
+        }
+
+        const backButton = document.getElementById("backButton");
+        if (backButton) {
+            backButton.addEventListener("click", () => {
+                goTo("main");
+            })
         }
     }
 }
@@ -55,7 +62,7 @@ async function handleCreateTest(event) {
 
     try {
         // Send the new test to the backend
-        const response = await fetch(`${API_URL}/api/tests`, {
+        const response = await fetch(`${API_URL}/tests`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -101,8 +108,9 @@ function addQuestion() {
 
     questionDiv.id = `questionContainer_${questionCounter}`;
 
+    questionDiv.className = "questionCard"
+
     questionDiv.innerHTML = `
-        <hr>
         <h3>Question ${questionCounter}</h3>
         <label>Question Type</label>
         <select id="type_${questionCounter}">
@@ -113,33 +121,27 @@ function addQuestion() {
                 Open Answer
             </option>
         </select>
-        <br><br>
         <label>Question</label>
         <input
             type="text"
             id="question_${questionCounter}"
-            required
-        >
-        <br><br>
-        <label>Maximum Score</label>
-        <input
-            type="number"
-            id="score_${questionCounter}"
-            value="1"
-            min="1"
-            required
-        >
-
-        <br><br>
-        
-        ${createMultipleChoiceSection(questionCounter)}
-        
-        <button
-            type="button"
-            id="remove_${questionCounter}">
-            Remove Question
-        </button>
-
+            required >
+        <div id="scoreContainer_${questionCounter}">   
+            <label>Maximum Score</label>
+            <input
+                type="number"
+                id="score_${questionCounter}"
+                value="1"
+                min="1"
+                required
+            >
+        </div>     
+            ${createMultipleChoiceSection(questionCounter)}
+            <button
+                type="button"
+                id="remove_${questionCounter}">
+                Remove Question
+            </button>
     `;
 
     // Add the question to the page
@@ -197,13 +199,15 @@ function createMultipleChoiceSection(questionCounter){
 }
 
 
-// TQoggle the questio type
+// Toggle the questio type
 function toggleQuestionType(questionCounter) {
 
     const questionType = document.getElementById(`type_${questionCounter}`);
     const answersSection = document.getElementById(`answers_${questionCounter}`);
+    const scoreContainer = document.getElementById(`scoreContainer_${questionCounter}`);
+    const scoreInput = document.getElementById(`score_${questionCounter}`);
 
-    if (!questionType || !answersSection) {
+    if (!questionType || !answersSection || !scoreContainer || !scoreInput) {
         return;
     }
 
@@ -216,13 +220,16 @@ function toggleQuestionType(questionCounter) {
             answersSection.style.display = "none";
             answersInput.forEach(input => {
                 input.required = false;
-            })
+            });
+            scoreContainer.style.display = "none";
+            scoreInput.required = false;
         } else {
             answersSection.style.display = "block";
             answersInput.forEach(input => {
                 input.required = true;
             });
-
+            scoreContainer.style.display = "block";
+            scoreInput.required = true;
         }
     });
 }
@@ -244,13 +251,11 @@ function buildQuestions() {
 
         const questionType = document.getElementById(`type_${i}`).value;
         const questionText = document.getElementById(`question_${i}`).value.trim();
-        const maxScore = Number(document.getElementById(`score_${i}`).value);
 
         const question = {
             _id: `q${i}`,
             question_type: questionType,
             question: questionText,
-            max_score: maxScore
         };
 
         // Buld the question based on its type
@@ -275,14 +280,15 @@ function buildQuestions() {
                 }
             ];
 
-            question.correct_answer = Number(
-                document.getElementById(`correct_${i}`).value
-            );
+            question.correct_answer = Number(document.getElementById(`correct_${i}`).value);
+            question.max_score = Number(document.getElementById(`score_${i}`).value);
+
 
             // open questions do not have predefines answers
         } else {
             question.answers = null;
             question.correct_answer = null;
+            question.max_score = null;
         }
         // add the question to the test
         questions.push(question);

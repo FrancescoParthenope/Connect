@@ -11,6 +11,9 @@ import * as ViewTest from "./js/viewTest.js";
 import * as CorrectTests from "./js/correctTests.js";
 import * as CorrectSingleTest from "./js/correctSingleTest.js";
 import * as ReviewTest from "./js/reviewTest.js";
+import * as Chat from "./js/chat.js";
+import * as Chats from "./js/chats.js";
+import * as NewChat from "./js/newChat.js";
 
 export const API_URL = "http://127.0.0.1:8000/api";
 
@@ -32,6 +35,9 @@ const routes = { // used to create path and load listener dynamically
     'correctTests': {folder: 'classroomTest', module: CorrectTests},
     'correctSingleTest': {folder: 'classroomTest', module: CorrectSingleTest},
     'reviewTest': {folder: 'classroomTest', module: ReviewTest},
+    'chat': {folder: 'chat', module: Chat},
+    'chats': {folder: 'chat', module: Chats},
+    'newChat': {folder: 'chat', module: NewChat},
 }
 
 export async function navigateTo(page){

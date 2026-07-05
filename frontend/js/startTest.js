@@ -39,7 +39,7 @@ async function loadTest(){
 
     try{
         // request a new test session from the backend
-        const response = await fetch(`${API_URL}/api/student/tests`,{
+        const response = await fetch(`${API_URL}/student/tests`,{
 
             method:"POST",
             headers:{
@@ -273,7 +273,7 @@ async function submitTest(){
 
     try{
         // Send the completed test to the backend
-        const response = await fetch(`${API_URL}/api/student/tests`, {
+        const response = await fetch(`${API_URL}/student/tests`, {
             method: "POST",
             headers:{
                 "Content-Type":"application/json",

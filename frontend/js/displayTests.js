@@ -115,23 +115,24 @@ function buildStudentMap(studentTests) {
 function displayTutorTest(test, containers, goTo, toggleTest) {
 
     let buttonHtml = `
-        <button
-            class="viewTestButton"
-            data-id="${test.test_id}">
-            View Test
-        </button>
-        <button
-            class="toggleButton"
-            data-id="${test.test_id}"
-            data-active="${test.is_active}">
-            ${test.is_active ? "Deactivate" : "Activate"}
-        </button>
+            <button
+                class="viewTestButton"
+                data-id="${test.test_id}">
+                View Test
+            </button>
+            <button
+                class="toggleButton"
+                data-id="${test.test_id}"
+                data-active="${test.is_active}">
+                ${test.is_active ? "Deactivate" : "Activate"}
+            </button>     
     `;
 
     const div = document.createElement("div");
 
+    div.className = "testCard"
+
     div.innerHTML = `
-        <hr>
         <h3>${test.title}</h3>
         <p><strong>Time limit:</strong> ${test.time_limit} minutes</p>
         <p><strong>Availability:</strong>
@@ -146,14 +147,13 @@ function displayTutorTest(test, containers, goTo, toggleTest) {
         containers.inactiveContainer.appendChild(div);
     }
 
-    const button = div.querySelector(".toggleButton");
     const viewTestButton = div.querySelector(".viewTestButton");
-
     viewTestButton.addEventListener("click", function () {
         localStorage.setItem("test_id", test.test_id);
         goTo("viewTest");
     });
 
+    const button = div.querySelector(".toggleButton");
     button.addEventListener("click", function () {
         toggleTest(this.dataset.id, this.dataset.active === "true");
     });
@@ -179,8 +179,7 @@ function displayStudentTest(test, completedTest, containers, goTo) {
 
     } else {
 
-        const submittedDate =
-            new Date(completedTest.completed_date).toLocaleString();
+        const submittedDate = new Date(completedTest.completed_date).toLocaleString();
 
         let displayStatus = completedTest.status;
 
@@ -243,11 +242,9 @@ function displayStudentTest(test, completedTest, containers, goTo) {
 
     const div = document.createElement("div");
 
+    div.className = "testCard"
     div.innerHTML = `
-        <hr>
-
         <h3>${test.title}</h3>
-
         <p><strong>Time limit:</strong>
             ${test.time_limit} minutes
         </p>

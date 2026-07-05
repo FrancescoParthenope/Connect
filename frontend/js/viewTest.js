@@ -42,7 +42,7 @@ async function loadTest(){
     try{
         // request test details from the backend
         const response = await fetch(
-            `${API_URL}/api/tests?test_id=${testId}`,
+            `${API_URL}/tests?test_id=${testId}`,
             {
                 method: "GET",
                 headers:{"Authorization": `Bearer ${token}`

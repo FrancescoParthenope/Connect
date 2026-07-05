@@ -55,13 +55,13 @@ async function loadClassroomTests() {
     try {
         // request classroom tests
         const response = await fetch(
-            `${API_URL}/api/tests?classroom_id=507f1f77bcf86cd799439011`, {
+            `${API_URL}/tests?classroom_id=507f1f77bcf86cd799439011`, {
                 method: "GET",
                 headers: {"Authorization": `Bearer ${token}`}
             });
 
         // request completed student tests
-        const responseStudent = await fetch(`${API_URL}/api/student/tests?action=get_student_test`, {
+        const responseStudent = await fetch(`${API_URL}/student/tests?action=get_student_test`, {
             method: "GET",
             headers: {"Authorization": `Bearer ${token}`}
         });
@@ -93,7 +93,7 @@ async function toggleTest(testId, currentStatus) {
 
     try {
         // send the new activation status to the backend
-        const response = await fetch(`${API_URL}/api/tests`, {
+        const response = await fetch(`${API_URL}/tests`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

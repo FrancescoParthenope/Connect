@@ -35,7 +35,7 @@ async function loadSubmission(){
         // request submission details from backend
         const response = await fetch(
 
-            `${API_URL}/api/student/tests?action=get_submission&submission_id=${submissionId}`,
+            `${API_URL}/student/tests?action=get_submission&submission_id=${submissionId}`,
             {
                 method: "GET",
                 headers:{"Authorization": `Bearer ${token}`
@@ -125,7 +125,7 @@ async function saveCorrection(){
     try {
         // Send the correction to the backend
         const response = await fetch(
-            `${API_URL}/api/student/tests`,
+            `${API_URL}/student/tests`,
             {
                 method: "POST",
                 headers: {
@@ -155,5 +155,4 @@ async function saveCorrection(){
         console.error(error);
         alert("Impossible to connect to server");
     }
-
 }

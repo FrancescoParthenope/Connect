@@ -31,7 +31,7 @@ async function loadTestsToCorrect() {
 
     try{
         const response = await fetch(
-            `${API_URL}/api/student/tests?action=get_tests_to_correct`,
+            `${API_URL}/student/tests?action=get_tests_to_correct`,
             {
                 method: "GET",
                 headers:{"Authorization": `Bearer ${token}`
@@ -125,7 +125,7 @@ async function loadCorrectedTests() {
     try {
         // request corrected tests from backend
         const response = await fetch(
-            `${API_URL}/api/student/tests?action=get_corrected_tests`,
+            `${API_URL}/student/tests?action=get_corrected_tests`,
             {
                 method: "GET",
                 headers: {

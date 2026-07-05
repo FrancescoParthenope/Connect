@@ -1,0 +1,193 @@
+
+/* # it's a id: a element uniq for page
+ . it's a class: style for plus element
+ */
+
+#backButton{
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+#backButton:hover {
+    opacity: 0.9;
+    background-color: #c82333;
+    color: white;
+}
+
+
+#sendMessageButton{
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+#sendMessageButton:hover{
+    opacity: 0.9;
+    background-color: #28a745;
+    color: white;
+}
+
+#correctTestsButton{
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#correctTestsButton:hover {
+    background-color: #28a745;
+    color: white;
+}
+
+
+.viewTestButton{
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.viewTestButton:hover{
+    background-color: #218838;
+    color: white;
+}
+
+
+.toggleButton{
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    background-color: #c82333;
+    color: white;
+    cursor: pointer;
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.toggleButton:hover{
+    background-color: #218838;
+}
+
+
+.startButton{
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.startButton:hover{
+    background-color: #218838;
+    color: white;
+}
+
+
+.retryButton{
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.retryButton:hover{
+    background-color: #218838;
+    color: white;
+}
+
+
+.viewResultButton{
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.viewResultButton:hover{
+    background-color:#6A8DD3;
+    color: white;
+}
+
+.headerButtons{
+    display: flex;
+    gap: 10px;
+}
+
+#newChatButton{
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+#newChatButton:hover{
+    background-color:#6A8DD3;
+    color: white;
+}
+
+#addChatButton{
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: "Poppins", sans-serif;
+}
+
+.questionCard button{
+    display: block;
+    margin-left: auto;
+    width: 150px;
+    padding: 10px 16px;
+    margin-bottom: 25px;
+    font-size: 14px;
+    font-family: "Poppins", sans-serif;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.questionCard button:hover{
+    background-color: red;
+    color: white;
+}
+
+#addQuestionButton{
+    align-self: flex-end;
+    width: 150px;
+    padding: 10px 16px;
+    margin-bottom: 25px;
+    font-size: 14px;
+    font-family: "Poppins", sans-serif;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+#addQuestionButton:hover{
+    background-color: #218838;
+    color: white;
+}
+
+
+
+
