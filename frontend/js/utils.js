@@ -7,7 +7,8 @@ export function formatTime(secondsLeft){
     return `${minutes} minutes and ${seconds.toString().padStart(2, '0')} seconds left`
 }
 /*
-route must be a string that completes the route
+route must be a string that completes the route after the "api"
+so to complete right the route must be something like "/name_of_action".
 body is an object for the JSON.stringify
  */
 export async function postFunction(route,body){

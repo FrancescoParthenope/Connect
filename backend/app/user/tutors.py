@@ -3,9 +3,9 @@ from flask import jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.user import bp
 from config.database import subjects_collection
-from app.services import TutorProfileManager, SubjectManager
+from app.services.tutor import *
+from app.services.subject import *
 from app.utils import create_route_response
-
 
 @bp.route('/tutor', methods=['GET', 'POST'])
 @jwt_required()
@@ -32,7 +32,7 @@ def tutor_manager():
 def add_tutor_role():
     user_id = ObjectId(get_jwt_identity())
 
-    result, message = TutorProfileManager.promote_to_tutor(user_id)
+    result, message = promote_to_tutor(user_id)
 
     if not result:
         return jsonify({
@@ -51,7 +51,6 @@ def add_subject():
     if not data:
         return jsonify({"success": False, "message": "No data provided"}), 400
 
-    # checking if the data provided are in the correct format
     if "subjectName" not in data:
         return jsonify({
             "success": False,
@@ -64,7 +63,6 @@ def add_subject():
 
     try:
         subject = subjects_collection.find_one({"name": to_add}, {"field": 0})
-        # checking if the subject is effectively in the Database
         if subject is None:
             return jsonify({
                 "success": False,
@@ -72,8 +70,7 @@ def add_subject():
             }), 404
         subject_id = ObjectId(subject["_id"])
 
-        # using the service class to add the subject to the user
-        result, message = TutorProfileManager.add_subject(user_id, subject_id)
+        result, message = add_subject(user_id, subject_id)
 
         if not result:
             return jsonify({"success": False, "message": message}), 400
@@ -90,7 +87,7 @@ tors_list = []
 # @jwt_required()
 def get_tutor_profile():
     user_id = ObjectId(get_jwt_identity())
-    result, message = TutorProfileManager.get_tutor_profile(user_id)
+    result, message = get_tutor_profile(user_id)
 
     if not result:
         return jsonify({"success": False, "message": message}), 400
@@ -116,10 +113,10 @@ def search_tutors():
             "No Subject provided",
             "BAD_REQUEST"
         )
-    result, message, error_type = SubjectManager.get_subject_id(subject)
+    result, message, error_type = get_subject_id(subject)
     if not result:
         create_route_response(result,message,error_type)
 
-    result, message, error_type = TutorProfileManager.get_tutors_list_by_subject(message)
+    result, message, error_type = get_tutors_list_by_subject(message)
 
     return create_route_response(result, message, error_type)

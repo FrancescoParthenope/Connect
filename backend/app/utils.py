@@ -6,6 +6,7 @@ error_map = {
     "NOT_FOUND": 404,
     "NO_PENDING_TEST": 404,
     "NOT_STARTED": 404,
+    "NOT_ACTIVE": 404,
     "ALREADY_EXISTS": 409, # Conflict
     "ALREADY_TUTOR": 409,
     "IN_PROGRESS": 409,
@@ -19,7 +20,8 @@ success_map = {
     "IN_PROGRESS": 200,
     "TEST_PASSED": 200,
     "TEST_FAILED": 200,
-    "CREATED": 201
+    "CREATED": 201,
+    "NO_CHANGES": 204
 }
 
 def create_route_response(status, data_or_message, status_key="SUCCESS"):

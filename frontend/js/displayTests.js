@@ -1,28 +1,21 @@
 
-// Display all classroom tests
 export function displayTests(tests, studentTests, goTo, toggleTest) {
 
     const user = JSON.parse(localStorage.getItem("user"));
     const role = user.roles[0];
 
-    // Configure page sections
     const containers = setupContainers(role);
 
-    // Map completed tests by test id
     const studentMap = buildStudentMap(studentTests);
 
     if (role === "student") {
-
-        // Show tests not yet completed
         tests.forEach(test => {
 
             const completedTest = studentMap[test.test_id];
-            // Skip inactive tests
             if (!test.is_active) {
                 return;
             }
 
-            // Show only tests that have not been submitted
             if (!completedTest) {
                 displayStudentTest(
                     test,
@@ -54,7 +47,6 @@ export function displayTests(tests, studentTests, goTo, toggleTest) {
             }
         });
     } else {
-        // Tutor view
         tests.forEach(test => {
             displayTutorTest(
                 test,
@@ -66,7 +58,11 @@ export function displayTests(tests, studentTests, goTo, toggleTest) {
     }
 }
 
-// Configure page containers based on the user role
+/*
+ * In this function we configure the containers that are visible to the user
+ * But because what can be seen is different between the roles of the student
+ * we pass the role of the user to get the right containers type to be shown
+ */
 function setupContainers(role) {
 
     const activeContainer = document.getElementById("activeTestsContainer");
@@ -98,7 +94,6 @@ function setupContainers(role) {
     };
 }
 
-// Create a map of completed student tests
 function buildStudentMap(studentTests) {
 
     const studentMap = {};
@@ -114,24 +109,23 @@ function buildStudentMap(studentTests) {
 function displayTutorTest(test, containers, goTo, toggleTest) {
 
     let buttonHtml = `
-            <button
-                class="viewTestButton"
-                data-id="${test.test_id}">
-                View Test
-            </button>
-            <button
-                class="toggleButton"
-                data-id="${test.test_id}"
-                data-active="${test.is_active}">
-                ${test.is_active ? "Deactivate" : "Activate"}
-            </button>     
+        <button
+            class="viewTestButton"
+            data-id="${test.test_id}">
+            View Test
+        </button>
+        <button
+            class="toggleButton"
+            data-id="${test.test_id}"
+            data-active="${test.is_active}">
+            ${test.is_active ? "Deactivate" : "Activate"}
+        </button>
     `;
 
     const div = document.createElement("div");
 
-    div.className = "testCard"
-
     div.innerHTML = `
+        <hr>
         <h3>${test.title}</h3>
         <p><strong>Time limit:</strong> ${test.time_limit} minutes</p>
         <p><strong>Availability:</strong>
@@ -146,13 +140,14 @@ function displayTutorTest(test, containers, goTo, toggleTest) {
         containers.inactiveContainer.appendChild(div);
     }
 
+    const button = div.querySelector(".toggleButton");
     const viewTestButton = div.querySelector(".viewTestButton");
+
     viewTestButton.addEventListener("click", function () {
         localStorage.setItem("test_id", test.test_id);
         goTo("viewTest");
     });
 
-    const button = div.querySelector(".toggleButton");
     button.addEventListener("click", function () {
         toggleTest(this.dataset.id, this.dataset.active === "true");
     });
@@ -178,7 +173,8 @@ function displayStudentTest(test, completedTest, containers, goTo) {
 
     } else {
 
-        const submittedDate = new Date(completedTest.completed_date).toLocaleString();
+        const submittedDate =
+            new Date(completedTest.completed_date).toLocaleString();
 
         let displayStatus = completedTest.status;
 
@@ -241,9 +237,11 @@ function displayStudentTest(test, completedTest, containers, goTo) {
 
     const div = document.createElement("div");
 
-    div.className = "testCard"
     div.innerHTML = `
+        <hr>
+
         <h3>${test.title}</h3>
+
         <p><strong>Time limit:</strong>
             ${test.time_limit} minutes
         </p>

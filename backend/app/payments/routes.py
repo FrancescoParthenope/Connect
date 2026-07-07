@@ -11,26 +11,20 @@ from app.services.mock_payment import MockPayment
 @bp.route('/payments_methods', methods=['POST'])
 @jwt_required()
 def add_payments_methods():
-
-    # recovering json data from the request
     data = request.get_json()
 
-    # check presence of all data
     if not data:
         return jsonify({'error': 'No data provided'}), 400
 
-    # get user id form JWT
     user_id = get_jwt_identity()
 
-    # recovering json data from the request
-    payment_type = data.get('payment_type', '').strip() # card or paypal
+    payment_type = data.get('payment_type', '').strip()
     card_number = data.get('card_number', '')
     cvv = data.get('cvv', '').strip()
     expiration_date = data.get('expiration_date', '').strip()
-    provider = data.get('provider', '').strip() # payment provider
+    provider = data.get('provider', '').strip()
     is_default = data.get('is_default', False)
 
-    # check data received
     if not payment_type or not card_number or not cvv or not expiration_date:
         return jsonify({'error': 'missing on obligatory camp'}), 400
 
@@ -76,7 +70,6 @@ def add_payments_methods():
             }), 404
 
     except Exception as e:
-        # error while inserting the payment method into MongoDB
         return jsonify({
             "success": False,
             "error": str(e)

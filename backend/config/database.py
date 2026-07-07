@@ -10,16 +10,16 @@ MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
 DB_NAME = os.getenv("MONGO_DATABASE","connect_db")
 
 try:
-    # initialization
     client = MongoClient(MONGO_URI, tz_aware=True, serverSelectionTimeoutMS=15000)
 
-    # test ping
+    # we do a test ping here for being sure that the client is correctly configurated
+    # and that the server is communicating with the database
     client.admin.command('ping')
 
-    #select (or create if it doesn't exist) database
     db = client[DB_NAME]
 
-    #references to the collections as in docs/mongodb_scheme.txt
+    # we create references to the documents that are inside the database as
+    # we see them in the documentation file "mongodb_scheme.txt" in docs folder
     users_collection = db["users"]
     subjects_collection = db["subjects"]
     classrooms_collection = db["classrooms"]

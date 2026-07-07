@@ -19,7 +19,11 @@ import * as ViewReviews from "./js/viewReview.js";
 
 export const API_URL = "http://127.0.0.1:8000/api";
 
-const routes = { // used to create path and load listener dynamically
+// this dictionary is used to create the path and load listeners dynamically
+// in this way, every time we add a new functionality to the frontend
+// we just need to update this dictionary to create the correct path and
+// recover the listener
+const routes = {
     'login': { folder: 'auth', module: Auth },
     'register': { folder: 'auth', module: Auth },
     'main': { folder: '', module: Main},
@@ -54,18 +58,15 @@ export async function navigateTo(page){
     }
 
     try {
-        // creating the path
         const path = route.folder ?
             `views/${route.folder}/${page}.html` : `views/${page}.html`;
 
         const response = await fetch(path)
 
-        // used to block instantly in case of error
         if (!response.ok) throw new Error(`Could not load ${page}`);
 
         app.innerHTML = await response.text();
 
-        // loading dynamically the function init in every module
         if (route.module && typeof route.module.init === 'function'){
             route.module.init(page, navigateTo);
         }

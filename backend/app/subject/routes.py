@@ -1,7 +1,7 @@
 from flask import request
 from flask_jwt_extended import jwt_required
 from app.subject import bp
-from app.services import SubjectManager
+from app.services.subject import *
 from app.utils import create_route_response
 
 base_route = '/subjects'
@@ -9,7 +9,7 @@ base_route = '/subjects'
 @bp.route(f"{base_route}/all_subjects", methods=['GET'])
 @jwt_required()
 def find_all_subjects():
-    status, message, status_key = SubjectManager.get_all_subjects()
+    status, message, status_key = get_all_subjects()
 
     if status:
         for subject in message:
@@ -37,6 +37,6 @@ def filter_subjects_by_fields():
             "BAD_REQUEST"
         )
 
-    status, message, status_key = SubjectManager.get_subjects_by_field(data)
+    status, message, status_key = get_subjects_by_field(data)
 
     return create_route_response(status, message, status_key)

@@ -2,7 +2,6 @@ import { API_URL } from "../app.js";
 
 let goTo;
 
-// Initialize the review page
 export function init(page, navigateTo) {
 
     if (navigateTo) {
@@ -22,7 +21,6 @@ export function init(page, navigateTo) {
     }
 }
 
-// Load the reviewed test
 async function loadReviewTest() {
 
     const token = localStorage.getItem("token");
@@ -59,7 +57,6 @@ async function loadReviewTest() {
     }
 }
 
-// Display the reviewed test
 function displayReviewTest(test) {
 
     const container = document.getElementById("reviewContainer");

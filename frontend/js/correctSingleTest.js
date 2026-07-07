@@ -2,7 +2,6 @@ import { API_URL } from "../app.js";
 
 let goTo
 
-// initialize the single correction page
 export function init(page, navigateTo){
     if(navigateTo){
         goTo = navigateTo;
@@ -25,14 +24,12 @@ export function init(page, navigateTo){
     }
 }
 
-// load the selected student submission
 async function loadSubmission(){
 
     const token = localStorage.getItem("token");
     const submissionId = localStorage.getItem("submission_id");
 
     try{
-        // request submission details from backend
         const response = await fetch(
 
             `${API_URL}/student/tests?action=get_submission&submission_id=${submissionId}`,
@@ -57,11 +54,9 @@ async function loadSubmission(){
     }
 }
 
-// Display submission details and student answers
 function displaySubmission(submission){
     const container = document.getElementById("submissionContainer");
 
-    // clear previous content
     container.innerHTML = `
         <h3>${submission.title}</h3>
         <p><strong>Student:</strong> ${submission.student_name}</p>
@@ -71,7 +66,6 @@ function displaySubmission(submission){
         <hr>
     `;
 
-    // Display each question with the assigned score input
     submission.questions.forEach((question, index) => {
         container.innerHTML += `
         <h4>Question ${index + 1}</h4>
@@ -97,18 +91,14 @@ function displaySubmission(submission){
     })
 }
 
-
-// Save the tutor correction
 async function saveCorrection(){
 
     const input = document.querySelectorAll(".scoreInput");
     const token = localStorage.getItem("token");
     const submissionId = localStorage.getItem("submission_id");
 
-    // collect the score assigned to each question
     const questions = [];
 
-    // build the corrected question list
     input.forEach(input => {
         questions.push({
             index: Number(input.dataset.question),
@@ -116,14 +106,12 @@ async function saveCorrection(){
         });
     });
 
-    // get the final test result
     const status = document.querySelector('input[name="result"]:checked').value;
 
     console.log(questions);
     console.log(status);
 
     try {
-        // Send the correction to the backend
         const response = await fetch(
             `${API_URL}/student/tests`,
             {
@@ -145,7 +133,6 @@ async function saveCorrection(){
 
         if (response.ok) {
             alert("Correction saved successfully!");
-            // return to the correction list after saving
             goTo("correctTests");
         } else {
             alert(data.message);

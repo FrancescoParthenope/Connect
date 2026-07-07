@@ -34,7 +34,7 @@ async function loadProfile() {
 
     try {
 
-        const response = await fetch(`${API_URL}/api/profile`, {
+        const response = await fetch(`${API_URL}/profile`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -68,7 +68,7 @@ async function handleUpdateProfile(event) {
     const profilePicture = document.getElementById("profile_picture").value;
 
     try {
-        const response = await fetch(`${API_URL}/api/profile`, {
+        const response = await fetch(`${API_URL}/profile`, {
             method: "POST",
 
             headers: {

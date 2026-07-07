@@ -41,7 +41,7 @@ async function handleAddPaymentsMethod(event) {
     const is_default = document.getElementById("is_default").checked;
 
     try {
-        const response = await fetch(`${API_URL}/api/payments_methods`, {
+        const response = await fetch(`${API_URL}/payments_methods`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

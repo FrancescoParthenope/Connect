@@ -96,7 +96,6 @@ function subjectsDropDownList() {
 
     dropdown.innerHTML = '';
 
-    // use the search criteria to filter what to show
     const filteredSubjects = subjectsList.filter( s => {
         const fieldFilter = (field === "all" || s.field === field);
         const queryFilter = s.name.toLowerCase().includes(query);
@@ -111,7 +110,6 @@ function subjectsDropDownList() {
             item.className = "subject-item";
             item.textContent = subject.name;
 
-            //adding click listener for selecting the subject
             item.addEventListener("click", async (event) => {
                 event.preventDefault();
                 document.getElementById("subjectSearch").value = subject.name;

@@ -65,11 +65,23 @@ SUBJECTS
 CLASSROOMS
 {
     _id: ObjectId,
-    subject_id: ObjectId,
+    subject: {
+        subject_id: ObjectId,
+        subject_name: string
+    }
     name: string,
-    members: array[
-    { user_id: ObjectId, role: string, join_date: date }
-    ],
+    creator: {
+        creator_id: ObjectId,
+        creator_name: string,
+        creator_surname: string
+    }
+    members: array[{
+        user_id: ObjectId,
+        user_first_name: string,
+        user_last_name: string,
+        user_email: string,
+        join_date: date
+    }],
     description: string,
     invite_code: string,
     creation_date: date
@@ -97,13 +109,10 @@ CONVERSATIONS
 
 MESSAGES
 {
-    _id: ObjectId,COINS_TRANSACTIONS
-{
     _id: ObjectId,
-    type: string,
-    from_user: ObjectId | null,
-    to_user: ObjectId | null,
-    coins: int,
+    conversation_id: ObjectId,
+    sender_id: ObjectId,
+    message: string,
     creation_date: date
 }
 
@@ -116,12 +125,6 @@ TUTORING_SESSIONS
     end_time: date,
     duration_minutes: int,
     status: string
-}
-    conversation_id: ObjectId,
-    sender_id: ObjectId,
-    text: string,
-    attachments: array[string],
-    creation_date: date
 }
 
 TUTOR_TESTS
@@ -148,6 +151,7 @@ TESTS
     classroom_id: ObjectId,
     creator_id: ObjectId,
     creator_name: string,
+    is_active: boolean,
     questions: array[
     {
         _id: ObjectId,
@@ -159,14 +163,7 @@ TESTS
             text: string
         }] | null,
         correct_answer: int | null
-    }],COINS_TRANSACTIONS
-{
-    _id: ObjectId,
-    type: string,
-    from_user: ObjectId | null,
-    to_user: ObjectId | null,
-    coins: int,
-    creation_date: date
+    }]
 }
 
 TUTORING_SESSIONS
@@ -177,8 +174,7 @@ TUTORING_SESSIONS
     start_time: date,
     end_time: date,
     duration_minutes: int,
-    status: string
-}
+    status: string,
     time_limit: int,
     is_active: boolean
 }
@@ -256,15 +252,4 @@ COINS_TRANSACTIONS
     to_user: ObjectId | null,
     coins: int,
     creation_date: date
-}
-
-TUTORING_SESSIONS
-{
-    _id: ObjectId,
-    tutor_id: ObjectId,
-    student_id: ObjectId,
-    start_time: date,
-    end_time: date,
-    duration_minutes: int,
-    status: string
 }
