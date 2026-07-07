@@ -16,6 +16,8 @@ export function init(page, navigateTo) {
     const linkToCompletedApplications = document.getElementById("linkToCompletedApplications");
     const linkToSearchBySubject = document.getElementById("linkToSearchBySubject");
     const linkToChats = document.getElementById("linkToChat");
+    const linkToCreateReview = document.getElementById("linkToCreateReview");
+    const linkToViewReview = document.getElementById("linkToViewReview");
 
     const user = JSON.parse(localStorage.getItem("user"));
 
@@ -119,6 +121,20 @@ export function init(page, navigateTo) {
         linkToChats.addEventListener("click", (event) => {
             event.preventDefault();
             goTo('chats');
+        })
+    }
+
+    if(linkToCreateReview){
+        linkToCreateReview.addEventListener("click", (event) => {
+            event.preventDefault();
+            goTo('writeReview');
+        })
+    }
+
+    if(linkToViewReview){
+        linkToViewReview.addEventListener("click", (event) => {
+            event.preventDefault();
+            goTo("viewReview");
         })
     }
 }

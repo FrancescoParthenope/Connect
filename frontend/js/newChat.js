@@ -77,7 +77,7 @@ function displayUsers(users){
 
             try {
                 const response = await fetch(
-                    `${API_URL}/chat?action=get_private_conversation&email=${user.email}`,
+                    `${API_URL}/chat?action=get_private_conversations&email=${user.email}`,
                     {
                         method: "GET",
                         headers: {

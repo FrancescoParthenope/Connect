@@ -98,15 +98,14 @@ async function handleCreateTest(event) {
 // Add a new question to the form
 function addQuestion() {
 
-    // Generate a unique question id
     questionCounter++;
 
-    const container = document.getElementById("questionsContainer");
+    const container = document.getElementById("createQuestionsContainer");
 
     // create the question container
     const questionDiv = document.createElement("div");
 
-    questionDiv.id = `questionContainer_${questionCounter}`;
+    questionDiv.id = `createQuestionsContainer_${questionCounter}`;
 
     questionDiv.className = "questionCard"
 
@@ -242,7 +241,7 @@ function buildQuestions() {
 
     // process all created questions
     for (let i = 1; i <= questionCounter; i++) {
-        const questionDiv = document.getElementById(`questionContainer_${i}`);
+        const questionDiv = document.getElementById(`createQuestionsContainer_${i}`);
 
         // skip removed questions
         if (!questionDiv) {
@@ -258,7 +257,7 @@ function buildQuestions() {
             question: questionText,
         };
 
-        // Buld the question based on its type
+        // Build the question based on its type
         if (questionType === "multiple_choice") {
 
             question.answers = [

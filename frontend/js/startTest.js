@@ -3,11 +3,7 @@ import { API_URL } from "../app.js";
 let goTo;
 let currentTest = null
 let timerInterval = null;
-
-// current displayed question
 let currentQuestionIndex = 0;
-
-// stores all student answers locally
 let studentAnswers = []
 
 // Initialize the test page

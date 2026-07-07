@@ -14,6 +14,8 @@ import * as ReviewTest from "./js/reviewTest.js";
 import * as Chat from "./js/chat.js";
 import * as Chats from "./js/chats.js";
 import * as NewChat from "./js/newChat.js";
+import * as Review from "./js/createReview.js";
+import * as ViewReviews from "./js/viewReview.js";
 
 export const API_URL = "http://127.0.0.1:8000/api";
 
@@ -38,6 +40,8 @@ const routes = { // used to create path and load listener dynamically
     'chat': {folder: 'chat', module: Chat},
     'chats': {folder: 'chat', module: Chats},
     'newChat': {folder: 'chat', module: NewChat},
+    'writeReview': {folder: 'review', module: Review},
+    'viewReview': {folder: 'review', module: ViewReviews},
 }
 
 export async function navigateTo(page){
