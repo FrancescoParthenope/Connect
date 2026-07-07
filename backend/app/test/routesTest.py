@@ -142,7 +142,7 @@ def get_classroom_tests(classroom_id):
                 'test_id': str(test['_id']),
                 'title': test['title'],
                 'time_limit': test['time_limit'],
-                'is_active': test['is_active']
+                'is_active': test['is_active'],
             })
 
         return jsonify({

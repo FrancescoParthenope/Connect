@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from config.database import conversations_collection, messages_collection, classrooms_collection, users_collection
+from config.database import conversations_collection, messages_collection, classrooms_collection
 from app.services.user import *
 
 def get_classroom_conversation(classroom_id):
@@ -81,7 +81,7 @@ def send_messages(conversation_id, sender_id, message):
             "message": message,
             "creation_date": datetime.now(timezone.utc),
         })
-        
+
         conversations_collection.update_one(
             {"_id": conversation_id},
             {
@@ -116,7 +116,6 @@ def get_message(conversation_id, current_user_id):
             # Check the number of returned values because get_user_fname_lname()
             # may return either two or three values depending on the outcome.
             result = get_user_fname_lname(message["sender_id"])
-            print(result)
 
             if len(result) == 3:
                 success, user_info, _ = result
@@ -141,7 +140,6 @@ def get_message(conversation_id, current_user_id):
         return False, str(e)
 
 
-
 def get_conversations_list(current_user_id):
     try:
         conversations = list(conversations_collection.find({
@@ -160,7 +158,6 @@ def get_conversations_list(current_user_id):
 
         for conversation in conversations:
 
-                # Retrieve the last messag of the conversation
             last_message = messages_collection.find_one({"conversation_id": conversation["_id"]},
             sort=[("creation_date", -1)])
 

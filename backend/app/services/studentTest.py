@@ -294,11 +294,10 @@ def get_corrected_test():
         formatted_tests = []
 
         for test in tests:
-
             student = users_collection.find_one({"_id": ObjectId(test["student_id"]) })
 
             if not student:
-                return False, "Student not found"
+                return False, "student not found"
 
             student_name = f"{student['first_name']} {student['last_name']}"
 
