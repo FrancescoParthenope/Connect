@@ -15,12 +15,16 @@ export function init(page, navigateTo) {
     const linkToStartTest = document.getElementById("linkToStartTest");
     const linkToCompletedApplications = document.getElementById("linkToCompletedApplications");
     const linkToSearchBySubject = document.getElementById("linkToSearchBySubject");
+    const linkToChats = document.getElementById("linkToChat");
+    const linkToCreateReview = document.getElementById("linkToCreateReview");
+    const linkToViewReview = document.getElementById("linkToViewReview");
 
     const user = JSON.parse(localStorage.getItem("user"));
 
-    if(user){
-        const isTutor = user.roles.includes("tutor")
-        if(!isTutor && linkToCreateTest){
+    if (user) {
+        const role = user.roles[0];
+
+        if (role === "student" && linkToCreateTest) {
             linkToCreateTest.style.display = "none";
         }
     }
@@ -109,6 +113,28 @@ export function init(page, navigateTo) {
         linkToSearchBySubject.addEventListener("click", (event) => {
             event.preventDefault();
             goTo('searchBySubject');
+        })
+    }
+
+
+    if(linkToChats){
+        linkToChats.addEventListener("click", (event) => {
+            event.preventDefault();
+            goTo('chats');
+        })
+    }
+
+    if(linkToCreateReview){
+        linkToCreateReview.addEventListener("click", (event) => {
+            event.preventDefault();
+            goTo('writeReview');
+        })
+    }
+
+    if(linkToViewReview){
+        linkToViewReview.addEventListener("click", (event) => {
+            event.preventDefault();
+            goTo("viewReview");
         })
     }
 }

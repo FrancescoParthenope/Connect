@@ -3,11 +3,10 @@ import { API_URL } from "../app.js";
 let goTo;
 let currentTest = null
 let timerInterval = null;
-
 let currentQuestionIndex = 0;
-
 let studentAnswers = []
 
+// Initialize the test page
 export function init(page, navigateTo){
 
     if(navigateTo){
@@ -18,9 +17,11 @@ export function init(page, navigateTo){
     }
 }
 
+// start the selected test
 async function loadTest(){
 
     const token = localStorage.getItem("token");
+    // check if the user is authenticated
     if(!token){
         alert("You must be logged in");
         if(goTo){
@@ -29,10 +30,12 @@ async function loadTest(){
         return;
     }
 
+    // Get the selected test id
     const testId = localStorage.getItem("test_id");
 
     try{
-        const response = await fetch(`${API_URL}/api/student/tests`,{
+        // request a new test session from the backend
+        const response = await fetch(`${API_URL}/student/tests`,{
 
             method:"POST",
             headers:{
@@ -72,6 +75,7 @@ function displayQuestion(index) {
 
     let answersHtml = "";
 
+    // Display answer options based on the question type
     if (question.question_type === "multiple_choice") {
         question.answers.forEach(answer => {
             answersHtml += `
@@ -86,6 +90,7 @@ function displayQuestion(index) {
                 `;
         });
     } else {
+        // create the question card for open answer
         answersHtml = `
                 <textarea
                     id="openAnswer"
@@ -122,6 +127,7 @@ function displayQuestion(index) {
     container.appendChild(div);
     restoreAnswers(index)
 
+    // Previous question
     const previousButton = document.getElementById("previousButton");
 
     if (previousButton) {
@@ -132,6 +138,7 @@ function displayQuestion(index) {
         });
     }
 
+    // Next question
     const nextButton = document.getElementById("nextButton");
 
     if (nextButton) {
@@ -142,6 +149,7 @@ function displayQuestion(index) {
         });
     }
 
+    // Submit test
     const submitButton = document.getElementById("submitButton");
 
     if (submitButton) {
@@ -152,6 +160,7 @@ function displayQuestion(index) {
     }
 }
 
+// Save the current answers
 function saveCurrentAnswer(){
     const question = currentTest.questions[currentQuestionIndex];
 
@@ -170,6 +179,7 @@ function saveCurrentAnswer(){
     }
 }
 
+// Restore the previously saved answer
 function restoreAnswers(index) {
 
     const question = currentTest.questions[index];
@@ -194,21 +204,29 @@ function restoreAnswers(index) {
     }
 }
 
+// Display the test questions
 function displayTest(test){
 
     currentTest = test;
 
+    // initialize the answer list
     studentAnswers = new Array(test.questions.length).fill(null)
 
+    // start from the first question
     currentQuestionIndex = 0;
 
+    // Display basic test information
     document.getElementById("testTitle").textContent = test.title;
 
+    // start the countdown timer
     startTimer(test.time_limit);
 
+    // Display the first question
     displayQuestion(currentQuestionIndex)
 }
 
+
+// function fo start the countdown timer
 function startTimer(minutes){
     let timeLeft = minutes * 60;
 
@@ -227,10 +245,13 @@ function startTimer(minutes){
     }, 1000);
 }
 
+
+// collect all student answers
 function buildAnswers(test){
     return studentAnswers;
 }
 
+// submit the completed test
 async function submitTest(){
 
     const token = localStorage.getItem("token");
@@ -243,10 +264,12 @@ async function submitTest(){
         return;
     }
 
+    // Build the submission payload
     const answers = buildAnswers(currentTest);
 
     try{
-        const response = await fetch(`${API_URL}/api/student/tests`, {
+        // Send the completed test to the backend
+        const response = await fetch(`${API_URL}/student/tests`, {
             method: "POST",
             headers:{
                 "Content-Type":"application/json",
@@ -264,6 +287,7 @@ async function submitTest(){
         const data = await response.json();
 
         if(response.ok){
+            // Stop the time after a successful submission
             clearInterval(timerInterval);
             alert("Test submitted successfully");
             goTo("classroomTest")

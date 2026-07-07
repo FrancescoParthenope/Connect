@@ -1,14 +1,16 @@
-<form id="createTestForm" method='POST'>
+<div class = "page">
+    <div class = "header">
+        <h2> Create Test</h2>
+        <button id="backButton">Back</button>
+    </div>
+    <form id="createTestForm" method='POST'>
     <label for="title">Test Title</label>
     <input
         id="title"
         name="title"
         type="text"
         required >
-
-    <br><br>
-
-    <label for="time_limit"> Time limit </label>
+    <label for="time_limit"> Time limit (min) </label>
     <input
         id="time_limit"
         name="time_limit"
@@ -17,18 +19,10 @@
         value="1"
         required >
 
-    <br><br>
-
-    <div id="questionsContainer">
-
+    <div id="createQuestionsContainer">
     </div>
-
-    <button type="button" id="addQuestionButton">
-        Add question
-    </button>
-
+    <button type="button" id="addQuestionButton">Add question</button>
     <br><br>
-
     <input type="submit" value="Create Test">
-
-</form>
+    </form>
+</div>
