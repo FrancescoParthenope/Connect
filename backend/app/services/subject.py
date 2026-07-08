@@ -1,4 +1,4 @@
-from config.database import subjects_collection
+from config.database import subjects_collection, users_collection
 
 def get_all_subjects():
     try:
@@ -55,6 +55,33 @@ def get_subjects_by_field(field_name):
         output = list(cursor)
 
         return True, output, "SUCCESS"
+
+    except Exception as e:
+        return False, f"Error connecting to database : {str(e)}", "DB_ERROR"
+
+def get_subject_by_id(subject_id):
+    try:
+        subject_dict = subjects_collection.find_one({"_id": subject_id})
+        return True, subject_dict, "SUCCESS"
+
+    except Exception as e:
+        return False, f"Error connecting to database : {str(e)}", "DB_ERROR"
+
+def get_tutor_subjects(tutor_id):
+    try:
+        tutor_doc = users_collection.find_one({"_id": tutor_id}, {"tutor_profile.subjects":1})
+        if not tutor_doc:
+            return False, "Tutor not present in database", "NOT_FOUND"
+
+        subjects_id_list = tutor_doc.get("tutor_profile", {}).get("subjects", [])
+        if not subjects_id_list:
+            return False, "No subjects found for the tutor", "NOT_FOUND"
+
+        cursor = subjects_collection.find({"_id": {"$in": subjects_id_list}},
+                                          {"_id": 0, "name": 1, "field": 1})
+        subjects_output = list(cursor)
+
+        return True, subjects_output, "SUCCESS"
 
     except Exception as e:
         return False, f"Error connecting to database : {str(e)}", "DB_ERROR"

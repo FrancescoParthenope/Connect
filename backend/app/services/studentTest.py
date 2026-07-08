@@ -160,7 +160,6 @@ def get_student_tests(student_id):
         formatted_tests = []
 
         for test in tests:
-            print(test)
             formatted_tests.append({
                 "test_id": str(test["test_id"]),
                 "title": test["title"],
@@ -173,7 +172,6 @@ def get_student_tests(student_id):
 
     except Exception as e:
         return False, str(e)
-
 
 def get_test_to_correct():
     try:

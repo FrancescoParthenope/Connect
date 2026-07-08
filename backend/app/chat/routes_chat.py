@@ -102,6 +102,9 @@ def get_classroom_conversations():
     result["_id"] = str(result["_id"])
     result["classroom_id"] = str(result["classroom_id"])
 
+    if "participants" in result:
+        result["participants"] = [str(participant) for participant in result["participants"]]
+
     return jsonify({
         "success": True,
         "message": result

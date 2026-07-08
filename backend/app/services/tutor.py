@@ -173,6 +173,20 @@ def get_tutors_list_by_subject(subject_id):
     except Exception as e:
         return False, f"Error connecting to database : {str(e)}", "DB_ERROR"
 
+def is_tutor(user_id):
+    try:
+        user = users_collection.find_one({"_id": user_id},{"roles": 1})
+        if not user:
+            return False, "User not found in database", "NOT_FOUND"
+        roles = user.get("roles", [])
+
+        if "tutor" not in roles:
+            return False, "Not a Tutor", "UNAUTHORIZED"
+        return True, "Is Tutor","SUCCESS"
+
+    except Exception as e:
+        return False, f"Error connecting to database : {str(e)}"
+
 def _get_ineligible_subjects(applications):
     ineligible_subjects = []
 

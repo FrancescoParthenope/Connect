@@ -2,7 +2,6 @@ from bson import ObjectId
 from flask import jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.user import bp
-from config.database import subjects_collection
 from app.services.tutor import *
 from app.services.subject import *
 from app.utils import create_route_response
@@ -19,7 +18,7 @@ def tutor_manager():
             return jsonify({"success": False, "message": "No data provided"}), 400
         action = data.get("action")
         if action == "add_subject":
-            return add_subject()
+            return add_subject_to_tutor()
         elif action == "promote":
             return add_tutor_role()
         else:
@@ -46,7 +45,7 @@ def add_tutor_role():
 
 #@bp.route('/add_subject', methods=['POST'])
 # @jwt_required()
-def add_subject():
+def add_subject_to_tutor():
     data = request.get_json()
     if not data:
         return jsonify({"success": False, "message": "No data provided"}), 400
@@ -115,8 +114,20 @@ def search_tutors():
         )
     result, message, error_type = get_subject_id(subject)
     if not result:
-        create_route_response(result,message,error_type)
+        return create_route_response(result,message,error_type)
 
     result, message, error_type = get_tutors_list_by_subject(message)
+
+    return create_route_response(result, message, error_type)
+
+@bp.route('/mysubjects', methods=['GET'])
+@jwt_required()
+def get_my_subjects():
+    user_id = ObjectId(get_jwt_identity())
+    result, message, error_type = is_tutor(user_id)
+    if not result:
+        return create_route_response(result,message,error_type)
+
+    result, message, error_type = get_tutor_subjects(user_id)
 
     return create_route_response(result, message, error_type)

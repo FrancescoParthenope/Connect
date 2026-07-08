@@ -1,6 +1,17 @@
 # Connect
 TechWeb Project
 
+# Getting started
+1) start with docker a mongodb container version 6.0 with the port 27017
+2) create a .env file and save :
+   1) MONGO_URI = url and port of mongodb server
+   2) DB_NAME = for the name of the database (used connect_db)
+   3) FRONTEND_URL = url and port of the frontend (for CORS)
+   4) JWT_SECRET_KEY = the secret key to generate jwt token
+   5) JWT_ACCESS_TOKEN_EXPIRE = number in days to let the token for the login up
+3) start the server with flask launching connect.py with port 8000
+4) start the frontend
+
 # License
 this project is released under the Apache 2.0 license
 

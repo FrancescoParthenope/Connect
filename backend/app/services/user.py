@@ -58,3 +58,21 @@ def get_user_id_by_email(email):
 
     except Exception as e:
         return False, f"Error connecting to database : {str(e)}", "DB_ERROR"
+
+def get_all_users_info():
+    try:
+        user_info = users_collection.find(
+            {},{"email": 1, "first_name": 1, "last_name": 1, "_id": 0})
+
+        all_user_list = []
+        for user in user_info:
+            all_user_list.append(
+                {"email": user.get("email", ""),
+                 "first_name": user.get("first_name", ""),
+                 "last_name": user.get("last_name", "")
+                 })
+
+        return True, all_user_list,"SUCCESS"
+
+    except Exception as e:
+        return False, f"Error connecting to database : {str(e)}", "DB_ERROR"

@@ -83,11 +83,11 @@ CLASSROOMS
         user_email: string,
         join_date: date
     }],
-
     description: string,
     invite_code: string,
-    creation_date: date,
-    classroom_status: string
+    creation_date: date
+    classroom_status: string,
+    status: string
 }
 
 CLASSROOMS_DOCUMENTS
