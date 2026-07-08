@@ -158,15 +158,7 @@ def get_message(conversation_id, current_user_id):
 def get_conversations_list(current_user_id):
     try:
         conversations = list(conversations_collection.find({
-            "$or": [
-                 {
-                     "type": "classroom"
-                 },
-                 {
-                    "type": "private",
-                    "participants": current_user_id
-                }
-            ]
+            "type": "private", "participants": current_user_id
          }).sort("last_activity", -1))
 
         conversations_list = []

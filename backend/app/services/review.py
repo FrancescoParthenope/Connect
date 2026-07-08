@@ -1,5 +1,6 @@
 from datetime import datetime, timezone
 from config.database import reviews_collection, users_collection, classrooms_collection
+from app.services.user import get_classroom_user_info
 
 def create_review(student_id, tutor_id, rating, comment):
     try:
@@ -76,29 +77,41 @@ def _update_tutor_rating(tutor_id):
         }
     )
 
-def get_review(tutor_id):
+def get_review(user_id):
     try:
-        reviews = list(reviews_collection.find({"tutor_id": tutor_id,}).sort("creation_date", -1))
+        review_query = {
+            "$or": [
+                {"student_id": user_id},
+                {"tutor_id": user_id}
+            ]
+        }
+        reviews = list(reviews_collection.find(review_query).sort("creation_date", -1))
+
+        if not reviews:
+            return True, []
 
         formatted_reviews = []
+        status, user_info, status_key = get_classroom_user_info(user_id)
+        if not status:
+            return False, []
 
         for review in reviews:
-            student = users_collection.find_one(
-                {
-                    "_id": review["student_id"],
-                },
-                {
-                    "_id": 1,
-                    "first_name": 1,
-                    "last_name": 1,
-                }
-            )
-
-            if not student:
-                return False, "Student not found"
+            if review["tutor_id"] == user_id:
+                status,student_info, status_key = get_classroom_user_info(review["student_id"])
+                if not status:
+                    return False, []
+                student_name = f"{student_info.get('first_name','')} {student_info.get('last_name','')}"
+                tutor_name = f"{user_info.get('first_name','')} {user_info.get('last_name','')}"
+            else:
+                status, tutor_info, status_key = get_classroom_user_info(review["tutor_id"])
+                if not status:
+                    return False, []
+                student_name = f"{user_info.get('first_name','')} {user_info.get('last_name','')}"
+                tutor_name = f"{tutor_info.get('first_name','')} {tutor_info.get('last_name','')}"
 
             formatted_reviews.append({
-                "student_name": f"{student['first_name']} {student['last_name']}",
+                "tutor_name": tutor_name,
+                "student_name": student_name,
                 "rating": review["rating"],
                 "comment": review["comment"],
                 "creation_date": review["creation_date"],

@@ -36,12 +36,12 @@ def create_reviews():
         'message': result
     }), 200
 
-
+@bp.route('/viewReviews', methods=['GET'])
+@jwt_required()
 def get_reviews():
+    user_id = ObjectId(get_jwt_identity())
 
-    tutor_id = ObjectId(request.args.get('tutor_id'))
-
-    success, result = get_review(tutor_id)
+    success, result = get_review(user_id)
 
     if not success:
         return jsonify({
