@@ -12,7 +12,6 @@ export async function init(page, navigateTo) {
     }
 
     if (page === "chat") {
-
         conversationTitle = localStorage.getItem("conversation_title");
         document.getElementById("conversationTitle").textContent = conversationTitle;
 
@@ -30,7 +29,6 @@ export async function init(page, navigateTo) {
         });
     }
 }
-
 
 export async function loadMessages(){
 

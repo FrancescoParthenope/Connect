@@ -19,7 +19,7 @@ export async function init(page, navigateTo) {
 
         if (backButton) {
             backButton.addEventListener("click", function () {
-                goTo("main")
+                goTo("classroom");
             });
         }
 

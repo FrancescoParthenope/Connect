@@ -32,7 +32,6 @@ async function loadTest(){
     }
 
     const testId = localStorage.getItem("test_id");
-    console.log("TEST ID:", testId);
 
     try{
         const response = await fetch(

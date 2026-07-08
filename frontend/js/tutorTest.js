@@ -1,5 +1,5 @@
 import {API_URL} from "../app.js";
-import {formatTime, postFunction} from "./utils.js"
+import {formatTime, postFunction, linkToMain} from "./utils.js"
 
 const base_route = "tutor_tests"
 
@@ -12,45 +12,35 @@ let testToTake;
 let timerInterval;
 let currentQuestionIndex = 0;
 
-export function init(page, navigateTo){
+export async function init(page, navigateTo){
     if (navigateTo)
         goTo = navigateTo;
 
     if (page === 'eligibleSubjects'){
-        linkToMain();
+        linkToMain(goTo);
         const fieldSelection = document.getElementById('fieldSelection')
         if (fieldSelection) {
             fieldSelection.addEventListener('change', event => {
                 filterSubjects(event.target.value);
             })
         }
-        getEligibleSubjects();
+        await getEligibleSubjects();
         setupCandidateListener()
     }
 
     if (page === 'activeApplications'){
-        getActiveTests();
-        linkToMain();
+        await getActiveTests();
+        linkToMain(goTo);
         setupStartOrContinueListener()
     }
 
     if (page === 'completedApplications'){
-        getCompletedTests();
-        linkToMain();
+        await getCompletedTests();
+        linkToMain(goTo);
     }
 
     if (page === 'tutorTest'){
         populateTestPage();
-    }
-}
-
-function linkToMain() {
-    const linkToMain = document.getElementById('linkToMain');
-    if (linkToMain) {
-        linkToMain.addEventListener('click', event => {
-            event.preventDefault();
-            goTo('main');
-        })
     }
 }
 
@@ -280,11 +270,11 @@ function setupCandidateListener(){
 function setupStartOrContinueListener(){
     const container = document.getElementById('subjectsContainer');
     if (container){
-        container.addEventListener('click', event => {
+        container.addEventListener('click',async event => {
             if (event.target.classList.contains("execute-btn")){
                 const subjectId = event.target.dataset.id;
                 if (subjectId){
-                    startAndGetTutorTest(subjectId);
+                    await startAndGetTutorTest(subjectId);
                 }
             }
         })
@@ -399,7 +389,7 @@ function showQuestion(index) {
     const savedAnswer = testToTake.user_answers.find(
         a => a.question_id === question.question_id
     )
-    const selectedAnswerId = savedAnswer ? savedAnswer.answer : null;
+    const selectedAnswerId = savedAnswer ? savedAnswer.answer_given : null;
 
     questionContainer.innerHTML = `
         <div class="questionBlock">

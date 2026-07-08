@@ -41,6 +41,7 @@ export async function init(page, navigateTo){
     if (page === "inviteInClassroom"){
         linkToMain(goTo);
         linkToClassroomList(goTo);
+        linkToClassroomHome();
         initEmailFilterListener();
         await populateUserClassroomList();
         await populateStudentCards(usersNotInClassroom);
@@ -59,6 +60,7 @@ export async function init(page, navigateTo){
     if (page === "editClassroom"){
         linkToMain(goTo);
         linkToClassroomList(goTo);
+        linkToClassroomHome();
         await loadSubjects();
         populateDataList();
         await loadClassroomInfo();
@@ -676,4 +678,14 @@ export async function checkIsOwner() {
     let creator = classroomMembers.creator;
 
     return userInfo.email === creator.email;
+}
+
+function linkToClassroomHome(){
+    const linkToClassroom = document.getElementById("linkToClassroom");
+    if (linkToClassroom) {
+        linkToClassroom.addEventListener("click", event => {
+            event.preventDefault();
+            goTo('classroom');
+        })
+    }
 }

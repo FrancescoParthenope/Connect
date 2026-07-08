@@ -28,8 +28,9 @@ export function init(page, navigateTo) {
 
         const backButton = document.getElementById("backButton");
         if (backButton) {
-            backButton.addEventListener("click", () => {
-                goTo("main");
+            backButton.addEventListener("click", event => {
+                event.preventDefault();
+                goTo("classroom");
             })
         }
     }
