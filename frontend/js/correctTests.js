@@ -2,14 +2,14 @@ import { API_URL } from "../app.js";
 
 let goTo;
 
-export function init(page, navigateTo) {
+export async function init(page, navigateTo) {
 
     if(navigateTo) {
         goTo = navigateTo;
     }
     if(page === "correctTests") {
-        loadTestsToCorrect()
-        loadCorrectedTests()
+        await loadTestsToCorrect()
+        await loadCorrectedTests()
 
         const backButton = document.getElementById("backButton");
 
@@ -38,8 +38,7 @@ async function loadTestsToCorrect() {
         const data = await response.json();
 
         if(response.ok){
-            console.log(data)
-            displayTestsToCorrect(data.data);
+            await displayTestsToCorrect(data.data);
         }else{
             alert(data.message);
         }

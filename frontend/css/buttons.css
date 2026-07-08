@@ -1,3 +1,7 @@
+.invite-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
 
 /* # it's a id: a element uniq for page
  . it's a class: style for plus element
@@ -221,6 +225,10 @@
     cursor:not-allowed;
 }
 
-
-
+.enter-btn.is-closed {
+    background-color: #ccc;
+    cursor: not-allowed;
+    pointer-events: none;
+    opacity: 0.6;
+}
 

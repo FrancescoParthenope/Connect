@@ -8,3 +8,11 @@
     border-radius: 50%;
     object-fit: cover;
 }
+
+.tutor-only {
+    display: none;
+}
+
+.owner-only {
+    display: none;
+}

@@ -1,0 +1,37 @@
+<h2>Edit your classroom</h2>
+<br>
+<label for="editClassroomForm">Classroom Creation Form</label>
+<form id="editClassroomForm">
+  <label for="classroomName">Name</label>
+  <input type="text" id="classroomName"
+         name="classroomName"
+         placeholder="Enter Classroom Name">
+  <label for ="fieldSelection">Select a Field:</label>
+  <select id="fieldSelection" name="fieldSelection"></select>
+  <label for ="subjectInput">Select a subject:</label>
+  <input list="subjectsList" id="subjectInput"
+         name="subjectInput"
+         autocomplete="off"
+         placeholder="Type here the subject name">
+  <datalist id="subjectsList"></datalist>
+  <label for="classDescription">Write a description for the class</label>
+  <textarea id="classDescription" class="description-box"
+            name="classDescription"
+            maxlength="500"
+            placeholder="max 500 characters"></textarea>
+  <label for ="classroomStatus">Select the status of classroom</label>
+  <div id="classroomStatus">
+    <label>
+      <input type="radio" name="status" value="open" checked> Open
+    </label>
+    <label><input type="radio" name="status" value="closed"> Closed
+    </label>
+    <label>
+      <input type="radio" name="status" value="deleted"> Deleted
+    </label>
+  </div>
+  <button type="submit" class="create-btn" id="editClassroomBtn">Confirm Changes</button>
+</form>
+<br><br>
+<a href="/main" id="linkToMain">Home</a>
+<a href="/classroomHome" id="linkToClassroomList">Classrooms</a>

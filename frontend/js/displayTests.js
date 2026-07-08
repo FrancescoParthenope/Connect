@@ -1,14 +1,12 @@
+import {checkIsOwner} from "./classroom.js"
 
-export function displayTests(tests, studentTests, goTo, toggleTest) {
-
-    const user = JSON.parse(localStorage.getItem("user"));
-    const role = user.roles[0];
-
-    const containers = setupContainers(role);
+export async function displayTests(tests, studentTests, goTo, toggleTest) {
+    const isOwner = await checkIsOwner();
+    const containers = setupContainers(isOwner);
 
     const studentMap = buildStudentMap(studentTests);
 
-    if (role === "student") {
+    if (!isOwner) {
         tests.forEach(test => {
 
             const completedTest = studentMap[test.test_id];
@@ -63,7 +61,7 @@ export function displayTests(tests, studentTests, goTo, toggleTest) {
  * But because what can be seen is different between the roles of the student
  * we pass the role of the user to get the right containers type to be shown
  */
-function setupContainers(role) {
+function setupContainers(isOwner) {
 
     const activeContainer = document.getElementById("activeTestsContainer");
     const inactiveContainer = document.getElementById("inactiveTestsContainer");
@@ -76,7 +74,7 @@ function setupContainers(role) {
     inactiveContainer.innerHTML = "";
     submittedContainer.innerHTML = "";
 
-    if (role === "student") {
+    if (!isOwner) {
         inactiveTitle.style.display = "none";
         inactiveContainer.style.display = "none";
         submittedTitle.style.display = "block";

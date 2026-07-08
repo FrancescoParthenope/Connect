@@ -1,7 +1,7 @@
 import { API_URL } from "../app.js";
+import {clearChatInterval, setRefreshInterval} from "./utils.js"
 
 let goTo;
-let refreshIntervall;
 let conversationTitle;
 
 // Initialize the chat page
@@ -18,22 +18,21 @@ export async function init(page, navigateTo) {
 
         await loadMessages();
 
-        // Refresh the chat every 2 seconds
-        refreshIntervall = setInterval(loadMessages, 2000);
+        setRefreshInterval(loadMessages, 2000);
         document.getElementById("sendMessageButton").addEventListener("click", sendMessage);
     }
 
     const backButton = document.getElementById("backButton");
     if (backButton) {
         backButton.addEventListener("click", () => {
-            clearInterval(refreshIntervall);
+            clearChatInterval();
             goTo("chats")
         });
     }
 }
 
 
-async function loadMessages(){
+export async function loadMessages(){
 
     const token = localStorage.getItem("token");
     const conversationId = localStorage.getItem("conversation_id");
@@ -50,7 +49,6 @@ async function loadMessages(){
         );
 
         const data = await response.json();
-        console.log(data);
 
         if(response.ok){
             displayMessages(data.message)
@@ -62,7 +60,7 @@ async function loadMessages(){
     }
 }
 
-async function sendMessage() {
+export async function sendMessage() {
 
     const token = localStorage.getItem("token");
     const conversationId = localStorage.getItem("conversation_id");
@@ -145,3 +143,4 @@ function displayMessages(messages){
 
     container.scrollTop = container.scrollHeight;
 }
+

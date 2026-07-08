@@ -3,14 +3,12 @@ import { API_URL } from "../app.js";
 let goTo;
 let questionCounter = 0;
 
-// initialize the test creation page
 export function init(page, navigateTo) {
 
     if (navigateTo) {
         goTo = navigateTo;
     }
 
-    // Register from and button events
     if (page === "createTest") {
         const createTestForm = document.getElementById("createTestForm");
         if (createTestForm) {
@@ -37,14 +35,13 @@ export function init(page, navigateTo) {
     }
 }
 
-// Create a new test
 async function handleCreateTest(event) {
 
     event.preventDefault();
 
     const token = localStorage.getItem("token");
+    const classroomId = localStorage.getItem("classroomId");
 
-    // check if the user is authenticated
     if (!token) {
         alert("You must be logged in");
         if (goTo) {
@@ -52,16 +49,18 @@ async function handleCreateTest(event) {
         }
         return;
     }
+    if (!classroomId){
+        alert("Cannot retrieve classroom ID, returning to classrooms homepage");
+        goTo("classroomHome");
+    }
 
-    // collect the test information
+
     const title = document.getElementById("title").value.trim();
     const timeLimit = Number(document.getElementById("time_limit").value);
 
-    // Build the question list
     const questions = buildQuestions();
 
     try {
-        // Send the new test to the backend
         const response = await fetch(`${API_URL}/tests`, {
             method: "POST",
             headers: {
@@ -72,7 +71,7 @@ async function handleCreateTest(event) {
             body: JSON.stringify({
                 action: "create_test",
                 title: title,
-                classroom_id: "507f1f77bcf86cd799439011",
+                classroom_id: `${classroomId}`,
                 time_limit: timeLimit,
                 questions: questions
             })
@@ -82,7 +81,7 @@ async function handleCreateTest(event) {
         if (response.ok) {
             if (data.success) {
                 alert("Test created successfully");
-                document.getElementById("createTestForm").reset();
+                goTo("classroomTest");
             } else {
                 alert(data.message);
             }
@@ -95,14 +94,12 @@ async function handleCreateTest(event) {
     }
 }
 
-// Add a new question to the form
 function addQuestion() {
 
     questionCounter++;
 
     const container = document.getElementById("createQuestionsContainer");
 
-    // create the question container
     const questionDiv = document.createElement("div");
 
     questionDiv.id = `createQuestionsContainer_${questionCounter}`;
@@ -143,16 +140,12 @@ function addQuestion() {
             </button>
     `;
 
-    // Add the question to the page
     container.appendChild(questionDiv);
     toggleQuestionType(questionCounter);
 
-    // remove the selected question
     document.getElementById(`remove_${questionCounter}`).addEventListener("click", function () {questionDiv.remove();});
 }
 
-
-// Create the multiple-choice answer section
 function createMultipleChoiceSection(questionCounter){
     return `
         <div id="answers_${questionCounter}">
@@ -197,8 +190,6 @@ function createMultipleChoiceSection(questionCounter){
     `;
 }
 
-
-// Toggle the questio type
 function toggleQuestionType(questionCounter) {
 
     const questionType = document.getElementById(`type_${questionCounter}`);
@@ -233,13 +224,10 @@ function toggleQuestionType(questionCounter) {
     });
 }
 
-
-// build the question list for the backend
 function buildQuestions() {
 
     const questions = [];
 
-    // process all created questions
     for (let i = 1; i <= questionCounter; i++) {
         const questionDiv = document.getElementById(`createQuestionsContainer_${i}`);
 
@@ -257,7 +245,6 @@ function buildQuestions() {
             question: questionText,
         };
 
-        // Build the question based on its type
         if (questionType === "multiple_choice") {
 
             question.answers = [
@@ -283,15 +270,12 @@ function buildQuestions() {
             question.max_score = Number(document.getElementById(`score_${i}`).value);
 
 
-            // open questions do not have predefines answers
         } else {
             question.answers = null;
             question.correct_answer = null;
             question.max_score = null;
         }
-        // add the question to the test
         questions.push(question);
     }
-    // return the complete question list
     return questions;
 }

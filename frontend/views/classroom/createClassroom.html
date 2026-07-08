@@ -1,0 +1,29 @@
+<h2>Create a new Classroom</h2>
+<br>
+<label for="createClassroomForm">Classroom Creation Form</label>
+<form id="createClassroomForm">
+    <label for="classroomName">Name</label>
+    <input type="text" id="classroomName"
+           name="classroomName"
+           placeholder="Enter Classroom Name"
+           required>
+    <label for ="fieldSelection">Select a Field:</label>
+    <select id="fieldSelection" name="fieldSelection"></select>
+    <label for ="subjectInput">Select a subject:</label>
+    <input list="subjectsList" id="subjectInput"
+           name="subjectInput"
+           autocomplete="off"
+           placeholder="Type here the subject name"
+           required>
+    <datalist id="subjectsList"></datalist>
+    <label for="classDescription">Write a description for the class</label>
+    <textarea id="classDescription" class="description-box"
+              name="classDescription"
+              maxlength="500"
+              placeholder="max 500 characters"></textarea>
+    <button type="submit" class="create-btn" id="createClassroomBtn">Next Step</button>
+</form>
+
+<br><br>
+<a href="/main" id="linkToMain">Home</a>
+<a href="/classroomHome" id="linkToClassroomList">Classrooms</a>
