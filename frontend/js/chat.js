@@ -1,4 +1,5 @@
 import { API_URL } from "../app.js";
+import { loadSidebar } from "./utils.js";
 
 let goTo;
 let refreshIntervall;
@@ -6,6 +7,8 @@ let conversationTitle;
 
 // Initialize the chat page
 export async function init(page, navigateTo) {
+
+    loadSidebar(navigateTo);
 
     if (navigateTo) {
         goTo = navigateTo;
@@ -31,7 +34,6 @@ export async function init(page, navigateTo) {
         });
     }
 }
-
 
 async function loadMessages(){
 

@@ -46,6 +46,9 @@ const routes = {
     'newChat': {folder: 'chat', module: NewChat},
     'writeReview': {folder: 'review', module: Review},
     'viewReview': {folder: 'review', module: ViewReviews},
+    'home_page':{folder: 'home_page', module: Main},
+    'dashboard_home':{folder: 'home_page', module: Main},
+    'becomeTutor':{folder: 'tutorTest', module: TutorTest},
 }
 
 export async function navigateTo(page){
@@ -77,4 +80,4 @@ export async function navigateTo(page){
     }
 }
 
-navigateTo('main');
+navigateTo('dashboard_home');

@@ -1,9 +1,43 @@
-<form id="loginForm" method="post">
-    <label for="email" >Email</label>
-    <input type="email" id="email" name="email" required><br><br>
-    <label for="password" >Password</label>
-    <input type="password" id="password" name="password" required><br><br>
-    <input type="submit" value="Submit">
-</form>
-<br>
-<p> Not a User ? <a href="/register" id="linkToRegister">Register!</a></p>
+<div class="login-page">
+    <div class="login-content">
+        <div class="login-container">
+            <h1><strong>LOGIN</strong></h1>
+            <p class="login-description">
+                Inserisci le tue credenziali per continuare.
+            </p>
+            <form id="loginForm" method="post">
+                <div class="input-group">
+                    <label for="email">Email</label>
+                    <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            required>
+                </div>
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            required>
+                </div>
+                <div class="login-actions">
+                    <input
+                            type="submit"
+                            value="ACCEDI"
+                            class="btn-login">
+                </div>
+            </form>
+            <p class="register-text">
+                Non hai un account?
+                <a href="register.html" id="linkToRegister">
+                    Registrati
+                </a>
+            </p>
+        </div>
+        <div class="login-image">
+            <img src="/frontend/img/img_login.png" alt="login_connect">
+        </div>
+    </div>
+</div>

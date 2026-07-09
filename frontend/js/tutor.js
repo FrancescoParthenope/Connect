@@ -1,14 +1,17 @@
 import {API_URL} from "../app.js";
+import { loadSidebar } from "./utils.js";
 
 let goTo;
-
 let subjectsList = [];
 let tutorList = [];
 
 export async function init(page, navigateTo) {
+
     if (navigateTo) {
         goTo = navigateTo;
     }
+
+    loadSidebar(navigateTo);
 
     if (page === "searchBySubject"){
         linkToMain();
@@ -26,6 +29,13 @@ export async function init(page, navigateTo) {
             subjectsDropDownList();
         });
         subjectsDropDownList();
+
+        const backButton = document.getElementById("backButton");
+        if (backButton) {
+            backButton.addEventListener("click", () => {
+                goTo("dashboard_home");
+            })
+        }
     }
 }
 

@@ -1,9 +1,12 @@
 import { API_URL } from "../app.js";
+import { loadSidebar } from "./utils.js";
 
 let goTo;
 let allUsers = [];
 
 export async function init(page, navigateTo) {
+
+    loadSidebar(navigateTo);
 
     if(navigateTo) {
         goTo = navigateTo;

@@ -1,5 +1,29 @@
-<label for ="fieldSelection">Select a Field:</label>
-<select id="fieldSelection" name="fieldSelection"></select>
-<div id="subjectsContainer" class="grid-container"></div>
-<br><br>
-<a href="/main" id="linkToMain">Home</a>
+<div class="dashboard">
+    <div id="sidebarContainer"></div>
+    <main class="dashboard-content">
+        <div class="page">
+            <div class="header">
+                <h1 class="page-title"><em>Eligible Subjects</em></h1>
+                <button id="backButton">Back</button>
+            </div>
+            <p class="page-description">
+                <em>Seleziona un'area disciplinare e scegli le materie per cui desideri candidarti come tutor.</em>
+            </p>
+            <div class="applications-card">
+                <div class="input-group">
+                    <label for="fieldSelection">
+                        Select a Field
+                    </label>
+                    <select
+                            id="fieldSelection"
+                            name="fieldSelection">
+                    </select>
+                </div>
+                <div
+                        id="subjectsContainer"
+                        class="grid-container">
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

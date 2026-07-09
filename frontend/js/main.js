@@ -18,6 +18,8 @@ export function init(page, navigateTo) {
     const linkToChats = document.getElementById("linkToChat");
     const linkToCreateReview = document.getElementById("linkToCreateReview");
     const linkToViewReview = document.getElementById("linkToViewReview");
+    const linkToDashboardHome = document.getElementById("linkToDashboardHome");
+    const linkToBecomeTutor = document.getElementById("linkToBecomeTutor");
 
     const user = JSON.parse(localStorage.getItem("user"));
 
@@ -137,4 +139,18 @@ export function init(page, navigateTo) {
             goTo("viewReview");
         })
     }
+
+   if(linkToDashboardHome){
+       linkToDashboardHome.addEventListener("click", (event) => {
+           event.preventDefault();
+           goTo('dashboard_home');
+       })
+   }
+
+   if(linkToBecomeTutor){
+       linkToBecomeTutor.addEventListener("click", (event) => {
+           event.preventDefault();
+           goTo('becomeTutor');
+       })
+   }
 }

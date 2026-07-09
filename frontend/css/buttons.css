@@ -4,10 +4,19 @@
  */
 
 #backButton{
-    padding: 10px 18px;
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    z-index: 100;
+    padding: 10px 20px;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
+    background: white;
+    color: var(--primary-color);
+    font-weight: 600;
     cursor: pointer;
+    transition: .3s;
+    margin-top: 150px;
 }
 
 #backButton:hover {
@@ -15,7 +24,6 @@
     background-color: #c82333;
     color: white;
 }
-
 
 #sendMessageButton{
     padding: 10px 20px;
@@ -30,6 +38,7 @@
     color: white;
 }
 
+/*BUTTON FOR STUDENT TEST AND TUTOR FOR CORRECTED TESTS*/
 #correctTestsButton{
     padding: 10px 20px;
     border: none;
@@ -42,7 +51,6 @@
     background-color: #28a745;
     color: white;
 }
-
 
 .viewTestButton{
     padding: 10px 18px;
@@ -91,7 +99,6 @@
     color: white;
 }
 
-
 .retryButton{
     padding: 10px 18px;
     border: none;
@@ -106,7 +113,6 @@
     background-color: #218838;
     color: white;
 }
-
 
 .viewResultButton{
     padding: 10px 18px;
@@ -209,7 +215,6 @@
     margin-right:10px;
 }
 
-
 #nextButton:hover,
 #submitButton:hover{
     background: green;
@@ -221,6 +226,120 @@
     cursor:not-allowed;
 }
 
+.btn-login{
+    display: inline-block;
+    padding: 15px 40px;
+    background-color: white;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 30px;
+    transition: 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    margin-top: 15px;
+}
+
+.btn-login:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.20);
+    background-color: #218838;
+    color: white;
+}
+
+.btn-login:active{
+    transform: scale(0.97);
+}
+
+/*DASHBOARD BUTTON*/
+.logout-item .sidebar-icon{
+    background: #DCE8FF;
+    color: #333;
+    transition: .3s;
+}
+
+.logout-item:hover .sidebar-icon{
+    background: #D32F2F;
+    color: white;
+}
+
+.logout-item:hover span{
+    color: #D32F2F;
+}
+
+/*CANDIDATE BUTTON*/
+.candidate-btn{
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.candidate-btn:hover{
+    background: green;
+    color: white;
+}
+
+.execute-btn{
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: .3s;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.execute-btn:hover{
+    background-color: green;
+}
+
+/*SAVE PROFILE INFO BUTTON*/
+.save-btn{
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: .3s;
+    font-size: 15px;;
+}
+
+.save-btn:hover{
+    transform: translateY(-2px);
+    background: #218838;
+
+}
+
+/*BUTTON TUTOR TEST*/
+.nextQuestionButtons{
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.nextQuestionButtons button{
+    border: none;
+    border-radius: 10px;
+    background: var(--primary-color);
+    color: white;
+    padding: 12px 22px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.nextQuestionButtons button:hover{
+    background: green;
+}
 
 
 

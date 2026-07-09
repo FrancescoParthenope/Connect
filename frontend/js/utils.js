@@ -33,3 +33,60 @@ export async function postFunction(route,body){
 
     return data;
 }
+
+export async function loadSidebar(goTo){
+
+    const response = await fetch("views/component/sidebar.html");
+
+    if (!response.ok){
+        throw new Error("Impossible to load sidebar");
+    }
+
+    const html = await response.text();
+
+    document.getElementById("sidebarContainer").innerHTML = html;
+
+    document.getElementById("linkToDashboardHome")?.addEventListener("click", (event) => {
+        event.preventDefault();
+        goTo("dashboard_home");
+    });
+
+    document.getElementById("linkToProfile")?.addEventListener("click", (event) => {
+        event.preventDefault();
+        goTo("update_profile");
+    });
+
+
+    document.getElementById("linkToChat")?.addEventListener("click", (event) => {
+        event.preventDefault();
+        goTo("chats");
+    });
+
+
+    document.getElementById("linkToSearchBySubject")?.addEventListener("click", (event) => {
+        event.preventDefault();
+        goTo("searchBySubject");
+    });
+
+    document.getElementById("linkToBecomeTutor")?.addEventListener("click", (event) => {
+        event.preventDefault();
+        goTo("becomeTutor");
+    })
+
+    document.getElementById("linkToInsertPayments")?.addEventListener("click", (event) => {
+        event.preventDefault();
+        goTo("insert_payments");
+    });
+
+    document.getElementById("linkToViewReview")?.addEventListener("click", (event) => {
+        event.preventDefault();
+        goTo("viewReview");
+    });
+
+    document.getElementById("linkToLogout")?.addEventListener("click", (event) => {
+        event.preventDefault();
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        goTo("login");
+    });
+}

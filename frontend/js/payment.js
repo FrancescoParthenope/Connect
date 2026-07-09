@@ -10,12 +10,18 @@ export function init(page, navigateTo) {
 
     if (page === "insert_payments") {
         const paymentsForm = document.getElementById("PaymentsForm");
-
         if (paymentsForm) {
             paymentsForm.addEventListener(
                 "submit",
                 handleAddPaymentsMethod
             );
+        }
+
+        const backButton = document.getElementById("backButton");
+        if (backButton) {
+            backButton.addEventListener("click", () => {
+                goTo("dashboard_home")
+            });
         }
     }
 }

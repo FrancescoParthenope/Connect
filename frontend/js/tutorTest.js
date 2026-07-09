@@ -1,10 +1,9 @@
 import {API_URL} from "../app.js";
 import {formatTime, postFunction} from "./utils.js"
+import { loadSidebar } from "./utils.js";
 
 const base_route = "tutor_tests"
-
 let goTo;
-
 let subjects = [];
 let activeTests = [];
 let completedTests = [];
@@ -12,11 +11,20 @@ let testToTake;
 let timerInterval;
 let currentQuestionIndex = 0;
 
-export function init(page, navigateTo){
+export function init(page, navigateTo) {
     if (navigateTo)
         goTo = navigateTo;
 
-    if (page === 'eligibleSubjects'){
+    loadSidebar(navigateTo);
+
+    const backButton = document.getElementById("backButton");
+    if(backButton && (page === "eligibleSubjects" || page === "activeApplications" || page === "completedApplications")){
+        backButton.addEventListener("click", () => {
+            goTo("becomeTutor");
+        });
+    }
+
+    if (page === 'eligibleSubjects') {
         linkToMain();
         const fieldSelection = document.getElementById('fieldSelection')
         if (fieldSelection) {
@@ -25,22 +33,34 @@ export function init(page, navigateTo){
             })
         }
         getEligibleSubjects();
-        setupCandidateListener()
+        setupCandidateListener();
     }
 
-    if (page === 'activeApplications'){
+    if (page === 'activeApplications') {
         getActiveTests();
         linkToMain();
         setupStartOrContinueListener()
     }
 
-    if (page === 'completedApplications'){
+    if (page === 'completedApplications') {
         getCompletedTests();
         linkToMain();
     }
 
-    if (page === 'tutorTest'){
+    if (page === 'tutorTest') {
         populateTestPage();
+    }
+
+    if (page === "becomeTutor") {
+        document.getElementById("cardEligibleSubjects")?.addEventListener("click", () => {
+            goTo("eligibleSubjects");
+        });
+        document.getElementById("cardActiveApplications")?.addEventListener("click", () => {
+            goTo("activeApplications");
+        });
+        document.getElementById("cardCompletedApplications")?.addEventListener("click", () => {
+            goTo("completedApplications");
+        });
     }
 }
 

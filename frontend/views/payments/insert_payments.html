@@ -1,28 +1,75 @@
-<form id="PaymentsForm" method="post">
-
-    <label for="paymentType">Payment Method</label>
-    <select id="paymentType" name="payment_type">
-        <option value="Card">Card</option>
-        <option value="Paypal">Paypal</option>
-    </select>
-    <br><br>
-    <label for="cardNumber">Card number</label>
-    <input id="cardNumber" name="card_number" type="text" maxlength="16" required>
-    <br><br>
-    <label for="expirationDate">Expiration date</label>
-    <input id="expirationDate" name="expiration_date" type="text" placeholder="12/30" required>
-    <br><br>
-    <label for="cvv">cvv</label>
-    <input id="cvv" name="cvv" type="text" required>
-    <br><br>
-    <label for="provider">Provider</label>
-    <input type="text" id="provider" name="provider" placeholder="Mastercard">
-    <br><br>
-    <label for="is_default">
-        <input id="is_default" name="is_default" type="checkbox">
-        Set as default payment method
-    </label>
-    <br><br>
-    <input type="submit" value="Save payment method">
-</form>
+<div class="payment-page">
+    <div class="payment-header">
+        <button id="backButton">Back</button>
+    </div>
+    <div class="payment-content">
+        <div class="payment-container">
+            <h1>METODO DI PAGAMENTO</h1>
+            <p class="payment-description">Inserisci un metodo di pagamento per completare la configurazione del tuo account.</p>
+            <form id="PaymentsForm" method="post">
+                <div class="input-group">
+                    <label for="paymentType">Metodo di pagamento</label>
+                    <select id="paymentType" name="payment_type">
+                        <option value="Card">Carta</option>
+                        <option value="Paypal">PayPal</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="cardNumber">Numero carta</label>
+                    <input
+                            id="cardNumber"
+                            name="card_number"
+                            type="text"
+                            maxlength="16"
+                            required>
+                </div>
+                <div class="payment-row">
+                    <div class="input-group">
+                        <label for="expirationDate">Scadenza</label>
+                        <input
+                                id="expirationDate"
+                                name="expiration_date"
+                                type="text"
+                                placeholder="MM/AA"
+                                required>
+                    </div>
+                    <div class="input-group">
+                        <label for="cvv">CVV</label>
+                        <input
+                                id="cvv"
+                                name="cvv"
+                                type="text"
+                                maxlength="3"
+                                required>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="provider">Circuito</label>
+                    <input
+                            type="text"
+                            id="provider"
+                            name="provider">
+                </div>
+                <div class="checkbox-group">
+                    <label>
+                        <input
+                                id="is_default"
+                                name="is_default"
+                                type="checkbox">
+                        Imposta come metodo di pagamento predefinito
+                    </label>
+                </div>
+                <div class="payment-actions">
+                    <input
+                            type="submit"
+                            value="SALVA"
+                            class="btn-login">
+                </div>
+            </form>
+        </div>
+        <div class="payment-image">
+            <img src="/frontend/img/img_payments.png" alt="Payment">
+        </div>
+    </div>
+</div>
 

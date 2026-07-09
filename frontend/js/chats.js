@@ -1,10 +1,13 @@
 import { API_URL } from "../app.js";
+import { loadSidebar } from "./utils.js";
 
 let goTo;
 let lastMessage;
 let allConversations = [];
 
 export async function init(page, navigateTo) {
+
+    loadSidebar(navigateTo);
 
     if (navigateTo) {
         goTo = navigateTo;
@@ -17,7 +20,7 @@ export async function init(page, navigateTo) {
     const backButton = document.getElementById("backButton");
     if (backButton) {
         backButton.addEventListener("click", () => {
-            goTo("main")
+            goTo("chats")
         });
     }
 
