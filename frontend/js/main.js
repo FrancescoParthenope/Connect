@@ -11,9 +11,6 @@ export function init(page, navigateTo) {
     const linkToInsertPayments = document.getElementById("linkToInsertPayments");
     const linkToProfile = document.getElementById("linkToProfile");
     const linkToCreateTest = document.getElementById("linkToCreateTest");
-    const linkToClassroomTest = document.getElementById("linkToClassroomTest");
-    const linkToStartTest = document.getElementById("linkToStartTest");
-    const linkToCompletedApplications = document.getElementById("linkToCompletedApplications");
     const linkToSearchBySubject = document.getElementById("linkToSearchBySubject");
     const linkToClassroomHome = document.getElementById("linkToClassroomHome");
     const linkToChats = document.getElementById("linkToChat");
@@ -23,8 +20,6 @@ export function init(page, navigateTo) {
     const linkToBecomeTutor = document.getElementById("linkToBecomeTutor");
 
     const user = JSON.parse(localStorage.getItem("user"));
-    const token = localStorage.getItem("token");
-
 
     if(user){
         const isTutor = user.roles.includes("tutor")
@@ -92,24 +87,10 @@ export function init(page, navigateTo) {
         })
     }
 
-    if (linkToClassroomTest) {
-        linkToClassroomTest.addEventListener("click", (event) => {
+    if (linkToClassroomHome) {
+        linkToClassroomHome.addEventListener("click", (event) => {
             event.preventDefault();
-            goTo('classroomTest');
-        })
-    }
-
-    if (linkToStartTest) {
-        linkToStartTest.addEventListener("click", (event) => {
-            event.preventDefault();
-            goTo('startTest');
-        })
-    }
-
-    if (linkToCompletedApplications) {
-        linkToCompletedApplications.addEventListener("click", (event) => {
-            event.preventDefault();
-            goTo('completedApplications');
+            goTo('classroomHome');
         })
     }
 

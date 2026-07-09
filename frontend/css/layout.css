@@ -749,13 +749,15 @@
 
 .tutor-card{
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     background: white;
     border-radius: 15px;
     border: 1px solid #DDD;
     padding: 20px;
     transition: .3s;
+    gap: 10px;
 }
 
 .tutor-card:hover{
@@ -782,6 +784,19 @@ h2 {
 .profile-picture {
     border-radius: 50%;
     object-fit: cover;
+}
+
+.profile-description{
+    color: var(--primary-color) ;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.tutor-card p {
+    color: var(--primary-color) ;
+    font-size: 15px;
+    display: block;
+    margin: 5px 0;
 }
 
 /*UPDATE PROFILE*/
@@ -846,6 +861,11 @@ h2 {
     max-width: 1100px;
     margin: 20px auto;
     min-height: 700px;
+}
+
+#tutorTestContainer p{
+    color: var(--primary-color);
+    font-size: 14px;
 }
 
 .testHeader{

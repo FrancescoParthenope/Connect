@@ -6,7 +6,7 @@ let allUsers = [];
 
 export async function init(page, navigateTo) {
 
-    loadSidebar(navigateTo);
+    await loadSidebar(navigateTo);
 
     if(navigateTo) {
         goTo = navigateTo;

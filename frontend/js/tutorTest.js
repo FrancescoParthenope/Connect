@@ -1,5 +1,5 @@
 import {API_URL} from "../app.js";
-import {formatTime, postFunction} from "./utils.js"
+import {formatTime, postFunction, linkToMain} from "./utils.js"
 import { loadSidebar } from "./utils.js";
 
 const base_route = "tutor_tests"
@@ -11,15 +11,16 @@ let testToTake;
 let timerInterval;
 let currentQuestionIndex = 0;
 
-export function init(page, navigateTo) {
+export async function init(page, navigateTo) {
     if (navigateTo)
         goTo = navigateTo;
 
-    loadSidebar(navigateTo);
+    await loadSidebar(navigateTo);
 
     const backButton = document.getElementById("backButton");
     if(backButton && (page === "eligibleSubjects" || page === "activeApplications" || page === "completedApplications")){
-        backButton.addEventListener("click", () => {
+        backButton.addEventListener("click", event => {
+            event.preventDefault();
             goTo("becomeTutor");
         });
     }
@@ -32,18 +33,18 @@ export function init(page, navigateTo) {
                 filterSubjects(event.target.value);
             })
         }
-        getEligibleSubjects();
+        await getEligibleSubjects();
         setupCandidateListener();
     }
 
     if (page === 'activeApplications') {
-        getActiveTests();
+        await getActiveTests();
         linkToMain();
         setupStartOrContinueListener()
     }
 
     if (page === 'completedApplications') {
-        getCompletedTests();
+        await getCompletedTests();
         linkToMain();
     }
 
@@ -61,16 +62,6 @@ export function init(page, navigateTo) {
         document.getElementById("cardCompletedApplications")?.addEventListener("click", () => {
             goTo("completedApplications");
         });
-    }
-}
-
-function linkToMain() {
-    const linkToMain = document.getElementById('linkToMain');
-    if (linkToMain) {
-        linkToMain.addEventListener('click', event => {
-            event.preventDefault();
-            goTo('main');
-        })
     }
 }
 
@@ -419,7 +410,7 @@ function showQuestion(index) {
     const savedAnswer = testToTake.user_answers.find(
         a => a.question_id === question.question_id
     )
-    const selectedAnswerId = savedAnswer ? savedAnswer.answer : null;
+    const selectedAnswerId = savedAnswer ? savedAnswer.answer_given : null;
 
     questionContainer.innerHTML = `
         <div class="questionBlock">
@@ -581,7 +572,7 @@ function showTestFinished(message){
         </div>
     `;
 
-    document.getElementById("backToMainPage").onclick = () => goTo("main");
+    document.getElementById("backToMainPage").onclick = () => goTo("dashboard_home");
 }
 
 async function submitTest() {

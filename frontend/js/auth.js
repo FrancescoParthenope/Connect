@@ -83,11 +83,11 @@ async function handleRegister(event){
     localStorage.removeItem('token');
     localStorage.removeItem('user');
 
-    const firstName = document.getElementById('fname').value;
-    const lastName = document.getElementById('lname').value;
+    const firstName = document.getElementById('name').value;
+    const lastName = document.getElementById('surname').value;
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-    const confirmPassword = document.getElementById('password2').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
 
     if (password !== confirmPassword){
         alert('Passwords do not match!');
@@ -110,7 +110,7 @@ async function handleRegister(event){
         await response.json();
 
         if (response.ok) {
-            alert('Registration successfully registered!');
+            alert('User successfully registered!');
             goTo('main');
         } else {
             alert(`Registration failed with status ${response.status}`);

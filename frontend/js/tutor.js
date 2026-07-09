@@ -1,5 +1,5 @@
 import {API_URL} from "../app.js";
-import { loadSidebar } from "./utils.js";
+import { loadSidebar, populateSelectField } from "./utils.js";
 
 let goTo;
 let subjectsList = [];
@@ -11,7 +11,7 @@ export async function init(page, navigateTo) {
         goTo = navigateTo;
     }
 
-    loadSidebar(navigateTo);
+    await loadSidebar(navigateTo);
 
     if (page === "searchBySubject"){
         linkToMain();
@@ -63,7 +63,7 @@ async function loadSubjects() {
 
         if (response.ok) {
             subjectsList = data.message;
-            populateSelectField();
+            populateSelectField("fieldSelection",subjectsList);
         }
         else {
             alert(`Error: ${data.message}`);
@@ -73,29 +73,6 @@ async function loadSubjects() {
     catch (error) {
         console.error("Connection Error:", error)
         alert(`Impossible to connect to server`)
-    }
-}
-
-function populateSelectField(){
-    const fieldSelection = document.getElementById("fieldSelection");
-    if (fieldSelection){
-        fieldSelection.innerHTML = '<option value ="all" selected>All</option>';
-
-        // extracting the elements in the field camp in the JSON type returned from server
-        // using Set to eliminate duplicates of the fields
-        // .map to indicate the element to extract
-        // ... spread operator used to get the single field extracted
-
-        const fields = [... new Set(subjectsList.map(s => s.field))]
-
-        // now that we have the array with the right fields, we populate the options
-
-        fields.forEach(field => {
-            const option = document.createElement("option");
-            option.value = field;
-            option.textContent = field;
-            fieldSelection.appendChild(option);
-        });
     }
 }
 
@@ -184,10 +161,43 @@ function showTutorList(){
             <div class="profile-description">
                 <p>${tutor.tutor_profile.description}</p>
             </div>
-            <br>
+            <p>Email : ${tutor.email}</p>
             <p>Average rating: ${tutor.tutor_profile.average_rating}, Reviews: ${tutor.tutor_profile.reviews_count}</p>
-        `
+        `;
+        card.addEventListener("click", async event => {
+            event.preventDefault();
+            await openTutorChat(tutor);
+        })
         container.appendChild(card);
-        container.appendChild(document.createElement("hr"))
     })
+}
+
+async function openTutorChat(tutor) {
+    const token = localStorage.getItem("token");
+
+    try {
+        const response = await fetch(
+            `${API_URL}/chat?action=get_private_conversations&email=${tutor.email}`,
+            {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if (data.success) {
+
+            localStorage.setItem("conversation_id", data.message._id);
+            localStorage.setItem("conversation_title", `${tutor.first_name} ${tutor.last_name}`);
+            goTo("chat");
+        } else {
+            alert(data.message || "error retrieving chat");
+        }
+    } catch (error) {
+        console.error(error);
+        alert("Impossible to connect to server");
+    }
 }

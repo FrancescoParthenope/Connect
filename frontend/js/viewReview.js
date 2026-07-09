@@ -14,7 +14,7 @@ export async function init(page, navigateTo){
         const backButton = document.getElementById("backButton");
         if(backButton){
             backButton.addEventListener("click", () =>{
-                goTo("main");
+                goTo("dashboard_home");
             });
         }
     }

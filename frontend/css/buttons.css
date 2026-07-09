@@ -336,6 +336,19 @@
 }
 
 /*BUTTON TUTOR TEST*/
+#tutorTestContainer #backToMainPage{
+    border: none;
+    border-radius: 10px;
+    background: var(--primary-color);
+    color: white;
+    padding: 12px 22px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .3s;
+    margin-top: 20px;
+}
+
 .nextQuestionButtons{
     display: flex;
     justify-content: flex-end;

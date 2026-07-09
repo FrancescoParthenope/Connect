@@ -82,7 +82,7 @@ export function linkToMain(goTo) {
     if (linkToMain) {
         linkToMain.addEventListener('click', event => {
             event.preventDefault();
-            goTo('main');
+            goTo('dashboard_home');
         })
     }
 }
@@ -96,7 +96,13 @@ export function linkToClassroomList(goTo){
     }
 }
 
+
 export async function loadSidebar(goTo){
+    const container = document.getElementById("sidebarContainer");
+
+    if (!container){
+        return;
+    }
 
     const response = await fetch("views/component/sidebar.html");
 
@@ -133,12 +139,17 @@ export async function loadSidebar(goTo){
         goTo("becomeTutor");
     })
 
+    document.getElementById("linkToClassrooms")?.addEventListener("click", (event) => {
+        event.preventDefault();
+        goTo("classroomHome");
+    })
+
     document.getElementById("linkToInsertPayments")?.addEventListener("click", (event) => {
         event.preventDefault();
         goTo("insert_payments");
     });
 
-    document.getElementById("linkToViewReview")?.addEventListener("click", (event) => {
+    document.getElementById("reviewLink")?.addEventListener("click", (event) => {
         event.preventDefault();
         goTo("viewReview");
     });

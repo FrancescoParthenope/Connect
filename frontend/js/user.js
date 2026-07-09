@@ -12,10 +12,10 @@ export async function init(page, navigateTo) {
     await loadSidebar(navigateTo);
 
     if (page === "update_profile") {
-        await loadProfile();
         const profileForm = document.getElementById("ProfileForm");
 
         if (profileForm) {
+            await loadProfile();
             profileForm.addEventListener(
                 "submit",
                 handleUpdateProfile
@@ -52,11 +52,23 @@ async function loadProfile() {
         const data = await response.json();
 
         if (data.success === true) {
-            document.getElementById("firstName").value = data.data.first_name || "";
-            document.getElementById("lastName").value = data.data.last_name || "";
-            document.getElementById("birthDate").value = data.data.birth_date || "";
-            document.getElementById("bio").value = data.data.bio || "";
-            document.getElementById("profile_picture").value = data.data.profile_picture || "";
+            const firstName = document.getElementById("firstName");
+            const lastName = document.getElementById("lastName");
+            const bio = document.getElementById("bio");
+            const birthDate = document.getElementById("birthDate");
+
+            firstName.value = data.data.first_name || "";
+            lastName.value = data.data.last_name || "";
+            bio.value = data.data.bio || "";
+
+            let birthValue = data.data.birth_date;
+            if (!birthValue || birthValue === "") {
+                birthValue = "";
+            }
+            else {
+                birthValue = birthValue.split('T')[0]
+            }
+            birthDate.value = birthValue;
         }
 
     } catch (error) {
@@ -114,4 +126,3 @@ async function handleUpdateProfile(event) {
         alert("Impossible to connect to server");
     }
 }
-

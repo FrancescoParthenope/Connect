@@ -4,6 +4,7 @@ import * as TutorTest from "./js/tutorTest.js";
 import * as Payments from "./js/payment.js";
 import * as Users from "./js/user.js";
 import * as Tests from "./js/createTest.js";
+import * as Classroom from "./js/classroom.js";
 import * as ClassroomTest from "./js/classroomTest.js";
 import * as StartTest from "./js/startTest.js";
 import * as Tutor from "./js/tutor.js";
@@ -16,6 +17,8 @@ import * as Chats from "./js/chats.js";
 import * as NewChat from "./js/newChat.js";
 import * as Review from "./js/createReview.js";
 import * as ViewReviews from "./js/viewReview.js";
+
+import {clearChatInterval} from "./js/utils.js";
 
 export const API_URL = "http://127.0.0.1:8000/api";
 
@@ -33,6 +36,7 @@ const routes = {
     'insert_payments': {folder: 'payments', module: Payments},
     'update_profile': {folder: 'user', module: Users},
     'createTest': {folder: 'classroomTest', module: Tests},
+    "classroomHome": {folder: 'classroom', module: Classroom},
     'classroomTest': {folder: 'classroomTest', module: ClassroomTest},
     'startTest': {folder: 'classroomTest', module: StartTest},
     'completedApplications': {folder: 'tutorTest', module: TutorTest},
@@ -51,8 +55,24 @@ const routes = {
     'becomeTutor':{folder: 'tutorTest', module: TutorTest},
 }
 
+const publicPages = [
+    'home_page',
+    'login',
+    'register'
+]
+
 export async function navigateTo(page){
+    clearChatInterval(page);
     const app = document.getElementById('app');
+    const token = localStorage.getItem('token');
+
+    if (!publicPages.includes(page) && !token){
+        page = 'home_page';
+    }
+    if (token && (page === 'login' || page === 'register')) {
+        page = 'dashboard_home';
+    }
+
     const route = routes[page];
 
     if (!route) {
@@ -80,4 +100,4 @@ export async function navigateTo(page){
     }
 }
 
-navigateTo('dashboard_home');
+await navigateTo('dashboard_home');
