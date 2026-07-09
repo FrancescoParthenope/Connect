@@ -127,7 +127,7 @@ export function init(page, navigateTo) {
     if(linkToViewReview){
         linkToViewReview.addEventListener("click", (event) => {
             event.preventDefault();
-            goTo("viewReview");
+            goTo("reviewPage");
         })
     }
 

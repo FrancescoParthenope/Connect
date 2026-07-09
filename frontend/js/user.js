@@ -100,7 +100,7 @@ async function handleUpdateProfile(event) {
                 first_name: firstName,
                 last_name: lastName,
                 birth_date: birthDate,
-                bio: bio,
+                bio: bio
             })
 
         });
