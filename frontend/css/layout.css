@@ -771,16 +771,13 @@
     font-size: 20px;
 }
 
-h2 {
-    text-align: center;
-}
-
 .tutor-card h3 {
     display: flex;
     align-items: center;
     gap: 15px;
 }
 
+/*IMG SEARCH TUTOR*/
 .profile-picture {
     border-radius: 50%;
     object-fit: cover;
@@ -880,6 +877,7 @@ h2 {
 .tutor-only {
     display: none;
 }
+
 .owner-only {
     display: none;
 }
@@ -891,7 +889,7 @@ h2 {
     font-weight: 600;
 }
 
-.timer {
+.timer{
     background: red;
     color: white;
     padding: 12px 22px;
@@ -900,14 +898,14 @@ h2 {
     font-weight: 700;
 }
 
-.navigationBar {
+.navigationBar{
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     margin-bottom: 30px;
 }
 
-.navigationButton {
+.navigationButton{
     width: 45px;
     height: 45px;
     border: none;
@@ -919,37 +917,37 @@ h2 {
     transition: .3s;
 }
 
-.navigationButton:hover {
+.navigationButton:hover{
     background: var(--primary-color);
     color: white;
 }
 
-.questionBlock {
+.questionBlock{
     background: #F8F9FC;
     border: 1px solid #E5E5E5;
     border-radius: 18px;
     padding: 30px;
 }
 
-.questionBlock h3 {
+.questionBlock h3{
     color: var(--primary-color);
     margin-top: 0;
 }
 
-.questionBlock p {
+.questionBlock p{
     color: #333;
     font-size: 18px;
     line-height: 1.6;
 }
 
-.answerList {
+.answerList{
     display: flex;
     flex-direction: column;
     gap: 15px;
     margin-top: 25px;
 }
 
-.answerList label {
+.answerList label{
     display: flex;
     align-items: center;
     gap: 12px;
@@ -962,30 +960,306 @@ h2 {
     color: #333;
 }
 
-.answerList label:hover {
+.answerList label:hover{
     border-color: var(--primary-color);
     background: #EDF2FF;
 }
 
+/*CLASSROOM*/
 
-#createClassroom {
-    top: 20px;
-    left: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-bottom: 20px;
-    border-bottom: 2px solid;
+.page-title{
+    color: white;
+    font-size: 60px;
+    font-weight: 700;
+    margin-top: -50px;
 }
 
-#classroomInviteContainer {
-    display: flex;
-    justify-content: center;
-    padding-top: 20px;
+.page-description{
+    color: white;
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 35px;
 }
 
-#classroomInvite {
+.classroom-card{
+    background: white;
+    border-radius: 20px;
+    padding: 35px;
+    box-shadow: 0 10px 20px rgba(0,0,0,.15);
+    margin-bottom: 30px;
+    margin-top: 25px;
+}
+
+.classroom-card h2{
+    color: var(--primary-color);
+    font-size: 28px;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.classroom-card p{
+    color: #555;
+    line-height: 1.6;
+    font-size: 20px;
+    margin-top: 8px;
+}
+
+.member-list,
+.member-list h4,
+.member-list ul,
+.member-list li {
+    color: #333;
+}
+
+.member-list li {
+    margin-bottom: 8px;
+    font-size: 18px;
+    font-weight:bold;
+    font-style: italic;
+}
+
+#classroomInvite{
     display: flex;
-    align-items: center;
+    align-items: end;
     gap: 20px;
 }
+
+#classroomInvite label{
+    display: block;
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+#invitationTextBox{
+    width: 250px;
+    padding: 12px;
+    border: 1px solid #CCC;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+#sendInvitationCode{
+    background: var(--primary-color);
+}
+
+#classroomCreatedList,
+#classroomListContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    color: var(--primary-color);
+    font-size: 18px;
+}
+
+.classroom-item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    border-radius: 15px;
+    border: 1px solid #DDD;
+    padding: 20px;
+    transition: .3s;
+}
+
+.classroom-item h3{
+    color: var(--primary-color);
+    margin: 0;
+}
+
+.classroom-item p{
+    color: #555;
+    margin: 6px 0 0;
+}
+
+.status-group{
+    display: flex;
+    gap: 25px;
+    align-items: center;
+    margin-top: 8px;
+}
+
+.radio-option{
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 15px;
+    cursor: pointer;
+    color: black;
+}
+
+.radio-option input{
+    width: 14px;
+    height: 14px;
+    margin: 0;
+    cursor: pointer;
+}
+
+.test-info{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin:20px 0;
+    font-size:16px;
+}
+
+.info-label{
+    font-weight:600;
+    color:#555;
+}
+
+.info-value{
+    color:#5B5CE2;
+    font-weight:700;
+    font-size:18px;
+}
+
+.section-divider{
+    margin:30px 0;
+    border:none;
+    border-top:1px solid #E5E7EB;
+}
+
+#submissionContainer{
+    margin-top:25px;
+}
+
+#submissionContainer hr{
+    margin:20px 0;
+    border:none;
+    border-top:1px solid #E5E7EB;
+}
+
+#submissionContainer h3{
+    font-size:25px;
+    color:#24478f;
+    margin-bottom:15px;
+}
+
+#submissionContainer p{
+    font-size:20px;
+    color:#333;
+    line-height:1.7;
+    margin-bottom:12px;
+    font-weight: bold;
+    font-style: italic;
+}
+
+#reviewsContainer{
+    max-width:750px;
+    margin:30px auto 0;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+    align-items: flex-start;
+}
+
+#reviewContainer hr{
+    margin:20px 0;
+    border:none;
+    border-top:1px solid #E5E7EB;
+}
+
+/*REVIEW FOR TUTOR*/
+.review-cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:30px;
+    margin-top:35px;
+}
+
+.review-card{
+    background:#fff;
+    border-radius:18px;
+    padding:35px 30px;
+    text-align:center;
+    box-shadow:0 4px 12px rgba(0,0,0,.10);
+    transition:.25s ease;
+    cursor:pointer;
+    min-height:auto;
+    height:auto;
+    display:block;
+}
+
+.review-card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 10px 24px rgba(0,0,0,.15);
+}
+
+.review-icon{
+    font-size:48px;
+    margin-bottom:20px;
+}
+
+.review-card h2{
+    color:#24478f;
+    margin-bottom:15px;
+    font-size:24px;
+}
+
+.review-card p{
+    color:#666;
+    line-height:1.6;
+    margin-bottom:30px;
+    min-height:70px;
+}
+
+.review-card .create-btn{
+    width:100%;
+}
+
+/*view review*/
+.reviews-received,
+.reviews-done{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+    width:100%;
+    margin-left: -280px;
+    margin-top:20px;
+}
+
+.reviews-received h3,
+.reviews-done h3{
+    color:#24478f;
+    font-size:24px;
+    margin-bottom:10px;
+}
+
+.review-item{
+    background:#fff;
+    border:1px solid #E5E7EB;
+    border-radius:14px;
+    padding:22px 26px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+    transition:.2s;
+}
+
+.review-item:hover{
+    box-shadow:0 6px 18px rgba(0,0,0,.12);
+}
+
+.review-item h4{
+    margin:0 0 15px;
+    color:#24478f;
+    font-size:20px;
+}
+
+.review-item p{
+    margin:10px 0;
+    color:#444;
+    line-height:1.6;
+}
+
+.review-item strong{
+    color:#1F2937;
+}
+
+.review-item small{
+    display:block;
+    margin-top:15px;
+    color:#888;
+    font-size:13px;
+}
+

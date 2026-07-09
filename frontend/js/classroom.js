@@ -3,9 +3,9 @@ import {postFunction,populateSelectField,
     setRefreshInterval,linkToMain,linkToClassroomList} from "./utils.js"
 import {getMySubjectsList} from "./subject.js";
 import {sendMessage,loadMessages} from "./chat.js"
+import { loadSidebar } from "./utils.js";
 
 let goTo;
-
 let creator = null;
 let classroomInfo = null;
 let classroomList = [];
@@ -22,6 +22,8 @@ export async function init(page, navigateTo){
         goTo = navigateTo;
     }
 
+    await loadSidebar(navigateTo);
+
     if (page === "classroomHome"){
         linkToMain(goTo);
         checkUserRole();
@@ -36,6 +38,13 @@ export async function init(page, navigateTo){
         await loadSubjects();
         initCreateClassroomListeners();
         populateDataList();
+
+        const backButton = document.getElementById("backButton");
+        if (backButton){
+            backButton.addEventListener("click", () =>{
+                goTo("classroomHome");
+            });
+        }
     }
 
     if (page === "inviteInClassroom"){
@@ -45,6 +54,13 @@ export async function init(page, navigateTo){
         initEmailFilterListener();
         await populateUserClassroomList();
         await populateStudentCards(usersNotInClassroom);
+
+        const backButton = document.getElementById("backButton");
+        if (backButton){
+            backButton.addEventListener("click", () =>{
+                goTo("classroom");
+            });
+        }
     }
 
     if (page === 'classroom'){
@@ -55,6 +71,13 @@ export async function init(page, navigateTo){
         initClassroomListeners();
         populateMemberList();
         await loadClassroomChat();
+
+        const backButton = document.getElementById("backButton");
+        if (backButton){
+            backButton.addEventListener("click", () =>{
+                goTo("classroomHome");
+            });
+        }
     }
 
     if (page === "editClassroom"){
@@ -66,6 +89,13 @@ export async function init(page, navigateTo){
         await loadClassroomInfo();
         await preloadForm();
         initEditClassroomListeners();
+
+        const backButton = document.getElementById("backButton");
+        if (backButton){
+            backButton.addEventListener("click", () =>{
+                goTo("classroom");
+            });
+        }
     }
 }
 

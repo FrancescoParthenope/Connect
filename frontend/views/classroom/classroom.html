@@ -1,21 +1,70 @@
-<h3> Classroom Page </h3>
-<button class="owner-only" id="editButton">Edit Classroom</button>
-<button class="owner-only" id="inviteButton">Invite Students</button>
-<button class="owner-only" id="createTestButton">Create Test</button>
-<button id="classroomTests">Tests</button>
-
-<div id="memberListContainer" class="member-list"></div>
-<div id="messagesContainer" class="chat"></div>
-<label for="messageInput">Write message</label>
-<textarea
-    id="messageInput"
-    placeholder="Write a message..."
-    rows="3">
-</textarea>
-<div class="sendButtonContainer">
-    <button id="sendMessageButton">Send</button>
+<div class="dashboard">
+    <div id="sidebarContainer"></div>
+    <main class="dashboard-content">
+        <div class="page">
+            <div class="header">
+                <h1 class="page-title">
+                    <em>Classroom</em>
+                </h1>
+                <button id="backButton">Back</button>
+            </div>
+            <p class="page-description">
+                <em>
+                    Gestisci la tua classroom, comunica con gli altri partecipanti e accedi rapidamente ai test disponibili.
+                </em>
+            </p>
+            <div class="classroom-card owner-only">
+                <h2>Gestione Classroom</h2>
+                <div class="classroom-actions">
+                    <button id="editButton" class="create-btn">
+                        Modifica Classroom
+                    </button>
+                    <button id="inviteButton" class="create-btn">
+                        Invita Studenti
+                    </button>
+                    <button id="createTestButton" class="create-btn">
+                        Crea Test
+                    </button>
+                </div>
+            </div>
+            <div class="classroom-card">
+                <h2>Test della Classroom</h2>
+                <p class="page-description">
+                    Consulta tutti i test disponibili della classroom.
+                </p>
+                <div class="classroom-actions">
+                    <button id="classroomTests" class="create-btn">
+                        Visualizza Test
+                    </button>
+                </div>
+            </div>
+            <div class="classroom-layout">
+                <div class="classroom-card members-card">
+                    <h2>Membri della Classroom</h2>
+                    <div id="memberListContainer" class="member-list">
+                    </div>
+                </div>
+                <div class="classroom-card chat-card">
+                    <h2>Chat della Classroom</h2>
+                    <div id="messagesContainer" class="chat">
+                    </div>
+                    <div class="input-group">
+                        <label for="messageInput">
+                            Scrivi un messaggio
+                        </label>
+                        <textarea
+                                id="messageInput"
+                                placeholder="Scrivi un messaggio..."
+                                rows="4">
+                        </textarea>
+                    </div>
+                    <div class="sendButtonContainer">
+                        <button id="sendMessageButton">
+                            Invia
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
 </div>
-
-<br><br>
-<a href="/main" id="linkToMain">Home</a>
-<a href="/classroomHome" id="linkToClassroomList">Classrooms</a>

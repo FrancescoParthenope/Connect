@@ -1,10 +1,47 @@
-<h2>Correct Test</h2>
-<div id="submissionContainer"></div>
-<hr>
-<h3>Final Result</h3>
-<label><input type="radio" name="result" value="COMPLETED" checked>Passed</label>
-<br>
-<label><input type="radio" name="result" value="FAILED">Failed</label>
-<br><br>
-<button id="saveCorrectionButton">Save Correction</button>
-<button id="backButton">Back</button>
+<div class="dashboard">
+    <div id="sidebarContainer"></div>
+    <main class="dashboard-content">
+        <div class="page">
+            <div class="header">
+                <h1 class="page-title">
+                    <em>Correzione Test</em>
+                </h1>
+                <button id="backButton">Back</button>
+            </div>
+            <p class="page-description">
+                <em>Visualizza le risposte dello studente, assegna l'esito finale e salva la correzione del test.</em>
+            </p>
+            <div class="classroom-card">
+                <h2>Risposte dello Studente</h2>
+                <div id="submissionContainer">
+                </div>
+                <hr class="section-divider">
+                <h2>Esito Finale</h2>
+                <div class="status-group">
+                    <label class="radio-option">
+                        <input
+                                type="radio"
+                                name="result"
+                                value="COMPLETED"
+                                checked>
+                        Promosso
+                    </label>
+                    <label class="radio-option">
+                        <input
+                                type="radio"
+                                name="result"
+                                value="FAILED">
+                        Bocciato
+                    </label>
+                </div>
+                <div class="form-actions">
+                    <button
+                            id="saveCorrectionButton"
+                            class="create-btn">
+                        Salva Correzione
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

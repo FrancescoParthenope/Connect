@@ -1,13 +1,16 @@
 import { API_URL } from "../app.js";
+import { loadSidebar } from "./utils.js";
 
 let goTo;
 let questionCounter = 0;
 
-export function init(page, navigateTo) {
+export async function init(page, navigateTo) {
 
     if (navigateTo) {
         goTo = navigateTo;
     }
+
+    await loadSidebar(navigateTo);
 
     if (page === "createTest") {
         const createTestForm = document.getElementById("createTestForm");

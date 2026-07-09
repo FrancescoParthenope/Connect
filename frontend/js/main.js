@@ -18,6 +18,7 @@ export function init(page, navigateTo) {
     const linkToViewReview = document.getElementById("linkToViewReview");
     const linkToDashboardHome = document.getElementById("linkToDashboardHome");
     const linkToBecomeTutor = document.getElementById("linkToBecomeTutor");
+    const linkToReviewPage = document.getElementById("linkToReviewPage");
 
     const user = JSON.parse(localStorage.getItem("user"));
 
@@ -48,7 +49,7 @@ export function init(page, navigateTo) {
             localStorage.removeItem('token');
             localStorage.removeItem('user');
             alert("Logged out successfully");
-            goTo('home_page')
+            goTo('home_page');
         })
     }
 
@@ -141,6 +142,13 @@ export function init(page, navigateTo) {
        linkToBecomeTutor.addEventListener("click", (event) => {
            event.preventDefault();
            goTo('becomeTutor');
+       })
+   }
+
+   if(linkToReviewPage){
+       linkToReviewPage.addEventListener("click", (event) => {
+           event.preventDefault();
+           goTo('reviewPage');
        })
    }
 }

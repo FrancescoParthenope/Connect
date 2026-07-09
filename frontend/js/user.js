@@ -85,7 +85,6 @@ async function handleUpdateProfile(event) {
     const lastName = document.getElementById("lastName").value;
     const birthDate = document.getElementById("birthDate").value;
     const bio = document.getElementById("bio").value;
-    const profilePicture = document.getElementById("profile_picture").value;
 
     try {
         const response = await fetch(`${API_URL}/profile`, {
@@ -102,8 +101,6 @@ async function handleUpdateProfile(event) {
                 last_name: lastName,
                 birth_date: birthDate,
                 bio: bio,
-                profile_picture: profilePicture
-
             })
 
         });

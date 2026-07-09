@@ -25,16 +25,14 @@
     justify-content:space-between;
     align-items:center;
     padding:18px 22px;
-    background: #e3f2fd;
+    background: white;
     cursor:pointer;
     border-radius:8px;
     border-bottom: 1px solid rgba(255,255,255,.25);
     transition:.2s;
+    color: black;
 }
 
-.ConversationCard:hover{
-    background: #5B7FC8;
-}
 
 .conversationInfo{
     display:flex;
@@ -55,8 +53,9 @@
     font-size: 15px;
 }
 
+
 .conversationCard small {
-    color: grey;
+    color: black;
     font-size: 12px;
     float: right;
 }
@@ -69,16 +68,13 @@
 
 .userCard{
     padding: 18px 22px;
-    background:#e3f2fd;
+    background: white;
     cursor: pointer;
     transition: .2s;
     border-bottom: 1px solid rgba(255,255,255,.25);
     margin-top: 10px;
     border-radius: 10px;
 
-}
-.userCard:hover{
-    background: #5B7FC8;
 }
 
 .userCard h3{

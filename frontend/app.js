@@ -4,8 +4,8 @@ import * as TutorTest from "./js/tutorTest.js";
 import * as Payments from "./js/payment.js";
 import * as Users from "./js/user.js";
 import * as Tests from "./js/createTest.js";
-import * as Classroom from "./js/classroom.js";
 import * as ClassroomTest from "./js/classroomTest.js";
+import * as Classroom from "./js/classroom.js";
 import * as StartTest from "./js/startTest.js";
 import * as Tutor from "./js/tutor.js";
 import * as ViewTest from "./js/viewTest.js";
@@ -17,8 +17,8 @@ import * as Chats from "./js/chats.js";
 import * as NewChat from "./js/newChat.js";
 import * as Review from "./js/createReview.js";
 import * as ViewReviews from "./js/viewReview.js";
-
-import {clearChatInterval} from "./js/utils.js";
+import * as ReviewHome from "./js/reviewHome.js";
+import { clearChatInterval } from "./js/utils.js";
 
 export const API_URL = "http://127.0.0.1:8000/api";
 
@@ -37,6 +37,9 @@ const routes = {
     'update_profile': {folder: 'user', module: Users},
     'createTest': {folder: 'classroomTest', module: Tests},
     "classroomHome": {folder: 'classroom', module: Classroom},
+    "classroom":{folder: "classroom",module: Classroom},
+    "editClassroom":{folder: 'classroom', module: Classroom},
+    "inviteInClassroom": {folder: 'classroom', module: Classroom},
     'classroomTest': {folder: 'classroomTest', module: ClassroomTest},
     'startTest': {folder: 'classroomTest', module: StartTest},
     'completedApplications': {folder: 'tutorTest', module: TutorTest},
@@ -53,6 +56,7 @@ const routes = {
     'home_page':{folder: 'home_page', module: Main},
     'dashboard_home':{folder: 'home_page', module: Main},
     'becomeTutor':{folder: 'tutorTest', module: TutorTest},
+    'reviewPage':{folder: "review", module: ReviewHome},
 }
 
 const publicPages = [

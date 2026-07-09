@@ -1,23 +1,52 @@
-<h2>Classrooms List</h2>
-<div id="createClassroom" class="tutor-only">
-    <h3> Create a new Classroom </h3>
-    <button class="create-btn" id="createButton">Create a new Classroom</button>
+<div class="dashboard">
+    <div id="sidebarContainer"></div>
+    <main class="dashboard-content">
+        <div class="page">
+            <div class="header">
+                <h1 class="page-title"><em>Classroom</em></h1>
+            </div>
+            <p class="page-description">
+                <em>Gestisci le tue classroom, crea una nuova aula virtuale oppure accedi ad una esistente tramite codice di invito.</em>
+            </p>
+            <div id="createClassroom" class="classroom-card tutor-only">
+                <h2>Crea una nuova Classroom</h2>
+                <p>Crea una nuova aula virtuale per organizzare lezioni, test e attività con i tuoi studenti.</p>
+                <button
+                        class="create-btn"
+                        id="createButton">
+                    Crea Classroom
+                </button>
+            </div>
+            <div class="classroom-card">
+                <h2>Partecipa ad una Classroom</h2>
+                <p>Inserisci il codice di invito fornito dal tutor per accedere ad una classroom esistente.</p>
+                <div id="classroomInviteContainer">
+                    <div id="classroomInvite">
+                        <label for="invitationTextBox">Codice di invito</label>
+                        <input
+                                id="invitationTextBox"
+                                type="text"
+                                name="invitation"
+                                placeholder="Inserisci il codice"
+                                maxlength="6"
+                                pattern="[A-Za-z0-9]{6}"
+                                required>
+                        <button
+                                class="invite-btn"
+                                id="sendInvitationCode">
+                            Conferma
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div
+                    id="classroomCreatedList"
+                    class="classroom-card tutor-only">
+            </div>
+            <div class="classroom-card">
+                <h2>Le tue Classroom</h2>
+                <div id="classroomListContainer"></div>
+            </div>
+        </div>
+    </main>
 </div>
-
-<div id="classroomInviteContainer">
-    <div id="classroomInvite">
-        <label for="invitationTextBox">Invitation code</label>
-        <input id="invitationTextBox" type="text" name="invitation"
-               placeholder="Insert your code here"
-               maxlength="6"
-               pattern="[A-Za-z0-9]{6}"
-               required>
-        <button class="invite-btn" id="sendInvitationCode">Confirm</button>
-    </div>
-</div>
-
-<div id="classroomCreatedList" class="tutor-only">
-</div>
-<div id="classroomListContainer">
-</div>
-<a href="/main" id="linkToMain">Home</a>

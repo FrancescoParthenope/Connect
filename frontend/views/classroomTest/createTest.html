@@ -1,28 +1,57 @@
-<div class = "page">
-    <div class = "header">
-        <h2> Create Test</h2>
-        <button id="backButton">Back</button>
-    </div>
-    <form id="createTestForm" method='POST'>
-    <label for="title">Test Title</label>
-    <input
-        id="title"
-        name="title"
-        type="text"
-        required >
-    <label for="time_limit"> Time limit (min) </label>
-    <input
-        id="time_limit"
-        name="time_limit"
-        type="number"
-        min="1"
-        value="1"
-        required >
-
-    <div id="createQuestionsContainer">
-    </div>
-    <button type="button" id="addQuestionButton">Add question</button>
-    <br><br>
-    <input type="submit" value="Create Test">
-    </form>
+<div class="dashboard">
+    <div id="sidebarContainer"></div>
+    <main class="dashboard-content">
+        <div class="page">
+            <div class="header">
+                <h1 class="page-title">
+                    <em>Create Test</em>
+                </h1>
+                <button id="backButton">Back</button>
+            </div>
+            <p class="page-description">
+                <em>Crea un nuovo test per la tua classroom. Inserisci un titolo, imposta il tempo disponibile e aggiungi tutte le domande desiderate.</em>
+            </p>
+            <div class="classroom-card">
+                <h2>TEST</h2>
+                <form id="createTestForm" method="POST">
+                    <div class="input-group">
+                        <label for="title">Titolo</label>
+                        <input
+                                id="title"
+                                name="title"
+                                type="text"
+                                placeholder="Inserisci il titolo del test"
+                                required>
+                    </div>
+                    <div class="input-group">
+                        <label for="time_limit">
+                            Tempo a disposizione (minuti)
+                        </label>
+                        <input
+                                id="time_limit"
+                                name="time_limit"
+                                type="number"
+                                min="1"
+                                value="1"
+                                required>
+                    </div>
+                    <div id="createQuestionsContainer">
+                    </div>
+                    <div class="form-actions">
+                        <button
+                                type="button"
+                                id="addQuestionButton"
+                                class="secondary-btn">
+                             Aggiungi domanda
+                        </button>
+                        <button
+                                type="submit"
+                                class="create-btn">
+                            Crea Test
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
 </div>

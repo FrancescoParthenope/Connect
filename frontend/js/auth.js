@@ -111,7 +111,7 @@ async function handleRegister(event){
 
         if (response.ok) {
             alert('User successfully registered!');
-            goTo('main');
+            goTo('login');
         } else {
             alert(`Registration failed with status ${response.status}`);
         }

@@ -1,18 +1,50 @@
-<div class="page">
-    <div class="header">
-        <h2>Classroom Tests</h2>
-        <button id="backButton">Back</button>
-    </div>
-    <div class="header">
-        <h2>Active Tests</h2>
-        <button id="correctTestsButton" class="owner-only">Tests To Correct</button>
-    </div>
-    <div id="activeTestsContainer"></div>
-    <h2 id="submittedTestsTitle">Submitted Tests</h2>
-    <div id="submittedTestsContainer"></div>
-    <h2 id="inactiveTestsTitle">Inactive Tests</h2>
-    <div id="inactiveTestsContainer"></div>
+<div class="dashboard">
+    <div id="sidebarContainer"></div>
+
+    <main class="dashboard-content">
+        <div class="page">
+
+            <div class="header">
+                <h1 class="page-title">
+                    <em>Classroom Tests</em>
+                </h1>
+
+                <div class="header-actions">
+                    <button
+                            id="correctTestsButton"
+                            class="create-btn owner-only">
+                        Test da Correggere
+                    </button>
+
+                    <button id="backButton">
+                        Back
+                    </button>
+                </div>
+            </div>
+
+            <p class="page-description">
+                <em>
+                    Visualizza tutti i test della classroom, consulta quelli attivi,
+                    i test consegnati dagli studenti e quelli conclusi.
+                </em>
+            </p>
+            <div class="classroom-card" id="activeTestsCard">
+                <h2>Test Attivi</h2>
+                <div id="activeTestsContainer"></div>
+            </div>
+            <div class="classroom-card" id="submittedTestsCard">
+                <h2 id="submittedTestsTitle">
+                    Test Consegnati
+                </h2>
+                <div id="submittedTestsContainer"></div>
+            </div>
+            <div class="classroom-card" id="inactiveTestsCard">
+                <h2 id="inactiveTestsTitle">
+                    Test Inattivi
+                </h2>
+                <div id="inactiveTestsContainer"></div>
+            </div>
+
+        </div>
+    </main>
 </div>
-<br><br>
-<a href="/main" id="linkToMain">Home</a>
-<a href="/classroomHome" id="linkToClassroomList">Classrooms</a>

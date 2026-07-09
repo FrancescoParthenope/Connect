@@ -1,29 +1,76 @@
-<h2>Create a new Classroom</h2>
-<br>
-<label for="createClassroomForm">Classroom Creation Form</label>
-<form id="createClassroomForm">
-    <label for="classroomName">Name</label>
-    <input type="text" id="classroomName"
-           name="classroomName"
-           placeholder="Enter Classroom Name"
-           required>
-    <label for ="fieldSelection">Select a Field:</label>
-    <select id="fieldSelection" name="fieldSelection"></select>
-    <label for ="subjectInput">Select a subject:</label>
-    <input list="subjectsList" id="subjectInput"
-           name="subjectInput"
-           autocomplete="off"
-           placeholder="Type here the subject name"
-           required>
-    <datalist id="subjectsList"></datalist>
-    <label for="classDescription">Write a description for the class</label>
-    <textarea id="classDescription" class="description-box"
-              name="classDescription"
-              maxlength="500"
-              placeholder="max 500 characters"></textarea>
-    <button type="submit" class="create-btn" id="createClassroomBtn">Next Step</button>
-</form>
-
-<br><br>
-<a href="/main" id="linkToMain">Home</a>
-<a href="/classroomHome" id="linkToClassroomList">Classrooms</a>
+<div class="dashboard">
+    <div id="sidebarContainer"></div>
+    <main class="dashboard-content">
+        <div class="page">
+            <div class="header">
+                <h1 class="page-title">
+                    <em>Create a New Classroom</em>
+                </h1>
+                <button id="backButton">Back</button>
+            </div>
+            <p class="page-description">
+                <em>
+                    Crea una nuova classroom inserendo il nome, la materia e una breve descrizione. Potrai successivamente invitare gli studenti tramite codice o e-mail.
+                </em>
+            </p>
+            <div class="classroom-card">
+                <h2>Informazioni della Classroom</h2>
+                <form id="createClassroomForm">
+                    <div class="input-group">
+                        <label for="classroomName">
+                            Nome Classroom
+                        </label>
+                        <input
+                                type="text"
+                                id="classroomName"
+                                name="classroomName"
+                                placeholder="Inserisci il nome della classroom"
+                                required>
+                    </div>
+                    <div class="input-group">
+                        <label for="fieldSelection">
+                            Area disciplinare
+                        </label>
+                        <select
+                                id="fieldSelection"
+                                name="fieldSelection">
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="subjectInput">
+                            Materia
+                        </label>
+                        <input
+                                list="subjectsList"
+                                id="subjectInput"
+                                name="subjectInput"
+                                autocomplete="off"
+                                placeholder="Seleziona una materia"
+                                required>
+                        <datalist id="subjectsList"></datalist>
+                    </div>
+                    <div class="input-group">
+                        <label for="classDescription">
+                            Descrizione
+                        </label>
+                        <textarea
+                                id="classDescription"
+                                class="description-box"
+                                name="classDescription"
+                                maxlength="500"
+                                placeholder="Scrivi una descrizione della classroom (max 500 caratteri)">
+                        </textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button
+                                type="submit"
+                                class="create-btn"
+                                id="createClassroomBtn">
+                            Next Step
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>

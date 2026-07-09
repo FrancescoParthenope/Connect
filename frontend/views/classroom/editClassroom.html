@@ -1,38 +1,98 @@
-<h2>Edit your classroom</h2>
-<br>
-<label for="editClassroomForm">Classroom Creation Form</label>
-<form id="editClassroomForm">
-  <label for="classroomName">Name</label>
-  <input type="text" id="classroomName"
-         name="classroomName"
-         placeholder="Enter Classroom Name">
-  <label for ="fieldSelection">Select a Field:</label>
-  <select id="fieldSelection" name="fieldSelection"></select>
-  <label for ="subjectInput">Select a subject:</label>
-  <input list="subjectsList" id="subjectInput"
-         name="subjectInput"
-         autocomplete="off"
-         placeholder="Type here the subject name">
-  <datalist id="subjectsList"></datalist>
-  <label for="classDescription">Write a description for the class</label>
-  <textarea id="classDescription" class="description-box"
-            name="classDescription"
-            maxlength="500"
-            placeholder="max 500 characters"></textarea>
-  <label for ="classroomStatus">Select the status of classroom</label>
-  <div id="classroomStatus">
-    <label>
-      <input type="radio" name="status" value="open" checked> Open
-    </label>
-    <label><input type="radio" name="status" value="closed"> Closed
-    </label>
-    <label>
-      <input type="radio" name="status" value="deleted"> Deleted
-    </label>
-  </div>
-  <button type="submit" class="create-btn" id="editClassroomBtn">Confirm Changes</button>
-</form>
-<br><br>
-<a href="/main" id="linkToMain">Home</a>
-<a href="/classroomHome" id="linkToClassroomList">Classrooms List</a>
-<a href="/classroom" id="linkToClassroom">Classroom Homepage</a>
+<div class="dashboard">
+    <div id="sidebarContainer"></div>
+    <main class="dashboard-content">
+        <div class="page">
+            <div class="header">
+                <h1 class="page-title">
+                    <em>Edit Classroom</em>
+                </h1>
+                <button id="backButton">Back</button>
+            </div>
+            <p class="page-description">
+                <em>Modifica le informazioni della classroom, aggiorna la materia associata, la descrizione e lo stato della classe.</em>
+            </p>
+            <div class="classroom-card">
+                <h2>Informazioni della Classroom</h2>
+                <form id="editClassroomForm">
+                    <div class="input-group">
+                        <label for="classroomName">Nome Classroom</label>
+                        <input
+                                type="text"
+                                id="classroomName"
+                                name="classroomName"
+                                placeholder="Inserisci il nome della classroom">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="fieldSelection">Area disciplinare</label>
+                        <select
+                                id="fieldSelection"
+                                name="fieldSelection">
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="subjectInput">
+                            Materia
+                        </label>
+                        <input
+                                list="subjectsList"
+                                id="subjectInput"
+                                name="subjectInput"
+                                autocomplete="off"
+                                placeholder="Seleziona una materia">
+                        <datalist id="subjectsList"></datalist>
+                    </div>
+                    <div class="input-group">
+                        <label for="classDescription">
+                            Descrizione della Classroom
+                        </label>
+                        <textarea
+                                id="classDescription"
+                                class="description-box"
+                                name="classDescription"
+                                maxlength="500"
+                                placeholder="Scrivi una descrizione (massimo 500 caratteri)">
+                        </textarea>
+                    </div>
+                    <div class="input-group">
+                        <label>
+                            Stato della Classroom
+                        </label>
+                        <div id="classroomStatus" class="status-group">
+                            <label class="radio-option">
+                                <input
+                                        type="radio"
+                                        name="status"
+                                        value="open"
+                                        checked>
+                                Open
+                            </label>
+                            <label class="radio-option">
+                                <input
+                                        type="radio"
+                                        name="status"
+                                        value="closed">
+                                Closed
+                            </label>
+                            <label class="radio-option">
+                                <input
+                                        type="radio"
+                                        name="status"
+                                        value="deleted">
+                                Deleted
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button
+                                type="submit"
+                                class="create-btn"
+                                id="editClassroomBtn">
+                            Conferma modifiche
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>

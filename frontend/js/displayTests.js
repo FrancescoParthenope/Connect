@@ -67,23 +67,19 @@ function setupContainers(isOwner) {
     const inactiveContainer = document.getElementById("inactiveTestsContainer");
     const submittedContainer = document.getElementById("submittedTestsContainer");
 
-    const inactiveTitle = document.getElementById("inactiveTestsTitle");
-    const submittedTitle = document.getElementById("submittedTestsTitle");
+    const inactiveCard = document.getElementById("inactiveTestsCard");
+    const submittedCard = document.getElementById("submittedTestsCard");
 
     activeContainer.innerHTML = "";
     inactiveContainer.innerHTML = "";
     submittedContainer.innerHTML = "";
 
     if (!isOwner) {
-        inactiveTitle.style.display = "none";
-        inactiveContainer.style.display = "none";
-        submittedTitle.style.display = "block";
-        submittedContainer.style.display = "block";
+        submittedCard.style.display = "block";
+        inactiveCard.style.display = "none";
     } else {
-        inactiveTitle.style.display = "block";
-        inactiveContainer.style.display = "block";
-        submittedTitle.style.display = "none";
-        submittedContainer.style.display = "none";
+        submittedCard.style.display = "none";
+        inactiveCard.style.display = "block";
     }
     return {
         activeContainer,

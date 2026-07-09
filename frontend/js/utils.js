@@ -122,12 +122,10 @@ export async function loadSidebar(goTo){
         goTo("update_profile");
     });
 
-
     document.getElementById("linkToChat")?.addEventListener("click", (event) => {
         event.preventDefault();
         goTo("chats");
     });
-
 
     document.getElementById("linkToSearchBySubject")?.addEventListener("click", (event) => {
         event.preventDefault();
@@ -144,6 +142,11 @@ export async function loadSidebar(goTo){
         goTo("classroomHome");
     })
 
+    document.getElementById("linkToClassroomHome")?.addEventListener("click", (event) => {
+        event.preventDefault();
+        goTo("classroomHome");
+    })
+
     document.getElementById("linkToInsertPayments")?.addEventListener("click", (event) => {
         event.preventDefault();
         goTo("insert_payments");
@@ -153,6 +156,11 @@ export async function loadSidebar(goTo){
         event.preventDefault();
         goTo("viewReview");
     });
+
+    document.getElementById("linkToReviewPage")?.addEventListener("click", (event) => {
+        event.preventDefault();
+        goTo('reviewPage');
+    })
 
     document.getElementById("linkToLogout")?.addEventListener("click", (event) => {
         event.preventDefault();

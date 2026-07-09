@@ -1,4 +1,5 @@
 import { API_URL } from "../app.js";
+import { loadSidebar } from "./utils.js";
 
 let goTo;
 
@@ -8,13 +9,15 @@ export async function init(page, navigateTo){
         goTo = navigateTo;
     }
 
+    await loadSidebar(navigateTo);
+
     if(page === "viewReview"){
         await loadReviews();
 
         const backButton = document.getElementById("backButton");
         if(backButton){
             backButton.addEventListener("click", () =>{
-                goTo("dashboard_home");
+                goTo("reviewPage");
             });
         }
     }
@@ -84,7 +87,7 @@ async function populateReviewContainer(reviewList){
                 timeStyle: 'short'
             });
                 const card = document.createElement("div");
-                card.classList.add("review-card");
+                card.classList.add("review-item");
                 card.innerHTML = `
                     <h4>Tutor name: ${review.tutor_name}</h4>
                     <p>${review.comment}</p>
@@ -99,8 +102,5 @@ async function populateReviewContainer(reviewList){
                     reviewsDone.appendChild(card);
                 }
         });
-
-        reviewsReceived.appendChild(document.createElement("hr"));
-        reviewsDone.appendChild(document.createElement("hr"));
     }
 }

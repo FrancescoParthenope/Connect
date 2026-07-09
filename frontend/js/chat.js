@@ -129,7 +129,6 @@ function displayMessages(messages){
         }
 
         div.innerHTML = `
-            <hr>
             <p>
                 <strong>${message.sender_name}</strong>
             </p>

@@ -1,35 +1,64 @@
-<div class="page">
-    <div class="header">
-        <h2>Leave a Review</h2>
-        <button id="backButton">Back</button>
-    </div>
-    <form id="reviewForm">
-        <label for="tutorEmail"><strong>Tutor (Email):</strong></label>
-        <input type="email" id="tutorEmail"
-               placeholder="write the email here..."
-               autocomplete="off"
-               required>
-        <label for="rating">Rating</label>
-        <select id="rating" required>
-            <option value="">Select a rating</option>
-            <option value="1">1 - Very Poor</option>
-            <option value="2">2 - Poor</option>
-            <option value="3">3 - Good</option>
-            <option value="4">4 - Very Good</option>
-            <option value="5">5 - Excellent</option>
-        </select>
-        <br><br>
-        <label for="comment">Comment (optional)</label>
-        <br>
-        <textarea
-                id="comment"
-                rows="6"
-                placeholder="Write your review..."
-        ></textarea>
-        <br><br>
-        <input
-                type="submit"
-                value="Submit Review"
-        >
-    </form>
+<div class="dashboard">
+    <div id="sidebarContainer"></div>
+    <main class="dashboard-content">
+        <div class="page">
+            <div class="header">
+                <h1 class="page-title">
+                    <em>Scrivi una Recensione</em>
+                </h1>
+                <button id="backButton">
+                    Back
+                </button>
+            </div>
+            <p class="page-description">
+                <em>
+                    Condividi la tua esperienza con un tutor lasciando una recensione e una valutazione.
+                </em>
+            </p>
+            <div class="classroom-card">
+                <form id="reviewForm">
+                    <div class="input-group">
+                        <label for="tutorEmail">
+                            Email del Tutor
+                        </label>
+                        <input
+                                type="email"
+                                id="tutorEmail"
+                                placeholder="Inserisci l'email del tutor..."
+                                autocomplete="off"
+                                required>
+                    </div>
+                    <div class="input-group">
+                        <label for="rating">Valutazione</label>
+                        <select id="rating" required>
+                            <option value="">Seleziona una valutazione</option>
+                            <option value="1">1 - Molto Scarso</option>
+                            <option value="2">2 - Scarso</option>
+                            <option value="3">3 - Buono</option>
+                            <option value="4">4 - Ottimo</option>
+                            <option value="5">5 - Eccellente</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="comment">
+                            Commento (facoltativo)
+                        </label>
+                        <textarea
+                                id="comment"
+                                rows="6"
+                                maxlength="500"
+                                placeholder="Scrivi qui la tua recensione...">
+                        </textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button
+                                type="submit"
+                                class="create-btn">
+                            Invia Recensione
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
 </div>

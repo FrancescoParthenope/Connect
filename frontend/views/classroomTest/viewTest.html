@@ -1,12 +1,29 @@
-<h2>Test</h2>
-<h3 id="testTitle"></h3>
-<p>
-    <strong>Time limit:</strong>
-    <span id="timeLimit"></span>
-</p>
-<hr>
-<div id="questionsContainer"></div>
-<hr>
-<button id="backButton">
-    Back
-</button>
+<div class="dashboard">
+    <div id="sidebarContainer"></div>
+    <main class="dashboard-content">
+        <div class="page">
+            <div class="header">
+                <h1 class="page-title">
+                    <em>View Test</em>
+                </h1>
+                <button id="backButton">
+                    Back
+                </button>
+            </div>
+            <p class="page-description">
+                <em>Consulta il test completo, visualizza il tempo previsto per lo svolgimento e tutte le domande create.</em>
+            </p>
+            <div class="classroom-card">
+                <h2 id="testTitle">
+                </h2>
+                <div class="test-info">
+                    <span class="info-label">Tempo a disposizione:</span>
+                    <span id="timeLimit" class="info-value">
+                    </span>
+                </div>
+                <hr class="section-divider">
+                <div id="questionsContainer"></div>
+            </div>
+        </div>
+    </main>
+</div>

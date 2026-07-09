@@ -1,14 +1,17 @@
 import { API_URL } from "../app.js";
+import { loadSidebar } from "./utils.js";
 
 let goTo;
 
-export function init(page, navigateTo){
+export async function init(page, navigateTo){
 
     if(navigateTo){
         goTo = navigateTo;
     }
 
     if(page === "writeReview"){
+
+        await loadSidebar(navigateTo);
 
         const reviewForm = document.getElementById("reviewForm");
 
@@ -20,9 +23,11 @@ export function init(page, navigateTo){
 
         if(backButton){
             backButton.addEventListener("click", () =>{
-                goTo("main")
+                goTo("reviewPage");
             });
         }
+
+
     }
 }
 
