@@ -160,7 +160,6 @@ def get_student_tests(student_id):
         formatted_tests = []
 
         for test in tests:
-            print(test)
             formatted_tests.append({
                 "test_id": str(test["test_id"]),
                 "title": test["title"],
@@ -173,7 +172,6 @@ def get_student_tests(student_id):
 
     except Exception as e:
         return False, str(e)
-
 
 def get_test_to_correct():
     try:
@@ -294,11 +292,10 @@ def get_corrected_test():
         formatted_tests = []
 
         for test in tests:
-
             student = users_collection.find_one({"_id": ObjectId(test["student_id"]) })
 
             if not student:
-                return False, "Student not found"
+                return False, "student not found"
 
             student_name = f"{student['first_name']} {student['last_name']}"
 

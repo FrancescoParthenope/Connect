@@ -21,7 +21,7 @@ success_map = {
     "TEST_PASSED": 200,
     "TEST_FAILED": 200,
     "CREATED": 201,
-    "NO_CHANGES": 204
+    "NO_CHANGES": 200
 }
 
 def create_route_response(status, data_or_message, status_key="SUCCESS"):

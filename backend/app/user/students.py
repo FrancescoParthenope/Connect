@@ -5,6 +5,8 @@ from datetime import datetime
 
 from app.user import bp
 from config.database import users_collection
+from app.services.user import get_all_users_info
+from app.utils import create_route_response
 
 @bp.route('/profile', methods=['GET','POST'])
 @jwt_required()
@@ -113,3 +115,9 @@ def update_profile():
             "success": False,
             "error": f"Error updating user in database : {str(e)}"
         }), 500
+
+@bp.route('/users', methods=['GET'])
+@jwt_required()
+def get_users():
+    status, user_list, status_key = get_all_users_info()
+    return create_route_response(status,user_list,status_key)

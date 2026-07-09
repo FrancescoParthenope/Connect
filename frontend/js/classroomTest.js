@@ -1,44 +1,44 @@
 import { API_URL } from "../app.js";
 import {displayTests} from "./displayTests.js";
+import {checkIsOwner} from "./classroom.js";
 
 let goTo;
 
-export function init(page, navigateTo){
+export async function init(page, navigateTo) {
 
-    const user = JSON.parse(localStorage.getItem('user'));
-    const isTutor = user.roles.includes("tutor");
-
-    if(navigateTo){
+    if (navigateTo) {
         goTo = navigateTo;
     }
 
-    if(page === "classroomTest"){
-        loadClassroomTests();
+    if (page === "classroomTest") {
+        linkToMain(goTo)
+        linkToClassroomList(goTo)
+        await loadClassroomTests();
 
         const backButton = document.getElementById("backButton");
 
-        if(backButton){
-            backButton.addEventListener("click", function(){
-                goTo("main")
+        if (backButton) {
+            backButton.addEventListener("click", function () {
+                goTo("classroom");
             });
         }
 
-        if(correctTestsButton){
-            if(isTutor){
-                correctTestsButton.style.display = "inline-block";
-                correctTestsButton.addEventListener("click", function(){
+        const correctTestsButton = document.getElementById("correctTestsButton");
+        if (correctTestsButton) {
+            if (await checkIsOwner()) {
+                correctTestsButton.classList.remove("owner-only")
+                correctTestsButton.addEventListener("click", function () {
                     goTo("correctTests")
                 });
-            }else{
-                correctTestsButton.style.display = "none";
             }
         }
     }
 }
 
-async function loadClassroomTests() {
+export async function loadClassroomTests() {
 
     const token = localStorage.getItem("token");
+    const classroomId = localStorage.getItem("classroomId");
 
     if (!token) {
         alert("You must be logged in");
@@ -47,10 +47,14 @@ async function loadClassroomTests() {
         }
         return;
     }
+    if (!classroomId){
+        alert("No Classroom ID found, return to classrooms home page");
+        goTo("classroomHome");
+    }
 
     try {
         const response = await fetch(
-            `${API_URL}/tests?classroom_id=507f1f77bcf86cd799439011`, {
+            `${API_URL}/tests?classroom_id=${classroomId}`, {
                 method: "GET",
                 headers: {"Authorization": `Bearer ${token}`}
             });
@@ -64,7 +68,7 @@ async function loadClassroomTests() {
         const studentsData = await responseStudent.json();
 
         if (response.ok && responseStudent.ok) {
-            displayTests(
+            await displayTests(
                 testsData.data,
                 studentsData.data,
                 goTo,
@@ -102,7 +106,7 @@ async function toggleTest(testId, currentStatus) {
         const data = await response.json();
         if (response.ok) {
             alert(data.message);
-            loadClassroomTests();
+            await loadClassroomTests();
         } else {
             alert(data.message);
         }
@@ -113,4 +117,21 @@ async function toggleTest(testId, currentStatus) {
     }
 }
 
-export {loadClassroomTests};
+function linkToMain(goTo) {
+    const linkToMain = document.getElementById('linkToMain');
+    if (linkToMain) {
+        linkToMain.addEventListener('click', event => {
+            event.preventDefault();
+            goTo('main');
+        })
+    }
+}
+function linkToClassroomList(goTo){
+    const linkToClassroomList = document.getElementById('linkToClassroomList');
+    if (linkToClassroomList){
+        linkToClassroomList.addEventListener('click', event => {
+            event.preventDefault();
+            goTo('classroomHome');
+        })
+    }
+}

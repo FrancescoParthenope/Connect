@@ -4,7 +4,11 @@
         <button id="backButton">Back</button>
     </div>
     <form id="reviewForm">
-        <p><strong>Tutor: </strong> </p><span id="tutorName"></span>
+        <label for="tutorEmail"><strong>Tutor (Email):</strong></label>
+        <input type="email" id="tutorEmail"
+               placeholder="write the email here..."
+               autocomplete="off"
+               required>
         <label for="rating">Rating</label>
         <select id="rating" required>
             <option value="">Select a rating</option>

@@ -16,10 +16,10 @@ def verify_and_update_test(user_id, subject_id):
 
         answers_given = payload.get("user_answers")
 
-        success, message, status_key = _correct_test(subject_id, answers_given)
+        success, message_correct, status_key = _correct_test(subject_id, answers_given)
 
         if status_key == "NO_QUESTIONS":
-            return success, message, status_key
+            return success, message_correct, status_key
         else:
             completed_date = datetime.now(timezone.utc)
             if success:
@@ -36,9 +36,9 @@ def verify_and_update_test(user_id, subject_id):
             # and we add the subject to the list of the subjects for which he has a certification
             promote_to_tutor(user_id)
             add_subject(user_id, subject_id)
-            return True, message, "TEST_PASSED"
+            return True, message_correct, "TEST_PASSED"
         else:
-            return True, message, "TEST_FAILED"
+            return True, message_correct, "TEST_FAILED"
 
     except Exception as e:
         return False, f"Error connecting to database : {str(e)}", "DB_ERROR"

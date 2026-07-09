@@ -2,13 +2,13 @@ import { API_URL } from "../app.js";
 
 let goTo
 
-export function init(page, navigateTo){
+export async function init(page, navigateTo){
     if(navigateTo){
         goTo = navigateTo;
     }
 
     if(page === "correctSingleTest"){
-        loadSubmission();
+        await loadSubmission();
 
         const backButton = document.getElementById("backButton");
         if(backButton){
@@ -107,9 +107,6 @@ async function saveCorrection(){
     });
 
     const status = document.querySelector('input[name="result"]:checked').value;
-
-    console.log(questions);
-    console.log(status);
 
     try {
         const response = await fetch(

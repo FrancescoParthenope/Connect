@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from config.database import conversations_collection, messages_collection, classrooms_collection, users_collection
+from config.database import conversations_collection, messages_collection, classrooms_collection
 from app.services.user import *
 
 def get_classroom_conversation(classroom_id):
@@ -9,27 +9,43 @@ def get_classroom_conversation(classroom_id):
             "classroom_id": classroom_id
         })
 
+        classroom = classrooms_collection.find_one(
+            {"_id": classroom_id},
+            {
+                "_id": 1,
+                "creator":1 ,
+                "members": 1
+            })
+
+        if not classroom:
+            return False, "Classroom not found"
+
+        participants = []
+
+        if "creator" in classroom:
+            participants.append(classroom["creator"]["creator_id"])
+
+        for member in classroom.get("members", []):
+            participants.append(member["user_id"])
+
         if not conversation:
             creation_result = conversations_collection.insert_one({
                 "type": "classroom",
                 "classroom_id": classroom_id,
                 "creation_date": datetime.now(timezone.utc),
-                "last_activity": datetime.now(timezone.utc)
+                "last_activity": datetime.now(timezone.utc),
+                "participants": participants
             })
 
             conversation = conversations_collection.find_one({
-                "id": creation_result.inserted_id
+                "_id": creation_result.inserted_id
             })
-
-            classroom = classrooms_collection.find_one(
-                {"_id": classroom_id},
-                {
-                    "_id": 1,
-                    "members": 1
-                })
-
-            if classroom:
-                conversation["members"] = classroom["members"]
+        else:
+            conversations_collection.update_one(
+                {"_id": conversation["_id"]},
+                {"$set": {"participants": participants}}
+            )
+            conversation["participants"] = participants
 
         return True, conversation
 
@@ -81,7 +97,7 @@ def send_messages(conversation_id, sender_id, message):
             "message": message,
             "creation_date": datetime.now(timezone.utc),
         })
-        
+
         conversations_collection.update_one(
             {"_id": conversation_id},
             {
@@ -95,7 +111,6 @@ def send_messages(conversation_id, sender_id, message):
 
     except Exception as e:
         return False, str(e)
-
 
 
 def get_message(conversation_id, current_user_id):
@@ -116,7 +131,6 @@ def get_message(conversation_id, current_user_id):
             # Check the number of returned values because get_user_fname_lname()
             # may return either two or three values depending on the outcome.
             result = get_user_fname_lname(message["sender_id"])
-            print(result)
 
             if len(result) == 3:
                 success, user_info, _ = result
@@ -141,26 +155,16 @@ def get_message(conversation_id, current_user_id):
         return False, str(e)
 
 
-
 def get_conversations_list(current_user_id):
     try:
         conversations = list(conversations_collection.find({
-            "$or": [
-                 {
-                     "type": "classroom"
-                 },
-                 {
-                    "type": "private",
-                    "participants": current_user_id
-                }
-            ]
+            "type": "private", "participants": current_user_id
          }).sort("last_activity", -1))
 
         conversations_list = []
 
         for conversation in conversations:
 
-                # Retrieve the last messag of the conversation
             last_message = messages_collection.find_one({"conversation_id": conversation["_id"]},
             sort=[("creation_date", -1)])
 

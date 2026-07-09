@@ -1,0 +1,28 @@
+<h2>Classrooms List</h2>
+<div id="createClassroom" class="tutor-only">
+    <h3> Create a new Classroom </h3>
+    <button class="create-btn" id="createButton">Create a new Classroom</button>
+    <br><br>
+    <hr>
+</div>
+
+<div id="classroomInviteContainer">
+    <div id="classroomInvite">
+        <label for="invitationTextBox">Invitation code</label>
+        <input id="invitationTextBox" type="text" name="invitation"
+               placeholder="Insert your code here"
+               maxlength="6"
+               pattern="[A-Za-z0-9]{6}"
+               required>
+        <button class="invite-btn" id="sendInvitationCode">Confirm</button>
+    </div>
+</div>
+
+<hr>
+<div id="classroomCreatedList" class="tutor-only">
+</div>
+<br><br><hr>
+<div id="classroomListContainer">
+</div>
+<br><br>
+<a href="/main" id="linkToMain">Home</a>

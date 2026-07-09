@@ -42,8 +42,7 @@ async function handleReview(event) {
         return;
     }
 
-    // change this when the control of classroom it's finished
-    const email = document.getElementById("TutorEmail").value.trim();
+    const email = document.getElementById("tutorEmail").value.trim();
     const comment = document.getElementById("comment").value.trim();
     const rating = Number(document.getElementById("rating").value);
 

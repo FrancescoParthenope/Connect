@@ -73,7 +73,8 @@ CLASSROOMS
     creator: {
         creator_id: ObjectId,
         creator_name: string,
-        creator_surname: string
+        creator_surname: string,
+        creator_email: string
     }
     members: array[{
         user_id: ObjectId,
@@ -85,6 +86,8 @@ CLASSROOMS
     description: string,
     invite_code: string,
     creation_date: date
+    classroom_status: string,
+    status: string
 }
 
 CLASSROOMS_DOCUMENTS
