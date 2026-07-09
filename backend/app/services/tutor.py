@@ -155,6 +155,7 @@ def get_tutors_list_by_subject(subject_id):
             "_id": 0,
             "first_name": 1,
             "last_name": 1,
+            "email": 1,
             "profile_picture": 1,
             "tutor_profile.description": 1,
             "tutor_profile.average_rating": 1,
