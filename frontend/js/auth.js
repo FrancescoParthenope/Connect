@@ -11,6 +11,14 @@ export function init(page, navigateTo){
         if (registerForm){
             registerForm.addEventListener('submit', handleRegister)
         }
+
+        const linkToLogin = document.getElementById("linkToLogin");
+        if (linkToLogin){
+            linkToLogin.addEventListener('click', (event) => {
+                event.preventDefault();
+                goTo('login');
+            })
+        }
     }
 
     if (page === 'login'){
@@ -58,7 +66,7 @@ async function handleLogin(event){
             localStorage.setItem('token', data.token);
             localStorage.setItem('user', JSON.stringify(data.user));
             alert('Login successful');
-            goTo('main');
+            goTo('dashboard_home');
         } else {
             alert(`Login failed with status: ${data["error"]}`);
         }

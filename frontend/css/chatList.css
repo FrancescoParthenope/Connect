@@ -1,8 +1,9 @@
-.page {
-    max-width: 800px;
-    margin: auto;
-    padding: 20px;
+.page{
+    width: 100%;
+    max-width: 100%;
+    padding: 20px 40px;
     font-family: "Poppins", sans-serif;
+    box-sizing: border-box;
 }
 
 .header{

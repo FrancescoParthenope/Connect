@@ -1,20 +1,44 @@
-<form id="ProfileForm" method="post">
-
-    <label for="firstName">First Name</label>
-    <input id="firstName" type="text">
-    <br><br>
-    <label for="lastName">Last Name</label>
-    <input id="lastName" type="text">
-    <br><br>
-    <label for="birthDate">Birth Date</label>
-    <input id="birthDate" type="date">
-    <br><br>
-    <label for="bio">Bio</label>
-    <textarea id="bio"></textarea>
-    <br><br>
-    <label for="profile_picture">Picture</label>
-    <input id="profile_picture" type="text">
-    <br><br>
-    <input type="submit" value="Save profile">
-</form>
+<div class="dashboard">
+    <div id="sidebarContainer"></div>
+    <main class="dashboard-content">
+        <div class="page">
+            <div class="header">
+                <h1 class="page-title"><em>Update Profile</em></h1>
+                <button id="backButton">Back</button>
+            </div>
+            <p class="page-description">
+                <em>
+                    Update your personal information and keep your profile up to date.
+                </em>
+            </p>
+            <div class="profile-card">
+                <div class="profile-image-container">
+                    <img src="img/default_picture.png" alt="Profile Picture" class="profile-picture" width="120" height="120">
+                </div>
+                <form id="ProfileForm" method="post">
+                    <div class="input-group">
+                        <label for="firstName">First Name</label>
+                        <input id="firstName" type="text">
+                    </div>
+                    <div class="input-group">
+                        <label for="lastName">Last Name</label>
+                        <input id="lastName" type="text">
+                    </div>
+                    <div class="input-group">
+                        <label for="birthDate">Birth Date</label>
+                        <input id="birthDate" type="date">
+                    </div>
+                    <div class="input-group">
+                        <label for="bio">Bio</label>
+                        <textarea id="bio" rows="5">
+                        </textarea>
+                    </div>
+                    <div class="profile-actions">
+                        <input type="submit" value="Save Changes" class="save-btn">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>
 

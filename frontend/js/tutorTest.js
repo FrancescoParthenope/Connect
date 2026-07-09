@@ -1,10 +1,9 @@
 import {API_URL} from "../app.js";
-import {formatTime, postFunction, linkToMain} from "./utils.js"
+import {formatTime, postFunction} from "./utils.js"
+import { loadSidebar } from "./utils.js";
 
 const base_route = "tutor_tests"
-
 let goTo;
-
 let subjects = [];
 let activeTests = [];
 let completedTests = [];
@@ -12,35 +11,66 @@ let testToTake;
 let timerInterval;
 let currentQuestionIndex = 0;
 
-export async function init(page, navigateTo){
+export function init(page, navigateTo) {
     if (navigateTo)
         goTo = navigateTo;
 
-    if (page === 'eligibleSubjects'){
-        linkToMain(goTo);
+    loadSidebar(navigateTo);
+
+    const backButton = document.getElementById("backButton");
+    if(backButton && (page === "eligibleSubjects" || page === "activeApplications" || page === "completedApplications")){
+        backButton.addEventListener("click", () => {
+            goTo("becomeTutor");
+        });
+    }
+
+    if (page === 'eligibleSubjects') {
+        linkToMain();
         const fieldSelection = document.getElementById('fieldSelection')
         if (fieldSelection) {
             fieldSelection.addEventListener('change', event => {
                 filterSubjects(event.target.value);
             })
         }
-        await getEligibleSubjects();
-        setupCandidateListener()
+        getEligibleSubjects();
+        setupCandidateListener();
     }
 
-    if (page === 'activeApplications'){
-        await getActiveTests();
-        linkToMain(goTo);
+    if (page === 'activeApplications') {
+        getActiveTests();
+        linkToMain();
         setupStartOrContinueListener()
     }
 
-    if (page === 'completedApplications'){
-        await getCompletedTests();
-        linkToMain(goTo);
+    if (page === 'completedApplications') {
+        getCompletedTests();
+        linkToMain();
     }
 
-    if (page === 'tutorTest'){
+    if (page === 'tutorTest') {
         populateTestPage();
+    }
+
+    if (page === "becomeTutor") {
+        document.getElementById("cardEligibleSubjects")?.addEventListener("click", () => {
+            goTo("eligibleSubjects");
+        });
+        document.getElementById("cardActiveApplications")?.addEventListener("click", () => {
+            goTo("activeApplications");
+        });
+        document.getElementById("cardCompletedApplications")?.addEventListener("click", () => {
+            goTo("completedApplications");
+        });
+    }
+}
+
+function linkToMain() {
+    const linkToMain = document.getElementById('linkToMain');
+    if (linkToMain) {
+        linkToMain.addEventListener('click', event => {
+            event.preventDefault();
+            goTo('main');
+        })
     }
 }
 
@@ -270,11 +300,11 @@ function setupCandidateListener(){
 function setupStartOrContinueListener(){
     const container = document.getElementById('subjectsContainer');
     if (container){
-        container.addEventListener('click',async event => {
+        container.addEventListener('click', event => {
             if (event.target.classList.contains("execute-btn")){
                 const subjectId = event.target.dataset.id;
                 if (subjectId){
-                    await startAndGetTutorTest(subjectId);
+                    startAndGetTutorTest(subjectId);
                 }
             }
         })
@@ -389,7 +419,7 @@ function showQuestion(index) {
     const savedAnswer = testToTake.user_answers.find(
         a => a.question_id === question.question_id
     )
-    const selectedAnswerId = savedAnswer ? savedAnswer.answer_given : null;
+    const selectedAnswerId = savedAnswer ? savedAnswer.answer : null;
 
     questionContainer.innerHTML = `
         <div class="questionBlock">

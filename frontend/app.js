@@ -11,14 +11,11 @@ import * as ViewTest from "./js/viewTest.js";
 import * as CorrectTests from "./js/correctTests.js";
 import * as CorrectSingleTest from "./js/correctSingleTest.js";
 import * as ReviewTest from "./js/reviewTest.js";
-import * as Classroom from "./js/classroom.js";
 import * as Chat from "./js/chat.js";
 import * as Chats from "./js/chats.js";
 import * as NewChat from "./js/newChat.js";
 import * as Review from "./js/createReview.js";
 import * as ViewReviews from "./js/viewReview.js";
-
-import {clearChatInterval} from "./js/utils.js";
 
 export const API_URL = "http://127.0.0.1:8000/api";
 
@@ -44,20 +41,17 @@ const routes = {
     'correctTests': {folder: 'classroomTest', module: CorrectTests},
     'correctSingleTest': {folder: 'classroomTest', module: CorrectSingleTest},
     'reviewTest': {folder: 'classroomTest', module: ReviewTest},
-    'classroomHome': {folder: 'classroom', module: Classroom},
-    'classroom': {folder: 'classroom', module: Classroom},
-    'createClassroom': {folder: 'classroom', module: Classroom},
-    'inviteInClassroom': {folder: 'classroom', module: Classroom},
-    'editClassroom': {folder: 'classroom', module: Classroom},
     'chat': {folder: 'chat', module: Chat},
     'chats': {folder: 'chat', module: Chats},
     'newChat': {folder: 'chat', module: NewChat},
     'writeReview': {folder: 'review', module: Review},
     'viewReview': {folder: 'review', module: ViewReviews},
+    'home_page':{folder: 'home_page', module: Main},
+    'dashboard_home':{folder: 'home_page', module: Main},
+    'becomeTutor':{folder: 'tutorTest', module: TutorTest},
 }
 
 export async function navigateTo(page){
-    clearChatInterval();
     const app = document.getElementById('app');
     const route = routes[page];
 
@@ -86,4 +80,4 @@ export async function navigateTo(page){
     }
 }
 
-await navigateTo('main');
+navigateTo('dashboard_home');

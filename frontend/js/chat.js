@@ -1,36 +1,41 @@
 import { API_URL } from "../app.js";
-import {clearChatInterval, setRefreshInterval} from "./utils.js"
+import { loadSidebar } from "./utils.js";
 
 let goTo;
+let refreshIntervall;
 let conversationTitle;
 
 // Initialize the chat page
 export async function init(page, navigateTo) {
+
+    loadSidebar(navigateTo);
 
     if (navigateTo) {
         goTo = navigateTo;
     }
 
     if (page === "chat") {
+
         conversationTitle = localStorage.getItem("conversation_title");
         document.getElementById("conversationTitle").textContent = conversationTitle;
 
         await loadMessages();
 
-        setRefreshInterval(loadMessages, 2000);
+        // Refresh the chat every 2 seconds
+        refreshIntervall = setInterval(loadMessages, 2000);
         document.getElementById("sendMessageButton").addEventListener("click", sendMessage);
     }
 
     const backButton = document.getElementById("backButton");
     if (backButton) {
         backButton.addEventListener("click", () => {
-            clearChatInterval();
+            clearInterval(refreshIntervall);
             goTo("chats")
         });
     }
 }
 
-export async function loadMessages(){
+async function loadMessages(){
 
     const token = localStorage.getItem("token");
     const conversationId = localStorage.getItem("conversation_id");
@@ -47,6 +52,7 @@ export async function loadMessages(){
         );
 
         const data = await response.json();
+        console.log(data);
 
         if(response.ok){
             displayMessages(data.message)
@@ -58,7 +64,7 @@ export async function loadMessages(){
     }
 }
 
-export async function sendMessage() {
+async function sendMessage() {
 
     const token = localStorage.getItem("token");
     const conversationId = localStorage.getItem("conversation_id");
@@ -141,4 +147,3 @@ function displayMessages(messages){
 
     container.scrollTop = container.scrollHeight;
 }
-

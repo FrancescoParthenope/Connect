@@ -1,16 +1,17 @@
 import {API_URL} from "../app.js";
-import {getSubjectsList} from "./subject.js";
-import {populateSelectField} from "./utils.js";
+import { loadSidebar } from "./utils.js";
 
 let goTo;
-
 let subjectsList = [];
 let tutorList = [];
 
 export async function init(page, navigateTo) {
+
     if (navigateTo) {
         goTo = navigateTo;
     }
+
+    loadSidebar(navigateTo);
 
     if (page === "searchBySubject"){
         linkToMain();
@@ -28,6 +29,13 @@ export async function init(page, navigateTo) {
             subjectsDropDownList();
         });
         subjectsDropDownList();
+
+        const backButton = document.getElementById("backButton");
+        if (backButton) {
+            backButton.addEventListener("click", () => {
+                goTo("dashboard_home");
+            })
+        }
     }
 }
 
@@ -43,12 +51,51 @@ function linkToMain() {
 
 async function loadSubjects() {
     try {
-        subjectsList = await getSubjectsList()
-        populateSelectField("fieldSelection",subjectsList)
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${API_URL}/subjects/all_subjects`, {
+            method: 'GET',
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        })
+
+        const data = await response.json();
+
+        if (response.ok) {
+            subjectsList = data.message;
+            populateSelectField();
+        }
+        else {
+            alert(`Error: ${data.message}`);
+        }
     }
+
     catch (error) {
         console.error("Connection Error:", error)
         alert(`Impossible to connect to server`)
+    }
+}
+
+function populateSelectField(){
+    const fieldSelection = document.getElementById("fieldSelection");
+    if (fieldSelection){
+        fieldSelection.innerHTML = '<option value ="all" selected>All</option>';
+
+        // extracting the elements in the field camp in the JSON type returned from server
+        // using Set to eliminate duplicates of the fields
+        // .map to indicate the element to extract
+        // ... spread operator used to get the single field extracted
+
+        const fields = [... new Set(subjectsList.map(s => s.field))]
+
+        // now that we have the array with the right fields, we populate the options
+
+        fields.forEach(field => {
+            const option = document.createElement("option");
+            option.value = field;
+            option.textContent = field;
+            fieldSelection.appendChild(option);
+        });
     }
 }
 

@@ -1,4 +1,5 @@
 import { API_URL } from "../app.js";
+import { loadSidebar } from "./utils.js";
 
 let goTo;
 
@@ -8,10 +9,10 @@ export function init(page, navigateTo) {
         goTo = navigateTo;
     }
 
+    loadSidebar(navigateTo);
+
     if (page === "update_profile") {
-
         loadProfile();
-
         const profileForm = document.getElementById("ProfileForm");
 
         if (profileForm) {
@@ -19,6 +20,13 @@ export function init(page, navigateTo) {
                 "submit",
                 handleUpdateProfile
             );
+        }
+
+        const backButton = document.getElementById("backButton");
+        if (backButton) {
+            backButton.addEventListener("click", () => {
+                goTo("dashboard_home");
+            });
         }
     }
 }

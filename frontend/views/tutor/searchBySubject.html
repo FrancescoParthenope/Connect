@@ -1,15 +1,48 @@
-<div class="filterContainer">
-    <div class="filterGroup">
-        <label for ="fieldSelection">Select a Field:</label>
-        <select id="fieldSelection" name="fieldSelection"></select>
-    </div>
-    <div class="filterGroup">
-        <label for ="subjectSearch">Search by subject:</label>
-        <input type="text" id="subjectSearch" name="subjectSearch" placeholder="Type subject name here...">
-        <div id="subjectResults" class="results-dropdown"></div>
-    </div>
+<div class="dashboard">
+    <div id="sidebarContainer"></div>
+    <main class="dashboard-content">
+        <div class="page">
+            <div class="header">
+                <h1 class="page-title"><em>Search Tutor</em></h1>
+                <button id="backButton">Back</button>
+            </div>
+            <p class="page-description">
+                <em>Cerca un tutor selezionando un'area disciplinare oppure una materia specifica.</em>
+            </p>
+            <div class="search-card">
+                <div class="filterContainer">
+                    <div class="filterGroup">
+                        <label for="fieldSelection">
+                            Select a Field
+                        </label>
+                        <select
+                                id="fieldSelection"
+                                name="fieldSelection">
+                        </select>
+                    </div>
+                    <div class="filterGroup">
+                        <label for="subjectSearch">
+                            Search by Subject
+                        </label>
+                        <input
+                                type="text"
+                                id="subjectSearch"
+                                name="subjectSearch"
+                                placeholder="Type subject name here...">
+                        <div
+                                id="subjectResults"
+                                class="results-dropdown">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="search-card">
+                <h2>Available Tutors</h2>
+                <div
+                        id="tutorContainer"
+                        class="grid-container">
+                </div>
+            </div>
+        </div>
+    </main>
 </div>
-
-<div id="tutorContainer" class="grid-container"></div>
-<br><br>
-<a href="/main" id="linkToMain">Home</a>
