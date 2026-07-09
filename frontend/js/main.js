@@ -23,6 +23,8 @@ export function init(page, navigateTo) {
     const linkToBecomeTutor = document.getElementById("linkToBecomeTutor");
 
     const user = JSON.parse(localStorage.getItem("user"));
+    const token = localStorage.getItem("token");
+
 
     if(user){
         const isTutor = user.roles.includes("tutor")
@@ -51,7 +53,7 @@ export function init(page, navigateTo) {
             localStorage.removeItem('token');
             localStorage.removeItem('user');
             alert("Logged out successfully");
-            goTo('main')
+            goTo('home_page')
         })
     }
 

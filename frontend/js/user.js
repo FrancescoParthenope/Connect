@@ -3,16 +3,16 @@ import { loadSidebar } from "./utils.js";
 
 let goTo;
 
-export function init(page, navigateTo) {
+export async function init(page, navigateTo) {
 
     if (navigateTo) {
         goTo = navigateTo;
     }
 
-    loadSidebar(navigateTo);
+    await loadSidebar(navigateTo);
 
     if (page === "update_profile") {
-        loadProfile();
+        await loadProfile();
         const profileForm = document.getElementById("ProfileForm");
 
         if (profileForm) {
@@ -51,7 +51,7 @@ async function loadProfile() {
 
         const data = await response.json();
 
-        if (response.ok) {
+        if (data.success === true) {
             document.getElementById("firstName").value = data.data.first_name || "";
             document.getElementById("lastName").value = data.data.last_name || "";
             document.getElementById("birthDate").value = data.data.birth_date || "";
@@ -101,7 +101,7 @@ async function handleUpdateProfile(event) {
         if (response.ok) {
             if (data.success) {
                 alert(data.message || "Profile updated successfully");
-                loadProfile();
+                await loadProfile();
             } else {
                 alert(`${data.message}, error code: ${response.status}`);
             }

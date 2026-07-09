@@ -35,7 +35,7 @@ export async function init(page, navigateTo) {
     }
 }
 
-async function loadMessages(){
+export async function loadMessages(){
 
     const token = localStorage.getItem("token");
     const conversationId = localStorage.getItem("conversation_id");
@@ -64,7 +64,7 @@ async function loadMessages(){
     }
 }
 
-async function sendMessage() {
+export async function sendMessage() {
 
     const token = localStorage.getItem("token");
     const conversationId = localStorage.getItem("conversation_id");
